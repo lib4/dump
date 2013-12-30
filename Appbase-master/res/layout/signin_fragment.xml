@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/pane_background_color">
+    
+    <RelativeLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/header_background_color">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:text="@string/airoffers"
+            style="@style/TitleHeader"></TextView>
+          <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:text="@string/signin"
+            style="@style/TitleHeader"></Button>
+        
+    </RelativeLayout>
+	<EditText 
+	    android:id="@+id/email_edtTxt"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/email_address"
+	    android:inputType="textEmailAddress"
+	    android:paddingTop="30dp"
+
+	    />
+	
+	<EditText 
+	     android:paddingTop="2dp"
+	    android:id="@+id/password_edtTxt"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/password"
+	    android:inputType="textPassword"
+	    />
+</LinearLayout>
