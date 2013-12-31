@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="3dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_tile_background_color"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/default_profile_pic" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0" >
+
+            <TextView
+                android:id="@+id/customer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:text="AnasAbubacker" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".7"
+                android:text="$200.1" >
+            </TextView>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description \n Items" >
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/header_background_color"
+            android:orientation="horizontal"
+            android:weightSum="1.0" >
+
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:text="Your godfather" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/item_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".7"
+                android:text="$10.1" >
+            </TextView>
+
+          
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

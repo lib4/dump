@@ -71,6 +71,21 @@ public class DBManager {
 		close();
 	
 	}
+	
+	
+	/**
+	 * Inserting on to Profile Table. After succeful signup
+	 */
+	public void insertLiveOrders(ContentValues values) {
+		
+		System.out.println("Size Values "+values.size());
+		open();
+		long insertId = appSqLiteDatabase.insert(
+				sqLiteOpenHelper.TABLE_LIVE_ORDERS, null, values);
+		//fetchLiveOrders();
+		close();
+	
+	}
 //	
 //	
 //	
@@ -86,6 +101,19 @@ public class DBManager {
 		        allColumns, null, null,
 		        null, null, null);
 		Log.e("Curson Size ","== "+cursor.getCount());
+		return cursor;
+	}
+	
+	public Cursor fetchLiveOrders() {
+		open();
+		String[] allColumns = { sqLiteOpenHelper.COLUMN_CONSUMEREMAIL,
+				sqLiteOpenHelper.COLUMN_AMOUNT,sqLiteOpenHelper.COLUMN_CONSUMER__ID,sqLiteOpenHelper.COLUMN_STATUS,
+				sqLiteOpenHelper.COLUMN_ITEMS};
+		Cursor cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_LIVE_ORDERS,
+		        allColumns, null, null,
+		        null, null, null);
+		Log.e("Curson Size ","== "+cursor.getCount());
+		close();
 		return cursor;
 	}
 }

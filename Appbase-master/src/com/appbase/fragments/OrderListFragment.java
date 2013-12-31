@@ -1,16 +1,23 @@
 package com.appbase.fragments;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.appbase.R;
+import com.appbase.customui.PinterestUI;
+import com.appbase.datastorage.DBManager;
 import com.appbase.httphandler.HTTPResponseListener;
 import com.appbase.httphandler.HttpHandler;
 
 public class OrderListFragment extends BaseFragment implements HTTPResponseListener{
 
+	LinearLayout view;
+	PinterestUI mPinterestUI;
 	@Override 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		if (container == null) {
@@ -25,7 +32,8 @@ public class OrderListFragment extends BaseFragment implements HTTPResponseListe
 		}
 		
 		   // Inflate the layout for this fragment
-		return inflater.inflate(R.layout.orderlist_fragment, container, false);
+		view	=	 (LinearLayout) inflater.inflate(R.layout.orderlist_fragment, container, false);
+		return view;
 	}
 	
 	
@@ -43,13 +51,26 @@ public class OrderListFragment extends BaseFragment implements HTTPResponseListe
 	private void init(){
 		
 		new HttpHandler().getLiveOrders(getActivity(), this);
+		mPinterestUI	=	new PinterestUI(getActivity());
+		ScrollView mScrollView	=new ScrollView(getActivity());
+		mScrollView.addView(mPinterestUI);
+		view.addView(mScrollView);
+	
+		mPinterestUI.createLayout(new DBManager(getActivity()).fetchLiveOrders());
 		
 	}
-
+	@Override
+	public void onStart(){
+		super.onStart();
+	
+		
+	}
 
 	@Override
 	public void onSuccess() {
 		// TODO Auto-generated method stub
+		//Cursor mCursor 	=	new DBManager(getActivity()).fetchLiveOrders();
+		//mPinterestUI.createLayout(mCursor);
 		
 	}
 

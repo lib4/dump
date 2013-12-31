@@ -45,4 +45,6 @@ public class HttpConstants {
 	public static final String IMAGE_JKEY = "image";
 	public static final String NAME_JKEY = "name";
 
+	public static final String CHOICES_JKEY = "choices";
+	
 }

@@ -3,13 +3,16 @@ package com.appbase.datahandler;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.ContentValues;
 import android.content.Context;
 
 import com.appbase.datastorage.AppSqliteHelper;
 import com.appbase.datastorage.DBManager;
 import com.appbase.httphandler.HttpConstants;
-import com.appbase.utils.Utils;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -39,7 +42,7 @@ public class LiveOrderParser {
 
 					JsonFactory jsonfactory = new JsonFactory();
 					JsonParser jsonParser = jsonfactory.createJsonParser(response);
-					ContentValues values	=	new ContentValues();;
+					ContentValues values	=	new ContentValues();
 					// Begin the parsing procedure
 					while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
 					while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
@@ -50,29 +53,29 @@ public class LiveOrderParser {
 
 							// get the next token which will be the value...
 							jsonParser.nextToken();
-							values.put(AppSqliteHelper.COLUMN_ACCESSTOKEN, jsonParser.getText());
-							//Utils.TOKEN	=	jsonParser.getText();
+							values.put(AppSqliteHelper.COLUMN_LASTUPDATED, jsonParser.getText());
+							
 						}
 
 						if (HttpConstants.CREATED_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
 							System.out.println("members : " + jsonParser.getText());
-							values.put(AppSqliteHelper.COLUMN__ID, jsonParser.getText());
+							values.put(AppSqliteHelper.COLUMN_CREATED, jsonParser.getText());
 
 						}
 						if (HttpConstants.AMOUNT_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
 							System.out.println("members : " + jsonParser.getFloatValue());
-							values.put(AppSqliteHelper.COLUMN_BACKGROUNDSCAN, jsonParser.getText());
+							values.put(AppSqliteHelper.COLUMN_AMOUNT, jsonParser.getText());
 
 						}
 						if (HttpConstants.TAX_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
 							System.out.println("members : " + jsonParser.getFloatValue());
-							values.put(AppSqliteHelper.COLUMN_BUSINESS, jsonParser.getText());
+							values.put(AppSqliteHelper.COLUMN_TAX, jsonParser.getText());
 
 						}
 						
@@ -85,6 +88,7 @@ public class LiveOrderParser {
 
 									jsonParser.nextToken();
 									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
+									
 								}
 								if (HttpConstants.CREATED_JKEY.equals(token)) {
 
@@ -95,51 +99,62 @@ public class LiveOrderParser {
 
 									jsonParser.nextToken();
 									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
+									values.put(AppSqliteHelper.COLUMN_CONSUMEREMAIL, jsonParser.getText());
 								}
 								if (HttpConstants.DEVICE_JKEY.equals(token)) {
-
+									
 									while (jsonParser.nextToken() != JsonToken.END_OBJECT){
+										token = jsonParser.getCurrentName();
 										if (HttpConstants.ID_JKEY.equals(token)) {
 											jsonParser.nextToken();
-											System.out.println("CONSUMER_JKEY DEVICE ID : " + jsonParser.getText());
+											System.out.println("*********** DEVICE ID : " + jsonParser.getText());
+											values.put(AppSqliteHelper.COLUMN_DEVICE_ID, jsonParser.getText());
 										}
 									}
 									
-									
+									jsonParser.nextToken();
+									token = jsonParser.getCurrentName();
 								}
 								if (HttpConstants.TYPE_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
 									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
+									values.put(AppSqliteHelper.COLUMN_TYPE, jsonParser.getText());
 								}
 								if (HttpConstants._ID_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
 									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
+									values.put(AppSqliteHelper.COLUMN_CONSUMER__ID, jsonParser.getText());
 								}
 								
 								if (HttpConstants.V_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
 									System.out.println("CONSUMER_JKEY : " + jsonParser.getIntValue());
+									values.put(AppSqliteHelper.COLUMN_CONSUMER_V, jsonParser.getIntValue());
 								}
 								
 								if (HttpConstants.BACKGROUND_SCAN_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
 									System.out.println("CONSUMER_JKEY : " + jsonParser.getBooleanValue());
+									
+									values.put(AppSqliteHelper.COLUMN_BACKGROUNDSCAN, jsonParser.getBooleanValue());
 								}
 								
 								if (HttpConstants.GUEST_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
 									System.out.println("CONSUMER_JKEY : " + jsonParser.getBooleanValue());
+									values.put(AppSqliteHelper.COLUMN_GUEST, jsonParser.getBooleanValue());
 								}
 								
 								if (HttpConstants.ID_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
 									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
+									values.put(AppSqliteHelper.COLUMN_ID, jsonParser.getText());
 								}
 								
 							}
@@ -150,9 +165,9 @@ public class LiveOrderParser {
 						if (HttpConstants.BUSINESS_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("members : " + jsonParser.getText());
+							System.out.println("BUSINESS_JKEY : " + jsonParser.getText());
 
-							values.put(AppSqliteHelper.COLUMN_LNAME, jsonParser.getText());
+							values.put(AppSqliteHelper.COLUMN_BUSINESS, jsonParser.getText());
 						}
 
 						if (HttpConstants._ID_JKEY.equals(token)) {
@@ -160,7 +175,7 @@ public class LiveOrderParser {
 							jsonParser.nextToken();
 							System.out.println("members : " + jsonParser.getText());
 
-							values.put(AppSqliteHelper.COLUMN_ID, jsonParser.getText());
+							values.put(AppSqliteHelper.COLUMN__ID, jsonParser.getText());
 						}
 						
 						
@@ -169,7 +184,7 @@ public class LiveOrderParser {
 							jsonParser.nextToken();
 							System.out.println("members : " + jsonParser.getIntValue());
 
-							values.put(AppSqliteHelper.COLUMN_EMAIL, jsonParser.getIntValue());
+							values.put(AppSqliteHelper.COLUMN_V, jsonParser.getIntValue());
 						}
 						
 						
@@ -178,7 +193,7 @@ public class LiveOrderParser {
 							jsonParser.nextToken();
 							System.out.println("members : " + jsonParser.getBooleanValue());
 
-							values.put(AppSqliteHelper.COLUMN_FNAME, jsonParser.getBooleanValue());
+							values.put(AppSqliteHelper.COLUMN_RATED, jsonParser.getBooleanValue());
 						}
 						
 						
@@ -187,79 +202,131 @@ public class LiveOrderParser {
 							jsonParser.nextToken();
 							System.out.println("members : " + jsonParser.getBooleanValue());
 
-							values.put(AppSqliteHelper.COLUMN_FULLNAME, jsonParser.getBooleanValue());
+							values.put(AppSqliteHelper.COLUMN_FEECOLLECTED, jsonParser.getBooleanValue());
 						}
 						
 						if (HttpConstants.STATUS_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("members : " + jsonParser.getText());
+							System.out.println("STATUS_JKEY : " + jsonParser.getText());
 
-							values.put(AppSqliteHelper.COLUMN_GUEST, jsonParser.getText());
+							values.put(AppSqliteHelper.COLUMN_STATUS, jsonParser.getText());
 						}
 						
 						
 						if (HttpConstants.ITEMS_JKEY.equals(token)) {
-
 							jsonParser.nextToken();
-							
+							JSONArray itemArray	=	new JSONArray();
 							while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
-
+								
+								
+								JSONObject mJsonObject	=	new JSONObject();
 								while (jsonParser.nextToken() != JsonToken.END_OBJECT){
+									
 									token = jsonParser.getCurrentName();
+									
+									try{
 									if (HttpConstants.NAME_JKEY.equals(token)) {
 										jsonParser.nextToken();
-										System.out.println("CONSUMER_JKEY DEVICE ID : " + jsonParser.getText());
+										mJsonObject.put(token, jsonParser.getText());
+										System.out.println("ITEMS_JKEY  : " + jsonParser.getText());
 									}
 									
 									if (HttpConstants.PRICE_JKEY.equals(token)) {
 										jsonParser.nextToken();
-										System.out.println("CONSUMER_JKEY DEVICE ID : " + jsonParser.getFloatValue());
+										mJsonObject.put(token, jsonParser.getFloatValue());
+										System.out.println("ITEMS_JKEY : " + jsonParser.getFloatValue());
 									}
 									
 									if (HttpConstants.QTY_JKEY.equals(token)) {
 										jsonParser.nextToken();
-										System.out.println("CONSUMER_JKEY DEVICE ID : " + jsonParser.getIntValue());
+										mJsonObject.put(token, jsonParser.getIntValue());
+										System.out.println("ITEMS_JKEY : " + jsonParser.getIntValue());
 									}
 									if (HttpConstants.IMAGE_JKEY.equals(token)) {
 										jsonParser.nextToken();
-										System.out.println("CONSUMER_JKEY DEVICE ID : " + jsonParser.getText());
+										mJsonObject.put(token, jsonParser.getText());
+										System.out.println("ITEMS_JKEY: " + jsonParser.getText());
 									}
 									if (HttpConstants._ID_JKEY.equals(token)) {
 										jsonParser.nextToken();
-										System.out.println("CONSUMER_JKEY DEVICE ID : " + jsonParser.getText());
+										mJsonObject.put(token, jsonParser.getText());
+										System.out.println("ITEMS_JKEY : " + jsonParser.getText());
+									}
+									
+									
+									if (HttpConstants.CHOICES_JKEY.equals(token)) {
+										String choicetoken	=	token;
+										jsonParser.nextToken();
+										JSONArray choicesArray	=	new JSONArray();
+										while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
+											
+											
+											JSONObject choiceObject	=	new JSONObject();
+											while (jsonParser.nextToken() != JsonToken.END_OBJECT){
+												token = jsonParser.getCurrentName();
+												
+												if (HttpConstants.NAME_JKEY.equals(token)) {
+													jsonParser.nextToken();
+													mJsonObject.put(token, jsonParser.getText());
+													choiceObject.put(token, jsonParser.getText());
+												}
+												
+												if (HttpConstants.PRICE_JKEY.equals(token)) {
+													jsonParser.nextToken();
+													mJsonObject.put(token, jsonParser.getFloatValue());
+													choiceObject.put(token, jsonParser.getFloatValue());
+													
+												}
+												
+												if (HttpConstants.TYPE_JKEY.equals(token)) {
+													jsonParser.nextToken();
+													mJsonObject.put(token, jsonParser.getText());
+													choiceObject.put(token, jsonParser.getText());
+													
+												}
+												
+												
+											}
+											
+											if(jsonParser.getCurrentToken()==JsonToken.END_OBJECT){
+												choicesArray.put(choiceObject);
+											}
+										}
+										
+										
+										
+										mJsonObject.put(choicetoken, choicesArray);
+										
+									}
+									}catch(JSONException e){
+										e.printStackTrace();
 									}
 								}
 								
-							
+								if(jsonParser.getCurrentToken()==JsonToken.END_OBJECT){
+									itemArray.put(mJsonObject);
+								}
 								
 							}
 							
-
-							//values.put(AppSqliteHelper.COLUMN_TYPE, jsonParser.getText());
+							
+							System.out.println("TEST  mJsonObject: " + itemArray.toString());
+							
+							values.put(AppSqliteHelper.COLUMN_ITEMS, itemArray.toString());
 						}
-						/*if (HttpConstants.BUSINESS_JKEY.equals(token)) {
+						
 
-							System.out.println("names :");
-
-							// the next token will be '[' that means that we have an
-							// array
-							jsonParser.nextToken();
-
-							// parse tokens until you find ']'
-							while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
-
-								System.out.println(jsonParser.getText());
-							}
-
-						}*/
-
+					}
+					
+					if(jsonParser.getCurrentToken()==JsonToken.END_OBJECT){
+						new DBManager(context).insertLiveOrders(values);
 					}
 					}
 					
 					jsonParser.close();
 
-					//new DBManager(context).insertProfile(values);
+					
 				} catch (JsonGenerationException e) {
 
 					e.printStackTrace();
