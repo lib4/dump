@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pane_background_color"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/header_background_color"
+        android:orientation="horizontal" >
+
+          <Button
+            style="@style/left_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/left_arrow"/>
+        <TextView
+            style="@style/TitleHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+          
+            android:text="@string/app_name" >
+        </TextView>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+             android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="Logout"
+            />
+    
+    </RelativeLayout>
+
+    <!-- ACCOUNT -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            style="@style/SubTitleHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account" />
+
+        <TextView
+            android:id="@+id/emailAddress"
+            style="@style/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/listview_item_margin"
+            android:text="@string/account" />
+
+        <TextView
+            style="@style/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account" />
+
+        <TextView
+            style="@style/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account" />
+
+        <TextView
+            style="@style/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account" />
+    </LinearLayout>
+    <!-- GENERAL -->
+
+    <TextView
+        style="@style/SubTitleHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/general" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/white_tile_background_color"
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <TextView
+            style="@style/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"
+            android:text="@string/manage_menu" />
+
+        <TextView
+            style="@style/right_arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8"
+            android:text=">" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/white_tile_background_color"
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <TextView
+            style="@style/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"
+            android:text="@string/manage_sensors" />
+
+        <TextView
+            style="@style/right_arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8"
+            android:text=">" />
+    </LinearLayout>
+
+</LinearLayout>
