@@ -1,8 +1,10 @@
 package com.appbase.httphandler;
 
-public interface HTTPResponseListener {
+
+
+public interface HTTPResponseListener{
 
 	public void onSuccess();
-	public void onFailure();
+	public void onFailure(int failureCode);
 	
 }

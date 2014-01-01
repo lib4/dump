@@ -234,8 +234,8 @@ public class LiveOrderParser {
 									
 									if (HttpConstants.PRICE_JKEY.equals(token)) {
 										jsonParser.nextToken();
-										mJsonObject.put(token, jsonParser.getFloatValue());
-										System.out.println("ITEMS_JKEY : " + jsonParser.getFloatValue());
+										mJsonObject.put(token, jsonParser.getDoubleValue());
+										System.out.println("ITEMS_JKEY PRICE_JKEY : " + jsonParser.getDoubleValue());
 									}
 									
 									if (HttpConstants.QTY_JKEY.equals(token)) {

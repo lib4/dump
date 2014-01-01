@@ -1,7 +1,10 @@
 package com.appbase.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+
+
+import com.appbase.R;
 /**
  * 
  * @author aabuback
@@ -11,14 +14,14 @@ import android.support.v4.app.FragmentActivity;
  * The most commonly used function Example: Saving the state, memory clearing etc needs to e handled only in this class.
  * 
  */
-public class BaseActivity extends FragmentActivity{
+public class BaseActivity extends Activity{
 	
 	/**
 	 * Called when the activity is starting.
 	 */
 	 protected void onCreate(Bundle savedInstanceState){
 		 super.onCreate(savedInstanceState);
-		 
+		 this.overridePendingTransition(R.anim.enter, R.anim.exit);
 	 }   
 	 
 	 /**
@@ -55,6 +58,7 @@ public class BaseActivity extends FragmentActivity{
 	  */
 	 protected void onPause(){
 		 super.onPause();
+		 this.overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
 		 
 	 } 
 	 
@@ -63,6 +67,7 @@ public class BaseActivity extends FragmentActivity{
 	  */
 	 protected void onStop(){
 		 super.onStop();
+		 
 	 }   
 	 
 	 /**
@@ -70,6 +75,7 @@ public class BaseActivity extends FragmentActivity{
 	  */
 	 protected void onDestroy(){
 		 super.onDestroy();
+		 
 		 
 	 }
 	

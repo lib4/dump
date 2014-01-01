@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -34,7 +35,7 @@ public class PinterestUI extends LinearLayout {
 	int SCREEN_HEIGHT = 0;
 	int[] HeightArray;
 	LinearLayout NextLayout;
-	int TOTAL_NUM_ITEMS = 10;
+	int TOTAL_NUM_ITEMS = 0;
 	int ITEM_DRAWN_INDEX = 0;
 	Cursor liveOrderCursor;
 	public PinterestUI(Context context, AttributeSet attrs) {
@@ -57,6 +58,11 @@ public class PinterestUI extends LinearLayout {
 		SCREEN_WIDTH = metrics.widthPixels;
 		HeightArray = new int[NUM_COLUMN];
 		
+	
+	}
+
+	public void createLayout(Cursor mCursor) {
+		
 		ViewTreeObserver vto = getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
@@ -64,6 +70,9 @@ public class PinterestUI extends LinearLayout {
 			@Override
 			public void onGlobalLayout() {
 				ITEM_DRAWN_INDEX++;
+				System.out.println("onGlobalLayout&&&&&&& ITEM_DRAWN_INDEX"+ITEM_DRAWN_INDEX
+						+" TOTAL_NUM_ITEMS "+TOTAL_NUM_ITEMS);
+				
 				NextLayout = (LinearLayout) getChildAt(getLayoutIndexToAdd());
 
 				if (ITEM_DRAWN_INDEX >= TOTAL_NUM_ITEMS) {
@@ -81,11 +90,14 @@ public class PinterestUI extends LinearLayout {
 			}
 
 		});
-	}
-
-	public void createLayout(Cursor mCursor) {
+		
+		
+		
 		liveOrderCursor	=	mCursor;
+		
 		TOTAL_NUM_ITEMS	=	liveOrderCursor.getCount();
+		System.out.println("IM HERE TOTAL_NUM_ITEMS>>>>>>>>>>>" + TOTAL_NUM_ITEMS);
+		
 		System.out.println("IM HERE>>>>>>>>>>>" + SCREEN_WIDTH);
 		for (int i = 0; i < NUM_COLUMN; i++) {
 
@@ -95,18 +107,23 @@ public class PinterestUI extends LinearLayout {
 			
 			mLinearLayout.setOrientation(LinearLayout.VERTICAL);
 			setOrientation(LinearLayout.HORIZONTAL);
-			mLinearLayout.setPadding(20, 20, 20, 20);
+			mLinearLayout.setPadding(10, 20, 10, 20);
 			addView(mLinearLayout);
 
 			System.out.println("IM HERE>>>>>>>>>>> Layout Creation" + i);
 		}
 
+		
 		draw(0);
 		
 
 	}
 
 	private void draw(int itemIndex) {
+		
+		System.out.println(" ******INDEX "+itemIndex +"liveOrderCursor");
+		
+		if(liveOrderCursor!=null){
 		liveOrderCursor.moveToPosition(itemIndex);
 		if (NextLayout == null) {
 			NextLayout = (LinearLayout) getChildAt(0);
@@ -151,6 +168,7 @@ public class PinterestUI extends LinearLayout {
 	
 		
 		NextLayout.addView(mLinearLayout);
+		}
 	}
 
 	

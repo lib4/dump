@@ -31,9 +31,13 @@ public class DBManager {
 	 * @throws SQLException
 	 */
 	public void open() throws SQLException {
+		try{
 		appSqLiteDatabase = sqLiteOpenHelper.getWritableDatabase();
 		Uri mUril =	 Uri.parse(appSqLiteDatabase.getPath());
 		Log.e("URI ",""+mUril.toString());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -105,15 +109,20 @@ public class DBManager {
 	}
 	
 	public Cursor fetchLiveOrders() {
+		Cursor cursor;
+		try{
 		open();
 		String[] allColumns = { sqLiteOpenHelper.COLUMN_CONSUMEREMAIL,
 				sqLiteOpenHelper.COLUMN_AMOUNT,sqLiteOpenHelper.COLUMN_CONSUMER__ID,sqLiteOpenHelper.COLUMN_STATUS,
 				sqLiteOpenHelper.COLUMN_ITEMS};
-		Cursor cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_LIVE_ORDERS,
+		 cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_LIVE_ORDERS,
 		        allColumns, null, null,
 		        null, null, null);
 		Log.e("Curson Size ","== "+cursor.getCount());
 		close();
+		}catch(Exception e){
+			return null;
+		}
 		return cursor;
 	}
 }
