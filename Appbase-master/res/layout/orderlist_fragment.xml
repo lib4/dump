@@ -29,7 +29,8 @@
             android:gravity="center"
             android:text="@string/settings"
             android:textAlignment="center"
-            style="@style/header_btn" >
+            style="@style/header_btn"
+            android:background="@drawable/header_button" >
         </Button>
     </RelativeLayout>
 

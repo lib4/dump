@@ -20,7 +20,8 @@
             android:gravity="center"
             android:textAlignment="center"
            style="@style/header_btn"
-            android:text="@string/left_arrow" />
+            android:text="@string/left_arrow"
+            android:background="@drawable/header_button" />
 
         <TextView
             style="@style/TitleHeader"
@@ -37,8 +38,9 @@
             style="@style/header_btn"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:text="Logout" />
+            android:gravity="center"
+            android:text="Logout"
+            android:background="@drawable/header_button" />
     </RelativeLayout>
 
     <!-- ACCOUNT -->

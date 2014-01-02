@@ -19,6 +19,7 @@
             android:gravity="center"
             android:textAlignment="center"
             style="@style/header_btn"
+            android:background="@drawable/header_button"
             android:text="@string/left_arrow" />
 
       

@@ -70,12 +70,13 @@
         <item name="android:layout_margin">10dp</item>
     </style>
     
-    <style name="header_btn">
+    <style name="header_btn" >
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:typeface">normal</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
+        <item name="android:layout_margin">8dp</item>
     </style>
 
 </resources>
