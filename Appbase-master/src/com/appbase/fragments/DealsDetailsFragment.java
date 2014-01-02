@@ -11,11 +11,10 @@ import android.widget.LinearLayout;
 
 import com.appbase.R;
 import com.appbase.activities.LauncherActivity;
-import com.appbase.activities.MenuActivity;
 
-public class SettingsFragment extends BaseFragment {
+public class DealsDetailsFragment extends BaseFragment {
 
-	LinearLayout settingsLayout,menuManagementLayout;
+	LinearLayout dealsDetailsLayout;
 	Button back_Btn, logout_Btn;
 
 	@Override
@@ -33,10 +32,10 @@ public class SettingsFragment extends BaseFragment {
 		}
 
 		// Inflate the layout for this fragment
-		settingsLayout = (LinearLayout) inflater.inflate(
-				R.layout.settings_fragment, container, false);
+		dealsDetailsLayout = (LinearLayout) inflater.inflate(
+				R.layout.deal_details_fragment, container, false);
 		init();
-		return settingsLayout;
+		return dealsDetailsLayout;
 	}
 
 	/**
@@ -45,8 +44,8 @@ public class SettingsFragment extends BaseFragment {
 	 */
 	private void init() {
 
-		back_Btn = (Button) settingsLayout.findViewById(R.id.left_arrow_btn);
-		logout_Btn = (Button) settingsLayout.findViewById(R.id.logout_btn);
+		back_Btn = (Button) dealsDetailsLayout
+				.findViewById(R.id.back_btn);
 
 		back_Btn.setOnClickListener(new OnClickListener() {
 
@@ -57,32 +56,7 @@ public class SettingsFragment extends BaseFragment {
 			}
 		});
 
-		logout_Btn.setOnClickListener(new OnClickListener() {
+	
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),
-						LauncherActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				getActivity().finish();
-			}
-		});
-
-		
-		menuManagementLayout	=	(LinearLayout) settingsLayout.findViewById(R.id.menu_management);
-		menuManagementLayout.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),
-						MenuActivity.class);
-				
-				startActivity(intent);
-				
-			}
-		});
 	}
 }

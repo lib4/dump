@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -50,13 +50,31 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_marginTop">2dp</item>
     </style>
-
+    <!--
     <style name="left_arrow" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/white_tile_background_color</item>
         <item name="android:typeface">sans</item>
         <item name="android:textSize">30sp</item>
         <item name="android:padding">10dp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+    -->
+
+    <style name="menu_type_title" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/header_background_color</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+    
+    <style name="header_btn">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
     </style>
 

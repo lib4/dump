@@ -6,17 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.appbase.R;
-import com.appbase.activities.LauncherActivity;
-import com.appbase.activities.MenuActivity;
+import com.appbase.activities.DealDetailsActivity;
+import com.appbase.activities.LiveOrderActivity;
+import com.appbase.adapters.MenuAdapter;
+import com.appbase.datastorage.DBManager;
 
-public class SettingsFragment extends BaseFragment {
+public class MenuFragment extends BaseFragment {
 
-	LinearLayout settingsLayout,menuManagementLayout;
-	Button back_Btn, logout_Btn;
+	LinearLayout menuLayout;
+	Button back_Btn;
+	ListView mListView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,10 +39,10 @@ public class SettingsFragment extends BaseFragment {
 		}
 
 		// Inflate the layout for this fragment
-		settingsLayout = (LinearLayout) inflater.inflate(
-				R.layout.settings_fragment, container, false);
+		menuLayout = (LinearLayout) inflater.inflate(
+				R.layout.menu_fragment, container, false);
 		init();
-		return settingsLayout;
+		return menuLayout;
 	}
 
 	/**
@@ -45,8 +51,7 @@ public class SettingsFragment extends BaseFragment {
 	 */
 	private void init() {
 
-		back_Btn = (Button) settingsLayout.findViewById(R.id.left_arrow_btn);
-		logout_Btn = (Button) settingsLayout.findViewById(R.id.logout_btn);
+		back_Btn = (Button) menuLayout.findViewById(R.id.back_btn);
 
 		back_Btn.setOnClickListener(new OnClickListener() {
 
@@ -56,33 +61,33 @@ public class SettingsFragment extends BaseFragment {
 				getActivity().finish();
 			}
 		});
-
-		logout_Btn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),
-						LauncherActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				getActivity().finish();
-			}
-		});
-
 		
-		menuManagementLayout	=	(LinearLayout) settingsLayout.findViewById(R.id.menu_management);
-		menuManagementLayout.setOnClickListener(new OnClickListener() {
-			
+		mListView	=	(ListView) menuLayout.findViewById(R.id.menu_list);
+		MenuAdapter menuAdapter	=	new MenuAdapter(getActivity(), new DBManager(getActivity()).fetchLiveOrders());
+		mListView.setAdapter(menuAdapter);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
-			public void onClick(View v) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),
-						MenuActivity.class);
-				
-				startActivity(intent);
-				
+				loadDealDetailsFragment();
 			}
 		});
+
 	}
+	
+	
+	/**
+	 * Load the SignIn fragment
+	 * 
+	 */
+
+	public void loadDealDetailsFragment() {
+
+		Intent intent = new Intent(getActivity(), DealDetailsActivity.class);
+		startActivity(intent);
+
+	}
+
 }

@@ -12,7 +12,7 @@
     <!-- SignIn xml -->
     <string name="email_address">Email Address</string>
     <string name="password">Password</string>
-    <string name="airoffers">AirOffers</string>
+    <string name="airoffers">Appbase</string>
     <string name="signin">SignIn</string>
     <string name="uname_not_matching">Wrong Email and password combination. Please try again!</string>
     <string name="verifying">Verifying...</string>

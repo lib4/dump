@@ -126,7 +126,8 @@ public class HttpHandler extends Thread {
 
 				default:
 					
-					mHttpResponseListener.onFailure(DEFAULT_CODE);
+					mHttpResponseListener.onSuccess();
+					//mHttpResponseListener.onFailure(DEFAULT_CODE);
 					break;
 				}
 				break;

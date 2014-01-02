@@ -2,35 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pane_background_color"
-    android:orientation="vertical" >
-
-    <RelativeLayout
+    android:orientation="vertical" 
+    android:background="@color/pane_background_color">
+<RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="@dimen/header_height"
         android:background="@color/header_background_color"
         android:orientation="horizontal" >
 
-        <TextView
-            style="@style/TitleHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/airoffers" >
-        </TextView>
-
         <Button
-            android:id="@+id/settings_btn"
+            android:id="@+id/back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="@string/settings"
             android:textAlignment="center"
-            style="@style/header_btn" >
-        </Button>
+            style="@style/header_btn"
+            android:text="@string/left_arrow" />
+
+      
     </RelativeLayout>
+    <ListView
+        android:id="@+id/menu_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent" >
+    </ListView>
 
 </LinearLayout>

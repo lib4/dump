@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/pane_background_color">
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/header_height"
+        android:background="@color/header_background_color"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:textAlignment="center"
+          	style="@style/header_btn"
+            android:text="@string/left_arrow" />
+
+      
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/menu_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/default_profile_pic" >
+        
+        
+    </ImageView>
+
+    
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_tile_background_color"
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <TextView
+            style="@style/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="@string/manage_sensors" />
+
+        <TextView
+            style="@style/right_arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:text=">" />
+        
+        
+    </LinearLayout>
+    
+      
+       <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="application runs on a smaller screen, there might not be enough room in the Action Bar to display the search widget along with other action items or navigation elements, so the menu item will instead appear in the overflow menu. When placed in the overflow menu, the item works like an ordinary menu item and does not display the action view (the search widget)." />
+</LinearLayout>
