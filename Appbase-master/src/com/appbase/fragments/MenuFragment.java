@@ -17,8 +17,10 @@ import com.appbase.activities.DealDetailsActivity;
 import com.appbase.activities.LiveOrderActivity;
 import com.appbase.adapters.MenuAdapter;
 import com.appbase.datastorage.DBManager;
+import com.appbase.httphandler.HTTPResponseListener;
+import com.appbase.httphandler.HttpHandler;
 
-public class MenuFragment extends BaseFragment {
+public class MenuFragment extends BaseFragment implements HTTPResponseListener{
 
 	LinearLayout menuLayout;
 	Button back_Btn;
@@ -42,6 +44,7 @@ public class MenuFragment extends BaseFragment {
 		menuLayout = (LinearLayout) inflater.inflate(
 				R.layout.menu_fragment, container, false);
 		init();
+		new HttpHandler().getMenus(getActivity(), this);
 		return menuLayout;
 	}
 
@@ -88,6 +91,18 @@ public class MenuFragment extends BaseFragment {
 		Intent intent = new Intent(getActivity(), DealDetailsActivity.class);
 		startActivity(intent);
 
+	}
+
+	@Override
+	public void onSuccess() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onFailure(int failureCode) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
