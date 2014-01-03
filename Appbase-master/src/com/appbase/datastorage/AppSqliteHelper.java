@@ -9,6 +9,7 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 
 	public static final String TABLE_PROFILE = "profile";
 	public static final String TABLE_LIVE_ORDERS = "liveorders";
+	public static final String TABLE_CATALOGS = "catalogs";
 	private static final String DATABASE_NAME = "airoffers_merchant.db";
 	private static final int DATABASE_VERSION = 1;
 
@@ -40,6 +41,9 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_CONSUMER_BUSINESS = "consumer_business";
 	public static final String COLUMN_CONSUMER__ID = "consumer__id";
 	public static final String COLUMN_CONSUMER_V = "consumer_v";
+	
+	public static final String COLUMN_NAME = "name";
+	public static final String COLUMN_GROUPS = "groups";
 
 	// Database creation sql statement
 	private static final String CREATE_PROFILE_TABLE = "create table "
@@ -72,6 +76,16 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 			+ COLUMN_RATED + " boolean not null, " + "" + COLUMN_FEECOLLECTED
 			+ " boolean not null," + COLUMN_STATUS + " text not null, "
 			+ COLUMN_ITEMS + " text not null);";
+	
+	
+	
+	private static final String CREATE_CATALOG_TABLE = "create table "
+			+ TABLE_CATALOGS
+			+ " (auto_id integer primary key autoincrement,"
+			+ COLUMN_NAME + " text not null," + COLUMN_TYPE
+			+ " text not null," + "" + COLUMN__ID + " text not null,"
+			+ COLUMN_STATUS + " TEXT not null, " + COLUMN_GROUPS
+			+ " text not null);";
 
 //	COLUMN_CONSUMER_V
 //	
@@ -106,7 +120,7 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase database) {
 		database.execSQL(CREATE_PROFILE_TABLE);
 		database.execSQL(CREATE_LIVEORDERS_TABLE);
-
+		database.execSQL(CREATE_CATALOG_TABLE);
 	}
 
 	@Override

@@ -90,6 +90,23 @@ public class DBManager {
 		close();
 	
 	}
+	
+	
+	/**
+	 * Inserting on to Profile Table. After succeful signup
+	 */
+	public void insertCataloges(ContentValues values) {
+		
+		System.out.println("Size Values "+values.size());
+		open();
+		long insertId = appSqLiteDatabase.insert(
+				sqLiteOpenHelper.TABLE_CATALOGS, null, values);
+		fetchCatalogs();
+		close();
+	
+	}
+	
+	
 //	
 //	
 //	
@@ -116,6 +133,26 @@ public class DBManager {
 				sqLiteOpenHelper.COLUMN_AMOUNT,sqLiteOpenHelper.COLUMN_CONSUMER__ID,sqLiteOpenHelper.COLUMN_STATUS,
 				sqLiteOpenHelper.COLUMN_ITEMS};
 		 cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_LIVE_ORDERS,
+		        allColumns, null, null,
+		        null, null, null);
+		Log.e("Curson Size ","== "+cursor.getCount());
+		close();
+		}catch(Exception e){
+			return null;
+		}
+		return cursor;
+	}
+	
+	
+	
+	public Cursor fetchCatalogs() {
+		Cursor cursor;
+		try{
+		open();
+		String[] allColumns = { sqLiteOpenHelper.COLUMN_NAME,
+				sqLiteOpenHelper.COLUMN_TYPE,sqLiteOpenHelper.COLUMN__ID,sqLiteOpenHelper.COLUMN_STATUS,
+				sqLiteOpenHelper.COLUMN_GROUPS};
+		 cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_CATALOGS,
 		        allColumns, null, null,
 		        null, null, null);
 		Log.e("Curson Size ","== "+cursor.getCount());

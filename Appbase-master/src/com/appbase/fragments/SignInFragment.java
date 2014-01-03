@@ -90,7 +90,7 @@ public class SignInFragment extends BaseFragment implements
 				.findViewById(R.id.password_edtTxt);
 
 		// Hardcodes the emaild and password Need to remove
-		emailAddress_edtTxt.setText("merch25@teamonapp.com");
+		emailAddress_edtTxt.setText("merch27@teamonapp.com");
 		password_edtTxt.setText("123123");
 
 		password_edtTxt.setOnEditorActionListener(new OnEditorActionListener() {

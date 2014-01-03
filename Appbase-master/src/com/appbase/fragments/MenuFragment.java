@@ -1,7 +1,11 @@
 package com.appbase.fragments;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -66,8 +70,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener{
 		});
 		
 		mListView	=	(ListView) menuLayout.findViewById(R.id.menu_list);
-		MenuAdapter menuAdapter	=	new MenuAdapter(getActivity(), new DBManager(getActivity()).fetchLiveOrders());
-		mListView.setAdapter(menuAdapter);
+	
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -96,7 +99,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener{
 	@Override
 	public void onSuccess() {
 		// TODO Auto-generated method stub
-		
+		mHandler.sendMessage(new Message());
 	}
 
 	@Override
@@ -105,4 +108,12 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener{
 		
 	}
 
+	
+	final Handler mHandler = new Handler(Looper.getMainLooper()) {
+
+		public void handleMessage(Message msg) {
+			MenuAdapter menuAdapter	=	new MenuAdapter(getActivity(), new DBManager(getActivity()).fetchCatalogs());
+			mListView.setAdapter(menuAdapter);
+		}
+	};
 }

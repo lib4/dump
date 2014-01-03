@@ -46,5 +46,20 @@ public class HttpConstants {
 	public static final String NAME_JKEY = "name";
 
 	public static final String CHOICES_JKEY = "choices";
+
+	/*
+	 * ################################# GET MENU PARSER
+	 */
+	public static final String CARDS_JKEY = "cards";
+	public static final String CHOICE_GROUPS_JKEY = "choiceGroups";
+	public static final String PAYMENTS_ENABLED_JKEY = "paymentsEnabled";
+	public static final String SUBGROUPS_JKEY = "subgroups";
+	public static final String GROUPS_JKEY = "groups";
+	public static final String SENSOR_ADV_ID_JKEY = "sensorAdvID";
+	public static final String DESCRIPTION_JKEY = "description";
+	public static final String PRICE_STRING_JKEY = "priceString";
+	public static final String TEXT_JKEY = "text";
+	
+	
 	
 }
