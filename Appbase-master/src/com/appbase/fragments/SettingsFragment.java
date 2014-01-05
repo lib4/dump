@@ -1,5 +1,7 @@
 package com.appbase.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +14,8 @@ import android.widget.LinearLayout;
 import com.appbase.R;
 import com.appbase.activities.LauncherActivity;
 import com.appbase.activities.MenuActivity;
+import com.appbase.httphandler.HttpHandler;
+import com.appbase.utils.Utils;
 
 public class SettingsFragment extends BaseFragment {
 
@@ -62,11 +66,7 @@ public class SettingsFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),
-						LauncherActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				getActivity().finish();
+				signOutAlert();
 			}
 		});
 
@@ -84,5 +84,57 @@ public class SettingsFragment extends BaseFragment {
 				
 			}
 		});
+	}
+	
+	private void trgrSignOutService(){
+		
+		new HttpHandler().signOut(getActivity());
+	}
+	
+	private void signOutAlert(){
+		
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+					getActivity());
+
+			// set title
+			// alertDialogBuilder.setTitle("Your Title");
+
+			// set dialog message
+			alertDialogBuilder
+					.setMessage(
+							getActivity().getString(R.string.logut_alert))
+					.setCancelable(false)
+					.setPositiveButton("No", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// if this button is clicked, close
+							// current activity
+
+						}
+					})
+
+					.setNegativeButton("Yes",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int id) {
+									// if this button is clicked, close
+									// current activity
+									
+									Intent intent = new Intent(getActivity(),
+											LauncherActivity.class);
+									intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+									trgrSignOutService();
+									Utils.TOKEN	=	null;
+									
+									startActivity(intent);
+									getActivity().finish();
+									
+								}
+							});
+
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+
+			// show it
+			alertDialog.show();
+		
 	}
 }

@@ -37,7 +37,7 @@ public class Connection {
 
 		con.setRequestProperty("Content-Type", "application/json");
 		con.setRequestProperty("Accept", "application/json");
-		if (Utils.TOKEN != null && Utils.PASSWORD != null) {
+		if (Utils.TOKEN != null) {
 			System.out.println(" base64EncodedCredentials : " + Utils.TOKEN);
 			con.setRequestProperty("Authorization", "Bearer " + Utils.TOKEN);
 		}

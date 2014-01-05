@@ -1,12 +1,9 @@
 package com.appbase.customui;
 
-import java.net.ContentHandler;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,10 +12,13 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,8 +27,10 @@ import com.appbase.R;
 import com.appbase.androidquery.AQuery;
 import com.appbase.androidquery.callback.AjaxStatus;
 import com.appbase.androidquery.callback.BitmapAjaxCallback;
+import com.appbase.httphandler.HTTPResponseListener;
+import com.appbase.httphandler.HttpHandler;
 
-public class PinterestUI extends LinearLayout {
+public class PinterestUI extends LinearLayout implements HTTPResponseListener{
 	private int NUM_COLUMN = 2;
 	Context context;
 	int SCREEN_WIDTH = 0;
@@ -38,10 +40,12 @@ public class PinterestUI extends LinearLayout {
 	int TOTAL_NUM_ITEMS = 0;
 	int ITEM_DRAWN_INDEX = 0;
 	Cursor liveOrderCursor;
+
 	public PinterestUI(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		this.context = context;
+	
 	}
 
 	
@@ -70,8 +74,7 @@ public class PinterestUI extends LinearLayout {
 			@Override
 			public void onGlobalLayout() {
 				ITEM_DRAWN_INDEX++;
-				System.out.println("onGlobalLayout&&&&&&& ITEM_DRAWN_INDEX"+ITEM_DRAWN_INDEX
-						+" TOTAL_NUM_ITEMS "+TOTAL_NUM_ITEMS);
+				
 				
 				NextLayout = (LinearLayout) getChildAt(getLayoutIndexToAdd());
 
@@ -99,6 +102,10 @@ public class PinterestUI extends LinearLayout {
 		System.out.println("IM HERE TOTAL_NUM_ITEMS>>>>>>>>>>>" + TOTAL_NUM_ITEMS);
 		
 		System.out.println("IM HERE>>>>>>>>>>>" + SCREEN_WIDTH);
+		
+		if(SCREEN_WIDTH>900){
+			NUM_COLUMN	=	SCREEN_WIDTH/300;
+		}
 		for (int i = 0; i < NUM_COLUMN; i++) {
 
 			LinearLayout mLinearLayout = new LinearLayout(context);
@@ -121,34 +128,50 @@ public class PinterestUI extends LinearLayout {
 
 	private void draw(int itemIndex) {
 		
-		System.out.println(" ******INDEX "+itemIndex +"liveOrderCursor");
-		
+		try{
 		if(liveOrderCursor!=null){
 		liveOrderCursor.moveToPosition(itemIndex);
 		if (NextLayout == null) {
 			NextLayout = (LinearLayout) getChildAt(0);
 		}
 		LayoutInflater mLayoutInflater	=	LayoutInflater.from(context);
-		LinearLayout mLinearLayout	=	(LinearLayout) mLayoutInflater.inflate(R.layout.tiles,null);
+		FrameLayout mLinearLayout	=	(FrameLayout) mLayoutInflater.inflate(R.layout.tiles,null);
+		mLinearLayout.setTag(liveOrderCursor.getString(2));//SettingId
 		mLinearLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.scale_alpha));
+		if(liveOrderCursor.getString(3).compareToIgnoreCase("Pending")==0)
+			mLinearLayout.setOnClickListener(TileClickLister);
+		else{
+			//mLinearLayout.setOnClickListener(TileClickLister);
+			
+			((ImageView) mLinearLayout.findViewById(R.id.tick_image)).setVisibility(View.VISIBLE);
+		}
+		
 		TextView customerName	=	(TextView) mLinearLayout.findViewById(R.id.customer_name);
 		customerName.setText(liveOrderCursor.getString(0));
 		TextView amount	=	(TextView) mLinearLayout.findViewById(R.id.amount);
-		amount.setText(liveOrderCursor.getString(1));
-		
-		TextView itemName	=	(TextView) mLinearLayout.findViewById(R.id.item_name);
-		TextView itemPrice	=	(TextView) mLinearLayout.findViewById(R.id.item_price);
+		amount.setText(""+liveOrderCursor.getDouble(1));
+		LinearLayout itemLinearLayout	=	(LinearLayout) mLinearLayout.findViewById(R.id.itemsLayout);
+	
 		ImageView mImageView 	=	(ImageView) mLinearLayout.findViewById(R.id.profile_pic);
 		try {
 			JSONArray mJsonArray	=	new JSONArray(liveOrderCursor.getString(4));
-			JSONObject mJsonObject	=	mJsonArray.getJSONObject(0);
+			int itemsSize	=	mJsonArray.length();
+			for(int i=0;i<itemsSize;i++){
+			JSONObject mJsonObject	=	mJsonArray.getJSONObject(i);
+			
+			LayoutInflater itemLayoutInflater	=	LayoutInflater.from(context);
+			LinearLayout mItemLinearLayout	=	(LinearLayout) itemLayoutInflater.inflate(R.layout.item_tile,null);
+			TextView itemName	=	(TextView) mItemLinearLayout.findViewById(R.id.item_name);
+			TextView itemPrice	=	(TextView) mItemLinearLayout.findViewById(R.id.item_price);
+			itemLinearLayout.addView(mItemLinearLayout);
 			itemName.setText(mJsonObject.getString("name"));
 			itemPrice.setText(""+mJsonObject.getDouble("price"));
 			
-			
 			AQuery aq = new AQuery(mLinearLayout);
 			aq.id(mImageView)
-					.image("http://design.jboss.org/arquillian/logo/final/arquillian_icon_256px.png",
+					//.image("http://design.jboss.org/arquillian/logo/final/arquillian_icon_256px.png",
+			.image(liveOrderCursor.getString(5),
+					
 							true, true, 0, 0, new BitmapAjaxCallback() {
 								@Override
 								public void callback(String url, ImageView iv,
@@ -160,7 +183,7 @@ public class PinterestUI extends LinearLayout {
 								}
 							});
 
-			
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -169,8 +192,69 @@ public class PinterestUI extends LinearLayout {
 		
 		NextLayout.addView(mLinearLayout);
 		}
+		}catch(Exception e){
+			//Rare scenario. 
+			e.printStackTrace();
+		}
 	}
 
+	
+	public OnClickListener TileClickLister		=	new OnClickListener() {
+		
+		@Override
+		public void onClick(final View v) {
+			// TODO Auto-generated method stub
+			LayoutInflater itemLayoutInflater	=	LayoutInflater.from(context);
+			final LinearLayout mActionpanelLinearLayout	=	(LinearLayout) itemLayoutInflater.inflate(R.layout.action_item_panel,null);
+			mActionpanelLinearLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.slideup_action_item));
+			((FrameLayout)v).addView(mActionpanelLinearLayout);
+			
+			
+			Button confirmBtn	=(Button)	mActionpanelLinearLayout.findViewById(R.id.accept_btn);
+			confirmBtn.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					new HttpHandler().liveOrderAction(context, PinterestUI.this, (String)v.getTag(), "confirm");
+					
+				}
+			});
+			Button cancelBtn	=(Button)	mActionpanelLinearLayout.findViewById(R.id.reject_btn);
+			cancelBtn.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					new HttpHandler().liveOrderAction(context, PinterestUI.this, (String)v.getTag(), "cancel");
+					
+				}
+			});
+			Button acknowledgeBtn	=(Button)	mActionpanelLinearLayout.findViewById(R.id.acknowledge_btn);
+			acknowledgeBtn.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					new HttpHandler().liveOrderAction(context, PinterestUI.this, (String)v.getTag(), "acknowledge");
+					
+				}
+			});
+			
+			Button closeBtn	=(Button)	mActionpanelLinearLayout.findViewById(R.id.close_btn);
+			closeBtn.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					
+					mActionpanelLinearLayout.setVisibility(View.GONE);
+				}
+			});
+		
+		
+		}
+	};
 	
 	private int getLayoutIndexToAdd() {
 		int ChildCount = getChildCount();
@@ -178,8 +262,7 @@ public class PinterestUI extends LinearLayout {
 		int fewer = 0;
 		int layoutIndex = 0;
 		while (i < ChildCount) {
-			System.out.println("IM HERE>>>>>>>>>>> Layout getChildAt(i) " + i
-					+ "        " + getChildAt(i).getHeight());
+		
 			if (i == 0) {
 				fewer = getChildAt(i).getHeight();
 				layoutIndex = i;
@@ -193,9 +276,22 @@ public class PinterestUI extends LinearLayout {
 			i++;
 		}
 
-		System.out.println("IM HERE>>>>>>>>>>> Layout layoutIndex"
-				+ layoutIndex);
+	
 		return layoutIndex;
+	}
+
+
+	@Override
+	public void onSuccess() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onFailure(int failureCode) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

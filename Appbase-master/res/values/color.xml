@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-     <color name="pane_background_color">#F0F0EF</color>
+     <color name="pane_background_color">#E6E6E6</color>
      <color name="header_background_color">#DF5C3E</color>
      <color name="white_tile_background_color">#FFFFFF</color>
      <color name="subtitle_color">#515151</color>
+     <color name="item_pane">#79888C</color>
+     <color name="shadow_color">#969693</color>
+     <color name="text_color">#4D4D4D</color>
 </resources>

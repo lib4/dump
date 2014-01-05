@@ -33,13 +33,16 @@ public class LiveOrderParser {
 			 * Function used to parse and store the data on local db.
 			 */
 			private void parse(InputStream response) {
+				
+				DBManager mDbManager	=	new DBManager(context);
+				mDbManager.startTransaction();
 				/*
 				 * Parse the response here
 				 */
 				try {
 					
 					System.out.println("Parsing... : ");
-
+					
 					JsonFactory jsonfactory = new JsonFactory();
 					JsonParser jsonParser = jsonfactory.createJsonParser(response);
 					ContentValues values	=	new ContentValues();
@@ -60,22 +63,19 @@ public class LiveOrderParser {
 						if (HttpConstants.CREATED_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("members : " + jsonParser.getText());
 							values.put(AppSqliteHelper.COLUMN_CREATED, jsonParser.getText());
 
 						}
 						if (HttpConstants.AMOUNT_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("members : " + jsonParser.getFloatValue());
-							values.put(AppSqliteHelper.COLUMN_AMOUNT, jsonParser.getText());
+							values.put(AppSqliteHelper.COLUMN_AMOUNT, jsonParser.getDoubleValue());
 
 						}
 						if (HttpConstants.TAX_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("members : " + jsonParser.getFloatValue());
-							values.put(AppSqliteHelper.COLUMN_TAX, jsonParser.getText());
+							values.put(AppSqliteHelper.COLUMN_TAX, jsonParser.getDoubleValue());
 
 						}
 						
@@ -87,27 +87,53 @@ public class LiveOrderParser {
 								if (HttpConstants.LASTUPDATED_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
-									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
 									
 								}
 								if (HttpConstants.CREATED_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
-									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
 								}
 								if (HttpConstants.EMAIL_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
-									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
 									values.put(AppSqliteHelper.COLUMN_CONSUMEREMAIL, jsonParser.getText());
 								}
+								
+								if (HttpConstants.FNAME_JKEY.equals(token)) {
+
+									jsonParser.nextToken();
+									values.put(AppSqliteHelper.COLUMN_FNAME, jsonParser.getText());
+								}
+								
+								if (HttpConstants.lNAME_JKEY.equals(token)) {
+
+									jsonParser.nextToken();
+									values.put(AppSqliteHelper.COLUMN_LNAME, jsonParser.getText());
+								}
+								
+								if (HttpConstants.FULLNAME_JKEY.equals(token)) {
+
+									jsonParser.nextToken();
+									values.put(AppSqliteHelper.COLUMN_FULLNAME, jsonParser.getText());
+								}
+								if (HttpConstants.IMAGE_JKEY.equals(token)) {
+
+									jsonParser.nextToken();
+									values.put(AppSqliteHelper.COLUMN_IMAGE, jsonParser.getText());
+								}
+								
+								if (HttpConstants.THUMBNAIL_JKEY.equals(token)) {
+
+									jsonParser.nextToken();
+									values.put(AppSqliteHelper.COLUMN_THUMB, jsonParser.getText());
+								}
+								
 								if (HttpConstants.DEVICE_JKEY.equals(token)) {
 									
 									while (jsonParser.nextToken() != JsonToken.END_OBJECT){
 										token = jsonParser.getCurrentName();
 										if (HttpConstants.ID_JKEY.equals(token)) {
 											jsonParser.nextToken();
-											System.out.println("*********** DEVICE ID : " + jsonParser.getText());
 											values.put(AppSqliteHelper.COLUMN_DEVICE_ID, jsonParser.getText());
 										}
 									}
@@ -118,42 +144,35 @@ public class LiveOrderParser {
 								if (HttpConstants.TYPE_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
-									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
 									values.put(AppSqliteHelper.COLUMN_TYPE, jsonParser.getText());
 								}
 								if (HttpConstants._ID_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
-									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
 									values.put(AppSqliteHelper.COLUMN_CONSUMER__ID, jsonParser.getText());
 								}
 								
 								if (HttpConstants.V_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
-									System.out.println("CONSUMER_JKEY : " + jsonParser.getIntValue());
 									values.put(AppSqliteHelper.COLUMN_CONSUMER_V, jsonParser.getIntValue());
 								}
 								
 								if (HttpConstants.BACKGROUND_SCAN_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
-									System.out.println("CONSUMER_JKEY : " + jsonParser.getBooleanValue());
-									
 									values.put(AppSqliteHelper.COLUMN_BACKGROUNDSCAN, jsonParser.getBooleanValue());
 								}
 								
 								if (HttpConstants.GUEST_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
-									System.out.println("CONSUMER_JKEY : " + jsonParser.getBooleanValue());
 									values.put(AppSqliteHelper.COLUMN_GUEST, jsonParser.getBooleanValue());
 								}
 								
 								if (HttpConstants.ID_JKEY.equals(token)) {
 
 									jsonParser.nextToken();
-									System.out.println("CONSUMER_JKEY : " + jsonParser.getText());
 									values.put(AppSqliteHelper.COLUMN_ID, jsonParser.getText());
 								}
 								
@@ -165,16 +184,12 @@ public class LiveOrderParser {
 						if (HttpConstants.BUSINESS_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("BUSINESS_JKEY : " + jsonParser.getText());
-
 							values.put(AppSqliteHelper.COLUMN_BUSINESS, jsonParser.getText());
 						}
 
 						if (HttpConstants._ID_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("members : " + jsonParser.getText());
-
 							values.put(AppSqliteHelper.COLUMN__ID, jsonParser.getText());
 						}
 						
@@ -182,8 +197,6 @@ public class LiveOrderParser {
 						if (HttpConstants.V_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("members : " + jsonParser.getIntValue());
-
 							values.put(AppSqliteHelper.COLUMN_V, jsonParser.getIntValue());
 						}
 						
@@ -191,8 +204,6 @@ public class LiveOrderParser {
 						if (HttpConstants.RATED_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("members : " + jsonParser.getBooleanValue());
-
 							values.put(AppSqliteHelper.COLUMN_RATED, jsonParser.getBooleanValue());
 						}
 						
@@ -200,16 +211,12 @@ public class LiveOrderParser {
 						if (HttpConstants.FEE_COLLECTED_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("members : " + jsonParser.getBooleanValue());
-
 							values.put(AppSqliteHelper.COLUMN_FEECOLLECTED, jsonParser.getBooleanValue());
 						}
 						
 						if (HttpConstants.STATUS_JKEY.equals(token)) {
 
 							jsonParser.nextToken();
-							System.out.println("STATUS_JKEY : " + jsonParser.getText());
-
 							values.put(AppSqliteHelper.COLUMN_STATUS, jsonParser.getText());
 						}
 						
@@ -229,29 +236,24 @@ public class LiveOrderParser {
 									if (HttpConstants.NAME_JKEY.equals(token)) {
 										jsonParser.nextToken();
 										mJsonObject.put(token, jsonParser.getText());
-										System.out.println("ITEMS_JKEY  : " + jsonParser.getText());
 									}
 									
 									if (HttpConstants.PRICE_JKEY.equals(token)) {
 										jsonParser.nextToken();
 										mJsonObject.put(token, jsonParser.getDoubleValue());
-										System.out.println("ITEMS_JKEY PRICE_JKEY : " + jsonParser.getDoubleValue());
 									}
 									
 									if (HttpConstants.QTY_JKEY.equals(token)) {
 										jsonParser.nextToken();
 										mJsonObject.put(token, jsonParser.getIntValue());
-										System.out.println("ITEMS_JKEY : " + jsonParser.getIntValue());
 									}
 									if (HttpConstants.IMAGE_JKEY.equals(token)) {
 										jsonParser.nextToken();
 										mJsonObject.put(token, jsonParser.getText());
-										System.out.println("ITEMS_JKEY: " + jsonParser.getText());
 									}
 									if (HttpConstants._ID_JKEY.equals(token)) {
 										jsonParser.nextToken();
 										mJsonObject.put(token, jsonParser.getText());
-										System.out.println("ITEMS_JKEY : " + jsonParser.getText());
 									}
 									
 									
@@ -311,8 +313,6 @@ public class LiveOrderParser {
 							}
 							
 							
-							System.out.println("TEST  mJsonObject: " + itemArray.toString());
-							
 							values.put(AppSqliteHelper.COLUMN_ITEMS, itemArray.toString());
 						}
 						
@@ -320,7 +320,8 @@ public class LiveOrderParser {
 					}
 					
 					if(jsonParser.getCurrentToken()==JsonToken.END_OBJECT){
-						new DBManager(context).insertLiveOrders(values);
+						
+						mDbManager.insertLiveOrders(values);
 					}
 					}
 					
@@ -335,6 +336,11 @@ public class LiveOrderParser {
 
 					e.printStackTrace();
 
+				}
+				
+				finally{
+					System.out.println("Finally...");
+					mDbManager.endTransaction();
 				}
 
 			}

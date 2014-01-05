@@ -23,59 +23,71 @@
         <Button
             android:id="@+id/signin_btn"
             style="@style/header_btn"
-            android:background="@drawable/header_button"
-          
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:background="@drawable/header_button"
             android:gravity="center"
-            android:text="@string/signin" 
-            >
+            android:text="@string/signin" >
+        </Button>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#000000" >
         </Button>
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="50dp"
         android:background="@color/white_tile_background_color"
-        android:orientation="vertical"
-        android:layout_marginTop="50dp" >
+        android:orientation="vertical" >
 
         <EditText
             android:id="@+id/email_edtTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:hint="@string/email_address"
             android:inputType="textEmailAddress"
+            android:paddingBottom="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:gravity="center_vertical"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:textColor="@android:color/black" />
-        
-        <Button android:layout_width="match_parent"
-	    android:layout_height="1dp"
-	  
-	   	android:background="@color/pane_background_color"
-	    android:gravity="center"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/pane_background_color"
+            android:gravity="center" />
 
         <EditText
             android:id="@+id/password_edtTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:hint="@string/password"
             android:inputType="textPassword"
+            android:paddingBottom="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-             android:gravity="center_vertical"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
     </LinearLayout>
-	<TextView android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_marginTop="10dp"
-	    android:text="@string/singin_panel_text"
-	    android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/singin_panel_text"
+        android:textStyle="bold" />
+
 </LinearLayout>

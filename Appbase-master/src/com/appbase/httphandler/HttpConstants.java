@@ -43,6 +43,7 @@ public class HttpConstants {
 	public static final String PRICE_JKEY = "price";
 	public static final String QTY_JKEY = "1";
 	public static final String IMAGE_JKEY = "image";
+	public static final String THUMBNAIL_JKEY = "thumbnail";
 	public static final String NAME_JKEY = "name";
 
 	public static final String CHOICES_JKEY = "choices";

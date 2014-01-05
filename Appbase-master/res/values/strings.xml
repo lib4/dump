@@ -15,7 +15,9 @@
     <string name="airoffers">Appbase</string>
     <string name="signin">SignIn</string>
     <string name="uname_not_matching">Wrong Email and password combination. Please try again!</string>
+    <string name="logut_alert">Are you sure you want logout?</string>
     <string name="verifying">Verifying...</string>
+    <string name="loading">Loading...</string>
     <string name="singin_panel_text">Lorem ipsum dolor sit amet.</string>
     <string name="account">ACCOUNT</string>
     <string name="general">GENERAL</string>

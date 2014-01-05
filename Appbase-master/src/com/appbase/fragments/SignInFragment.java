@@ -1,8 +1,8 @@
 package com.appbase.fragments;
 
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -142,6 +143,7 @@ public class SignInFragment extends BaseFragment implements
 	 */
 
 	private void trgrSignInWebService() {
+		hideKeyboard();
 		mDialog = new ProgressDialog(getActivity());
 		mDialog.setMessage(getActivity().getString(R.string.verifying));
 		mDialog.setCancelable(false);
@@ -240,6 +242,15 @@ public class SignInFragment extends BaseFragment implements
 		alertDialog.show();
 	}
 
+	/**
+	 * Method to hide the keyboard
+	 */
+	
+	private void hideKeyboard(){
+		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
+			      Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(password_edtTxt.getWindowToken(), 0);
+	}
 	final Handler mHandler = new Handler(Looper.getMainLooper()) {
 
 		public void handleMessage(Message msg) {

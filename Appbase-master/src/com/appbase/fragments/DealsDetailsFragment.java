@@ -1,6 +1,8 @@
 package com.appbase.fragments;
 
-import android.content.Intent;
+import org.json.JSONObject;
+
+import android.net.NetworkInfo.DetailedState;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,14 +10,26 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.appbase.R;
-import com.appbase.activities.LauncherActivity;
+import com.appbase.activities.MenuActivity;
+import com.appbase.httphandler.HttpConstants;
 
 public class DealsDetailsFragment extends BaseFragment {
 
 	LinearLayout dealsDetailsLayout;
 	Button back_Btn, logout_Btn;
+	boolean hideHeaderBar = false;
+
+	JSONObject cardJsonObject;
+
+	public void hideHeaderBar(boolean hideHeaderBar) {
+
+		this.hideHeaderBar = hideHeaderBar;
+	}
+
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +48,12 @@ public class DealsDetailsFragment extends BaseFragment {
 		// Inflate the layout for this fragment
 		dealsDetailsLayout = (LinearLayout) inflater.inflate(
 				R.layout.deal_details_fragment, container, false);
+		this.cardJsonObject = MenuFragment.cardObject;
 		init();
+		if (hideHeaderBar) {
+			back_Btn.setVisibility(View.GONE);
+		}
+
 		return dealsDetailsLayout;
 	}
 
@@ -44,8 +63,27 @@ public class DealsDetailsFragment extends BaseFragment {
 	 */
 	private void init() {
 
-		back_Btn = (Button) dealsDetailsLayout
-				.findViewById(R.id.back_btn);
+		try{
+			
+			
+		
+		TextView tileText	=	(TextView) dealsDetailsLayout.findViewById(R.id.title_txt);
+		tileText.setText(cardJsonObject.getString("groupName"));
+		
+		
+		TextView cardName	=	(TextView) dealsDetailsLayout.findViewById(R.id.card_name);
+		cardName.setText(cardJsonObject.getString(HttpConstants.NAME_JKEY));
+		
+		TextView priceText	=	(TextView) dealsDetailsLayout.findViewById(R.id.price_text);
+		priceText.setText(cardJsonObject.getString(HttpConstants.PRICE_STRING_JKEY));
+		
+		
+		TextView cardDescriptionText	=	(TextView) dealsDetailsLayout.findViewById(R.id.cardDescription_text);
+		cardDescriptionText.setText(cardJsonObject.getString(HttpConstants.DESCRIPTION_JKEY));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		back_Btn = (Button) dealsDetailsLayout.findViewById(R.id.back_btn);
 
 		back_Btn.setOnClickListener(new OnClickListener() {
 
@@ -55,8 +93,6 @@ public class DealsDetailsFragment extends BaseFragment {
 				getActivity().finish();
 			}
 		});
-
-	
 
 	}
 }

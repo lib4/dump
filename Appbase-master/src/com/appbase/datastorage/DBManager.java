@@ -31,11 +31,11 @@ public class DBManager {
 	 * @throws SQLException
 	 */
 	public void open() throws SQLException {
-		try{
-		appSqLiteDatabase = sqLiteOpenHelper.getWritableDatabase();
-		Uri mUril =	 Uri.parse(appSqLiteDatabase.getPath());
-		Log.e("URI ",""+mUril.toString());
-		}catch(Exception e){
+		try {
+			appSqLiteDatabase = sqLiteOpenHelper.getWritableDatabase();
+			Uri mUril = Uri.parse(appSqLiteDatabase.getPath());
+			Log.e("URI ", "" + mUril.toString());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -47,23 +47,20 @@ public class DBManager {
 		sqLiteOpenHelper.close();
 	}
 
-	
-	
-	
-//	/**
-//	 * Dummy insertion of values to comments table
-//	 */
-//
-//	public void insertComments(ContentValues values) {
-//		//for(int i=0;i<100;i++){
-//		ContentValues values = new ContentValues();
-//		values.put(AppSqliteHelper.COLUMN_COMMENT, "aabuback: Comment ID ");
-//		long insertId = appSqLiteDatabase.insert(
-//				sqLiteOpenHelper.TABLE_COMMENTS, null, values);
-//		//}
-//	}
-//	
-//	
+	// /**
+	// * Dummy insertion of values to comments table
+	// */
+	//
+	// public void insertComments(ContentValues values) {
+	// //for(int i=0;i<100;i++){
+	// ContentValues values = new ContentValues();
+	// values.put(AppSqliteHelper.COLUMN_COMMENT, "aabuback: Comment ID ");
+	// long insertId = appSqLiteDatabase.insert(
+	// sqLiteOpenHelper.TABLE_COMMENTS, null, values);
+	// //}
+	// }
+	//
+	//
 	/**
 	 * Inserting on to Profile Table. After succeful signup
 	 */
@@ -73,71 +70,128 @@ public class DBManager {
 				sqLiteOpenHelper.TABLE_PROFILE, null, values);
 		fetchProfile();
 		close();
-	
+
 	}
-	
-	
+
 	/**
 	 * Inserting on to Profile Table. After succeful signup
 	 */
 	public void insertLiveOrders(ContentValues values) {
-		
-		System.out.println("Size Values "+values.size());
-		open();
+
+		System.out.println("Size Values " + values.size());
+		// open();
 		long insertId = appSqLiteDatabase.insert(
 				sqLiteOpenHelper.TABLE_LIVE_ORDERS, null, values);
-		//fetchLiveOrders();
+		// fetchLiveOrders();
+		// close();
+
+	}
+
+	/**
+	 * Flush the data in Live Order Table
+	 */
+	public void clearLiveOrders() {
+
+		open();
+		long insertId = appSqLiteDatabase.delete(
+				AppSqliteHelper.TABLE_LIVE_ORDERS, null, null);
 		close();
-	
+
 	}
 	
 	
 	/**
+	 * Flush the data in Menus  Table
+	 */
+	public void clearMenus() {
+
+		open();
+		long insertId = appSqLiteDatabase.delete(
+				AppSqliteHelper.TABLE_CATALOGS, null, null);
+		close();
+
+	}
+	
+	
+	/**
+	 * Flush the data in Menus  Table
+	 */
+	public void clearDB() {
+
+		open();
+		long insertId = appSqLiteDatabase.delete(
+				AppSqliteHelper.TABLE_PROFILE, null, null);
+		 insertId = appSqLiteDatabase.delete(
+				AppSqliteHelper.TABLE_CATALOGS, null, null);
+		 insertId = appSqLiteDatabase.delete(
+				AppSqliteHelper.TABLE_LIVE_ORDERS, null, null);
+		close();
+
+	}
+
+	/**
 	 * Inserting on to Profile Table. After succeful signup
 	 */
 	public void insertCataloges(ContentValues values) {
-		
-		System.out.println("Size Values "+values.size());
-		open();
+
+		System.out.println("Size Values " + values.size());
 		long insertId = appSqLiteDatabase.insert(
 				sqLiteOpenHelper.TABLE_CATALOGS, null, values);
-		fetchCatalogs();
-		close();
-	
-	}
-	
-	
-//	
-//	
-//	
-//	/**
-//	 * Fetching all the comments from Comment table.
-//	 */
-//
-	public Cursor fetchProfile() {
 		
+	}
+
+	//
+	//
+	//
+	// /**
+	// * Fetching all the comments from Comment table.
+	// */
+	//
+	public Cursor fetchProfile() {
+
 		String[] allColumns = { sqLiteOpenHelper.COLUMN_ID,
 				sqLiteOpenHelper.COLUMN_ACCESSTOKEN };
 		Cursor cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_PROFILE,
-		        allColumns, null, null,
-		        null, null, null);
-		Log.e("Curson Size ","== "+cursor.getCount());
+				allColumns, null, null, null, null, null);
+		Log.e("Curson Size ", "== " + cursor.getCount());
 		return cursor;
 	}
-	
+
 	public Cursor fetchLiveOrders() {
 		Cursor cursor;
-		try{
-		open();
-		String[] allColumns = { sqLiteOpenHelper.COLUMN_CONSUMEREMAIL,
-				sqLiteOpenHelper.COLUMN_AMOUNT,sqLiteOpenHelper.COLUMN_CONSUMER__ID,sqLiteOpenHelper.COLUMN_STATUS,
-				sqLiteOpenHelper.COLUMN_ITEMS};
-		 cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_LIVE_ORDERS,
-		        allColumns, null, null,
-		        null, null, null);
-		Log.e("Curson Size ","== "+cursor.getCount());
-		close();
-		}catch(Exception e){
+		try {
+			open();
+			String[] allColumns = { sqLiteOpenHelper.COLUMN_FULLNAME,
+					sqLiteOpenHelper.COLUMN_AMOUNT,
+					sqLiteOpenHelper.COLUMN__ID,
+					sqLiteOpenHelper.COLUMN_STATUS,
+					sqLiteOpenHelper.COLUMN_ITEMS,
+					sqLiteOpenHelper.COLUMN_THUMB };
+			cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_LIVE_ORDERS,
+					allColumns, null, null, null, null, null);
+			Log.e("Curson Size ", "== " + cursor.getCount());
+			close();
+		} catch (Exception e) {
+			return null;
+		}
+		return cursor;
+	}
+
+	public Cursor fetchCatalogs() {
+		Cursor cursor;
+		try {
+			open();
+			String[] allColumns = { sqLiteOpenHelper.COLUMN_NAME,
+					sqLiteOpenHelper.COLUMN_TYPE, sqLiteOpenHelper.COLUMN__ID,
+					sqLiteOpenHelper.COLUMN_STATUS,
+					sqLiteOpenHelper.COLUMN_GROUPS };
+			cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_CATALOGS,
+					allColumns, null, null, null, null, null);
+			System.out.println("CURSOR>>>>>>>> " + cursor.getCount());
+
+			close();
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 		return cursor;
@@ -145,21 +199,36 @@ public class DBManager {
 	
 	
 	
-	public Cursor fetchCatalogs() {
+	public Cursor fetchCatalogDetails(String id) {
 		Cursor cursor;
-		try{
-		open();
-		String[] allColumns = { sqLiteOpenHelper.COLUMN_NAME,
-				sqLiteOpenHelper.COLUMN_TYPE,sqLiteOpenHelper.COLUMN__ID,sqLiteOpenHelper.COLUMN_STATUS,
-				sqLiteOpenHelper.COLUMN_GROUPS};
-		 cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_CATALOGS,
-		        allColumns, null, null,
-		        null, null, null);
-		Log.e("Curson Size ","== "+cursor.getCount());
-		close();
-		}catch(Exception e){
+		try {
+			open();
+			String[] allColumns = { sqLiteOpenHelper.COLUMN_NAME,
+					sqLiteOpenHelper.COLUMN_TYPE, sqLiteOpenHelper.COLUMN__ID,
+					sqLiteOpenHelper.COLUMN_STATUS,
+					sqLiteOpenHelper.COLUMN_GROUPS };
+			cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_CATALOGS,
+					allColumns, sqLiteOpenHelper.COLUMN__ID +"= '"+id +"'", null, null, null, null);
+			System.out.println("CURSOR>>>>>>>> " + cursor.getCount());
+
+			close();
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 		return cursor;
+	}
+
+	public void startTransaction() {
+		open();
+		appSqLiteDatabase.beginTransaction();
+	}
+
+	public void endTransaction() {
+		appSqLiteDatabase.setTransactionSuccessful();
+
+		appSqLiteDatabase.endTransaction();
+		close();
+
 	}
 }

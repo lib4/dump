@@ -1,5 +1,7 @@
 package com.appbase.datastorage;
 
+import com.appbase.httphandler.HttpConstants;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -41,6 +43,8 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_CONSUMER_BUSINESS = "consumer_business";
 	public static final String COLUMN_CONSUMER__ID = "consumer__id";
 	public static final String COLUMN_CONSUMER_V = "consumer_v";
+	public static final String COLUMN_IMAGE = "image";
+	public static final String COLUMN_THUMB = "thumbnail";
 	
 	public static final String COLUMN_NAME = "name";
 	public static final String COLUMN_GROUPS = "groups";
@@ -66,9 +70,11 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 			+ COLUMN_LASTUPDATED + " text not null," + COLUMN_CREATED
 			+ " text not null," + "" + COLUMN_AMOUNT + " FLOAT not null,"
 			+ COLUMN_TAX + " FLOAT not null, " + COLUMN_CONSUMEREMAIL
-			+ " text not null, " + COLUMN_DEVICE_ID + " text not null," + ""
+			+ " text not null, " + COLUMN_DEVICE_ID + " text default null," + ""
 			+ COLUMN_TYPE + " text not null, " + COLUMN_CONSUMER__ID
 			+ " text not null, " + COLUMN_CONSUMER_V + " integer not null, "
+			+COLUMN_FNAME+" text, "+COLUMN_LNAME +" text, "+COLUMN_FULLNAME+" text, "
+			+COLUMN_IMAGE+" text, "+COLUMN_THUMB	+" text, "	
 			+ COLUMN_BACKGROUNDSCAN + " boolean not null," + "" + COLUMN_GUEST
 			+ " boolean not null, " + COLUMN_ID + " text not null,"
 			+ COLUMN_BUSINESS + " text not null," + COLUMN__ID
@@ -77,8 +83,7 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 			+ " boolean not null," + COLUMN_STATUS + " text not null, "
 			+ COLUMN_ITEMS + " text not null);";
 	
-	
-	
+
 	private static final String CREATE_CATALOG_TABLE = "create table "
 			+ TABLE_CATALOGS
 			+ " (auto_id integer primary key autoincrement,"
