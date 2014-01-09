@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_regular_normal"
+        android:clickable="true"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/accept_btn"
+            style="@style/CitrineFont_9pt_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_regular"
+            android:text="Accept"
+            android:textColor="#ffffff"
+            android:textStyle="bold" >
+        </Button>
+
+        <Button
+            android:id="@+id/reject_btn"
+            style="@style/CitrineFont_9pt_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_regular"
+            android:text="Reject"
+            android:textColor="#ffffff"
+            android:textStyle="bold" >
+        </Button>
+
+        <Button
+            android:id="@+id/acknowledge_btn"
+            style="@style/CitrineFont_9pt_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_regular"
+            android:text="Acknowledge"
+            android:textColor="#ffffff"
+            android:textStyle="bold" >
+        </Button>
+
+        <Button
+            android:id="@+id/close_btn"
+            style="@style/CitrineFont_9pt_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_regular"
+            android:text="Close"
+            android:textColor="#ffffff"
+            android:textStyle="bold" >
+        </Button>
+    </LinearLayout>
+
+</LinearLayout>
