@@ -6,20 +6,16 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appbase.R;
-import com.appbase.activities.MenuActivity;
 import com.appbase.androidquery.AQuery;
 import com.appbase.androidquery.callback.AjaxStatus;
 import com.appbase.androidquery.callback.BitmapAjaxCallback;
@@ -33,19 +29,18 @@ import com.appbase.httphandler.HttpConstants;
 public class MenuAdapter extends BaseAdapter {
 
 	private final Activity iContext; // Context to access the UI resources
-	private Cursor iCursor;
-	private MenuFragment menuFragment;
+
 	public JSONObject cardObject;
 
-	JSONArray cards_Array = new JSONArray();
+	public JSONArray cards_Array = new JSONArray();
 
-	public MenuAdapter(Context mContext, Cursor mCursor,
+	public MenuAdapter(Context mContext, JSONArray jsonArray,
 			MenuFragment menuFragment) {
 
 		this.iContext = (Activity) mContext;
-		this.iCursor = mCursor;
-		this.menuFragment = menuFragment;
-		setCardArray();
+	
+
+		this.cards_Array	=	jsonArray;
 
 	}
 
@@ -218,78 +213,5 @@ public class MenuAdapter extends BaseAdapter {
 
 	}
 
-	private void setCardArray() {
-
-		boolean catalogNameAdded = false;
-		boolean groupNameAdded = false;
-		if(iCursor==null){
-			return;
-		}
-		while (iCursor.moveToNext() != false) {
-			try {
-				
-				System.out.println("--------------------------------------");
-				catalogNameAdded = false;
-				String cataloge_name = iCursor.getString(0);
-				
-				
-				JSONArray mJsonArray = new JSONArray(iCursor.getString(4));
-
-				int size = mJsonArray.length();
-				for (int k = 0; k < size; k++) {
-					JSONObject group = (JSONObject) mJsonArray.get(k);
-					String groupName	=	"";
-					try{
-						groupName = group.getString(HttpConstants.NAME_JKEY);
-					}catch(Exception e){
-						
-					}
-					groupNameAdded = false;
-					JSONArray subGroups = group
-							.getJSONArray(HttpConstants.SUBGROUPS_JKEY);
-
-					int length = subGroups.length();
-					for (int i = 0; i < length; i++) {
-						try {
-
-							JSONObject cards = (JSONObject) subGroups.get(i);
-
-							JSONArray cardsArray = cards
-									.getJSONArray(HttpConstants.CARDS_JKEY);
-
-							int cardsSize = cardsArray.length();
-							for (int j = 0; j < cardsSize; j++) {
-
-								JSONObject card = (JSONObject) cardsArray
-										.get(j);
-								card.put("groupName", groupName);
-								if (!groupNameAdded) {
-									
-									card.put("showGroupName", true);
-									groupNameAdded = true;
-								}
-								card.put("catalogeName", cataloge_name);
-								if (!catalogNameAdded) {
-									card.put("showCatalogeName", true);
-									catalogNameAdded = true;
-								}
-								System.out.println("CARD>>>" + card);
-								cards_Array.put(card);
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				}
-				
-			
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			System.out.println("--------------------------------------");
-
-		}
-	}
+	
 }

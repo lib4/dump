@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.appbase.R;
 import com.appbase.activities.LauncherActivity;
+import com.appbase.activities.LiveOrderActivity;
 import com.appbase.activities.MenuActivity;
 import com.appbase.datastorage.DBManager;
 import com.appbase.httphandler.HTTPResponseListener;
@@ -121,8 +122,10 @@ public class SettingsFragment extends BaseFragment implements HTTPResponseListen
 									// current activity
 									
 									Intent intent = new Intent(getActivity(),
-											LauncherActivity.class);
+											LiveOrderActivity.class);
 									intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+									intent.putExtra("EXIT", true);
+
 									trgrSignOutService();
 									
 									DBManager mDbManager	=	new DBManager(getActivity());

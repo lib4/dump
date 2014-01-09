@@ -2,6 +2,7 @@ package com.appbase.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.appbase.R;
@@ -15,6 +16,15 @@ public class LiveOrderActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState!=null){
 			fetchFromServer	=	false;
+		}
+		
+		if (getIntent().getBooleanExtra("EXIT", false)) {
+			System.out.println("From Logut button press");
+			Intent intent = new Intent(this,
+					LauncherActivity.class);
+			startActivity(intent);
+		    finish();
+		    
 		}
 		setContentView(R.layout.launcher);
 		loadLiveOrderFragment();
@@ -67,7 +77,7 @@ public class LiveOrderActivity extends BaseActivity {
 	}
 	
 	
-
+	
 
 
 }
