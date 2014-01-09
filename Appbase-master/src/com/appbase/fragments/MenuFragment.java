@@ -44,7 +44,6 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 		OnClickListener, SearchView.OnQueryTextListener,         SearchView.OnCloseListener {
 
 	LinearLayout menuLayout;
-	Button back_Btn;
 	ListView mListView;
 	static ProgressDialog mDialog;
 	MenuFragment menuFragment;
@@ -53,6 +52,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 	public static JSONObject cardObject;
 	MenuAdapter menuAdapter;
 	JSONArray cards_Array = new JSONArray();
+	SearchView seachView;
 	public void FetchFromServerNeeded(boolean isFetchFromServer) {
 		// TODO Auto-generated constructor stub
 		this.isFetchFromServer = isFetchFromServer;
@@ -91,16 +91,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 	 */
 	private void init() {
 
-		back_Btn = (Button) menuLayout.findViewById(R.id.back_btn);
 
-		back_Btn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				getActivity().finish();
-			}
-		});
 
 		mListView = (ListView) menuLayout.findViewById(R.id.menu_list);
 		mListView.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -330,6 +321,12 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 	public boolean onQueryTextSubmit(String query) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void trgrSearch(String searchStr){
+		
+		menuAdapter.cards_Array	= searchCardArray(searchStr);
+		menuAdapter.notifyDataSetChanged();
 	}
 	
 	/**

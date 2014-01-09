@@ -1,12 +1,19 @@
 package com.appbase.activities;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.appbase.R;
+import com.appbase.datastorage.DBManager;
 import com.appbase.fragments.SettingsFragment;
-import com.appbase.fragments.SignInFragment;
+import com.appbase.httphandler.HttpHandler;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -48,10 +55,86 @@ public class SettingsActivity extends BaseActivity {
 
 		super.onSaveInstanceState(outState);
 
-		// FragmentTransaction ft = getFragmentManager().beginTransaction();
-		// ft.detach(mSignInFragment);
-		// ft.commit();
+	}
+	
+	  @Override
+	    public boolean onCreateOptionsMenu(Menu menu) {
+	        MenuInflater inflater = getMenuInflater();
+	        inflater.inflate(R.menu.settings, menu);
+	 
+	        return super.onCreateOptionsMenu(menu);
+	    }
+
+	private void signOutAlert() {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+		// set title
+		// alertDialogBuilder.setTitle("Your Title");
+
+		// set dialog message
+		alertDialogBuilder
+				.setMessage(this.getString(R.string.logut_alert))
+				.setCancelable(false)
+				.setPositiveButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// if this button is clicked, close
+						// current activity
+
+					}
+				})
+
+				.setNegativeButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// if this button is clicked, close
+								// current activity
+
+								Intent intent = new Intent(
+										SettingsActivity.this,
+										LiveOrderActivity.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								intent.putExtra("EXIT", true);
+
+								trgrSignOutService();
+
+								DBManager mDbManager = new DBManager(
+										SettingsActivity.this);
+								mDbManager.clearDB();
+								startActivity(intent);
+								finish();
+
+							}
+						});
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
 
 	}
 
+	private void trgrSignOutService() {
+
+		new HttpHandler().signOut(this);
+	}
+
+	/**
+     * On selecting action bar icons
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	super.onOptionsItemSelected(item);
+        // Take appropriate action for each action item click
+        switch (item.getItemId()) {
+        case R.id.action_logout:
+        	signOutAlert();
+            return true;
+       
+        }
+        
+        return true;
+    }
+ 
 }

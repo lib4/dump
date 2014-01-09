@@ -10,7 +10,8 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/header_height"
         android:background="@color/header_background_color"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:visibility="gone">
 
         <Button
             android:id="@+id/back_btn"
@@ -42,7 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
        	android:queryHint="@string/search"
-        android:background="@color/pane_background_color" />
+        android:background="@color/pane_background_color"
+          android:visibility="gone" />
 
     <ListView
         android:id="@+id/menu_list"

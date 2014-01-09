@@ -5,21 +5,22 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.SearchView;
 
 import com.appbase.R;
-import com.appbase.datastorage.DBManager;
 import com.appbase.fragments.DealsDetailsFragment;
 import com.appbase.fragments.MenuFragment;
 
-public class MenuActivity extends BaseActivity {
+public class MenuActivity extends BaseActivity implements SearchView.OnQueryTextListener,         SearchView.OnCloseListener {
 
 	MenuFragment mMenuFragment;
 
 	boolean fetchFromServer = true;
-	
+	SearchView searchView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -129,6 +130,60 @@ public class MenuActivity extends BaseActivity {
 		}
 		
 		
+	}
+	
+	 	@Override
+	    public boolean onCreateOptionsMenu(Menu menu) {
+	        MenuInflater inflater = getMenuInflater();
+	        inflater.inflate(R.menu.cataloge_list, menu);
+	        searchView = (SearchView) menu.findItem(R.id.action_search)
+	                .getActionView();
+	    	searchView.setOnQueryTextListener(this);
+			searchView.setOnCloseListener(this); 
+
+	        return super.onCreateOptionsMenu(menu);
+	    }
+
+	  /**
+	     * On selecting action bar icons
+	     * */
+	    @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	    	super.onOptionsItemSelected(item);
+	        // Take appropriate action for each action item click
+	    	
+	    	
+	        switch (item.getItemId()) {
+	        case R.id.action_search:
+	        	SearchView searchView = (SearchView) item.getActionView();
+               
+
+	        	
+	            return true;
+	       
+	        }
+	        
+	        return true;
+	    }
+
+	@Override
+	public boolean onClose() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String arg0) {
+		// TODO Auto-generated method stub
+		mMenuFragment.trgrSearch(arg0);
+	
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

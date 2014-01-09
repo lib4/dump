@@ -19,7 +19,7 @@ public class SplashActivity extends BaseActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		String profileToken	=	new DBManager(this).getProfileToken();
-		
+		getActionBar().hide();
 		System.out.println("profileToken"+profileToken);
 		if(profileToken!=null){
 			Utils.TOKEN	=	profileToken;

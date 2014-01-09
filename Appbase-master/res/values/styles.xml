@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -63,7 +63,7 @@
         <item name="android:padding">10dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-    </style>
+    </style>
     -->
 
     <style name="menu_type_title" parent="@android:style/TextAppearance">
@@ -76,6 +76,19 @@
     </style>
 
     <style name="header_btn">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="btn">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:typeface">sans</item>
         <item name="android:textStyle">bold</item>
@@ -110,6 +123,7 @@
         <item name="android:textSize">12dp</item>
         <item name="android:padding">5dp</item>
     </style>
+
     <style name="CitrineFont_9pt_shadow">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">9sp</item>
@@ -118,5 +132,36 @@
         <item name="android:shadowDy">2</item>
         <item name="android:shadowRadius">2</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <!-- the theme applied to the application or activity -->
+    <style name="CustomActionBarTheme" parent="@android:style/Theme.DeviceDefault">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+       	<item name="android:actionMenuTextColor">@color/white_tile_background_color</item>
+       
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar" parent="@android:style/Widget.DeviceDefault.ActionBar.Solid">
+        <item name="android:background">@color/header_background_color</item>
+        <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
+     
+
+         
+    </style>
+
+     <!-- ActionBar title text -->
+    <style name="MyActionBarTitleText"  parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white_tile_background_color</item>
+         <item name="android:textStyle">bold</item>
+          <item name="android:gravity">center</item>
+          
+    </style>
+    
+     <!-- ActionBar tabs text styles -->
+    <style name="MyActionBarMenuText"     parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Menu">
+        <item name="android:textColor">@color/white_tile_background_color</item>
+         <item name="android:textStyle">bold</item>
+          
     </style>
 </resources>

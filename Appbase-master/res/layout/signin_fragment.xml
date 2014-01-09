@@ -9,7 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/header_height"
         android:background="@color/header_background_color"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
         <TextView
             style="@style/TitleHeader"
@@ -21,7 +22,7 @@
         </TextView>
 
         <Button
-            android:id="@+id/signin_btn"
+            android:id="@+id/signin_btn1"
             style="@style/header_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,5 +90,14 @@
         android:gravity="center"
         android:text="@string/singin_panel_text"
         android:textStyle="bold" />
+    
+       <Button
+            android:id="@+id/signin_btn"
+            style="@style/btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/signin" >
+        </Button>
 
 </LinearLayout>

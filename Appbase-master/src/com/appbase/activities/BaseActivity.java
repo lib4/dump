@@ -2,6 +2,7 @@ package com.appbase.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.appbase.R;
 
@@ -24,6 +25,8 @@ public class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.overridePendingTransition(R.anim.enter, R.anim.exit);
+		getActionBar().setHomeButtonEnabled(true);
+		
 	}
 
 	/**
@@ -85,5 +88,23 @@ public class BaseActivity extends Activity {
 		super.onSaveInstanceState(outState);
 
 	}
+	
+	/**
+     * On selecting action bar icons
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	super.onOptionsItemSelected(item);
+        // Take appropriate action for each action item click
+        switch (item.getItemId()) {
+        case android.R.id.home:
+        		finish();
+        	  break; 
+       
+        }
+        
+        return false;
+    }
+ 
 
 }

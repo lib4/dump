@@ -2,7 +2,6 @@ package com.appbase.fragments;
 
 import org.json.JSONObject;
 
-import android.net.NetworkInfo.DetailedState;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbase.R;
-import com.appbase.activities.MenuActivity;
 import com.appbase.httphandler.HttpConstants;
 
 public class DealsDetailsFragment extends BaseFragment {
 
 	LinearLayout dealsDetailsLayout;
-	Button back_Btn, logout_Btn;
 	boolean hideHeaderBar = false;
-
 	JSONObject cardJsonObject;
 
 	public void hideHeaderBar(boolean hideHeaderBar) {
@@ -48,10 +44,7 @@ public class DealsDetailsFragment extends BaseFragment {
 				R.layout.deal_details_fragment, container, false);
 		this.cardJsonObject = MenuFragment.cardObject;
 		init();
-		if (hideHeaderBar) {
-			back_Btn.setVisibility(View.GONE);
-		}
-
+		
 		return dealsDetailsLayout;
 	}
 
@@ -89,48 +82,38 @@ public class DealsDetailsFragment extends BaseFragment {
 			TextView priceText = (TextView) dealsDetailsLayout
 					.findViewById(R.id.price_text);
 			try {
-				
+
 				try {
-					
-					String price 	=	cardJsonObject
+
+					String price = cardJsonObject
 							.getString(HttpConstants.PRICE_STRING_JKEY);
-					if(!price.contains("$")){
-						price="$"+price;
+					if (!price.contains("$")) {
+						price = "$" + price;
 					}
-					
+
 					priceText.setText(price);
-					
+
 				} catch (Exception e) {
 
 				}
-				
-				
+
 			} catch (Exception e) {
 
 			}
 
 			TextView cardDescriptionText = (TextView) dealsDetailsLayout
 					.findViewById(R.id.cardDescription_text);
-			
-			try{
-			cardDescriptionText.setText(cardJsonObject
-					.getString(HttpConstants.DESCRIPTION_JKEY));
-			}catch(Exception e){
-				
+
+			try {
+				cardDescriptionText.setText(cardJsonObject
+						.getString(HttpConstants.DESCRIPTION_JKEY));
+			} catch (Exception e) {
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		back_Btn = (Button) dealsDetailsLayout.findViewById(R.id.back_btn);
-
-		back_Btn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				getActivity().finish();
-			}
-		});
+		
 
 	}
 }

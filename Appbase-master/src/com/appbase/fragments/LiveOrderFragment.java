@@ -147,17 +147,7 @@ public class LiveOrderFragment extends BaseFragment implements
 		new HttpHandler().getLiveOrders(getActivity(), this);
 	}
 
-	/**
-	 * Load the Settings fragment
-	 * 
-	 */
 
-	private void loadSettingsFragment() {
-
-		Intent intent = new Intent(getActivity(), SettingsActivity.class);
-		startActivity(intent);
-
-	}
 
 	private void showNoNetworkAlertDialog() {
 
@@ -217,4 +207,16 @@ public class LiveOrderFragment extends BaseFragment implements
 			}
 		}
 	};
+	/**
+	 * Load the Settings fragment
+	 * 
+	 */
+
+	private void loadSettingsFragment() {
+
+		Intent intent = new Intent(getActivity(), SettingsActivity.class);
+		startActivity(intent);
+
+	}
+	
 }

@@ -4,6 +4,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.appbase.R;
 import com.appbase.fragments.LiveOrderFragment;
@@ -25,9 +28,10 @@ public class LiveOrderActivity extends BaseActivity {
 			startActivity(intent);
 		    finish();
 		    
-		}
+		}else{
 		setContentView(R.layout.launcher);
 		loadLiveOrderFragment();
+		}
 		
 	}
 
@@ -77,7 +81,42 @@ public class LiveOrderActivity extends BaseActivity {
 	}
 	
 	
-	
+	  @Override
+	    public boolean onCreateOptionsMenu(Menu menu) {
+	        MenuInflater inflater = getMenuInflater();
+	        inflater.inflate(R.menu.liveorder, menu);
+	 
+	        return super.onCreateOptionsMenu(menu);
+	    }
 
+	  /**
+	     * On selecting action bar icons
+	     * */
+	    @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	    	super.onOptionsItemSelected(item);
+	        // Take appropriate action for each action item click
+	        switch (item.getItemId()) {
+	        case R.id.action_settings:
+	            
+	        	loadSettingsFragment();
+	            return true;
+	       
+	        }
+	        
+	        return true;
+	    }
+	 
 
+		/**
+		 * Load the Settings fragment
+		 * 
+		 */
+
+		private void loadSettingsFragment() {
+
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+
+		}
 }
