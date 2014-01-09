@@ -5,7 +5,7 @@ android:repeatMode="restart"
 android:repeatCount="infinite" >
 
 <scale
-    android:duration="1000"
+    android:duration="300"
     android:fromXScale="0"
     android:fromYScale="0"
     android:pivotX="50%"
@@ -14,7 +14,7 @@ android:repeatCount="infinite" >
     android:toYScale="1.0" />
 
 <alpha
-    android:duration="1000"
+    android:duration="300"
     android:fromAlpha="0.0"
     android:toAlpha="1.0" />
 

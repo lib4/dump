@@ -31,7 +31,7 @@ public class SignInFragment extends BaseFragment implements
 
 	EditText emailAddress_edtTxt;// Email Address input field
 	EditText password_edtTxt;// Password input field
-	ProgressDialog mDialog;
+	static ProgressDialog mDialog;
 	Button signIn_Btn;
 	View signInLayout;
 	String emailAddress_str, password_str;
@@ -49,7 +49,7 @@ public class SignInFragment extends BaseFragment implements
 			// the view hierarchy; it would just never be used.
 			return null;
 		}
-
+		mDialog	=	null;
 		// Inflate the layout for this fragment
 		signInLayout = inflater.inflate(R.layout.signin_fragment, container,
 				false);
@@ -123,6 +123,7 @@ public class SignInFragment extends BaseFragment implements
 			mDialog.dismiss();
 
 		loadLiveOrderFragment();
+		getActivity().finish();
 	}
 
 	@Override
@@ -145,7 +146,7 @@ public class SignInFragment extends BaseFragment implements
 	private void trgrSignInWebService() {
 		hideKeyboard();
 		mDialog = new ProgressDialog(getActivity());
-		mDialog.setMessage(getActivity().getString(R.string.verifying));
+		mDialog.setMessage(getActivity().getString(R.string.signing));
 		mDialog.setCancelable(false);
 		mDialog.show();
 		new HttpHandler().doSignIn(emailAddress_edtTxt.getText().toString(),

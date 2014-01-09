@@ -6,16 +6,22 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,16 +34,18 @@ import com.appbase.datastorage.DBManager;
 import com.appbase.httphandler.HTTPResponseListener;
 import com.appbase.httphandler.HttpHandler;
 
-public class MenuFragment extends BaseFragment implements HTTPResponseListener,OnClickListener {
+public class MenuFragment extends BaseFragment implements HTTPResponseListener,
+		OnClickListener {
 
 	LinearLayout menuLayout;
 	Button back_Btn;
 	ListView mListView;
-	ProgressDialog mDialog;
+	static ProgressDialog mDialog;
 	MenuFragment menuFragment;
 
 	boolean isFetchFromServer = false;
 	public static JSONObject cardObject;
+	MenuAdapter menuAdapter;
 
 	public void FetchFromServerNeeded(boolean isFetchFromServer) {
 		// TODO Auto-generated constructor stub
@@ -57,7 +65,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,O
 			// the view hierarchy; it would just never be used.
 			return null;
 		}
-
+		mDialog = null;
 		// Inflate the layout for this fragment
 		menuLayout = (LinearLayout) inflater.inflate(R.layout.menu_fragment,
 				container, false);
@@ -67,7 +75,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,O
 		} else {
 			onSuccess();
 		}
-		menuFragment	=	this;
+		menuFragment = this;
 		return menuLayout;
 	}
 
@@ -89,16 +97,34 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,O
 		});
 
 		mListView = (ListView) menuLayout.findViewById(R.id.menu_list);
+		mListView.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-//		mListView.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-//					long arg3) {
-//				// TODO Auto-generated method stub
-//				loadDealDetailsFragment();
-//			}
-//		});
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				cardObject	=	 (JSONObject) menuAdapter.getItem(arg2);
+				loadDealDetailsFragment();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				cardObject	=	 (JSONObject) menuAdapter.getItem(arg2);
+				loadDealDetailsFragment();
+				
+			}
+		});
 
 	}
 
@@ -108,17 +134,14 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,O
 	 */
 
 	public void loadDealDetailsFragment() {
-		
-		
-		
 
-		
-		View mView	=	getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+		View mView = getActivity().getWindow().getDecorView()
+				.findViewById(android.R.id.content);
 
-	
-		if (mView.findViewById(R.id.slide_list)!= null) {
-			System.out.println("NOT NULLE "+getActivity().getClass().getCanonicalName());
-			
+		if (mView.findViewById(R.id.slide_list) != null) {
+			System.out.println("NOT NULLE "
+					+ getActivity().getClass().getCanonicalName());
+
 			DealsDetailsFragment mDealsDetailsFragment = new DealsDetailsFragment();
 			mDealsDetailsFragment.hideHeaderBar(true);
 			FragmentManager fragmentManager = getFragmentManager();
@@ -136,13 +159,10 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,O
 
 			// Commit the transaction
 			fragmentTransaction.commit();
-			
-
 
 		} else {
 			Intent intent = new Intent(getActivity(), DealDetailsActivity.class);
-		
-		
+
 			startActivity(intent);
 
 		}
@@ -155,8 +175,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,O
 		if (mDialog != null && mDialog.isShowing())
 			mDialog.dismiss();
 		mHandler.sendMessage(new Message());
-		
-		
+
 	}
 
 	@Override
@@ -234,10 +253,13 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,O
 			}
 
 			else {
-				MenuAdapter menuAdapter = new MenuAdapter(getActivity(),
-						new DBManager(getActivity()).fetchCatalogs(),menuFragment);
+				menuAdapter = new MenuAdapter(getActivity(), new DBManager(
+						getActivity()).fetchCatalogs(), menuFragment);
 				mListView.setAdapter(menuAdapter);
+				mListView.setSmoothScrollbarEnabled(true);
 				mListView.setOverScrollMode(ScrollView.OVER_SCROLL_ALWAYS);
+
+				resolveWidth();
 			}
 		}
 
@@ -246,13 +268,28 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,O
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		cardObject	=		(JSONObject)v.getTag();
-		System.out.println("ID>>> "+cardObject);
+		cardObject = (JSONObject) v.getTag();
+		System.out.println("ID>>> " + cardObject);
 		loadDealDetailsFragment();
-		
-	
+
 	}
-	
-	
+
+	private void resolveWidth() {
+
+		try {
+			WindowManager wm = (WindowManager) getActivity().getSystemService(
+					Context.WINDOW_SERVICE);
+			DisplayMetrics metrics = new DisplayMetrics();
+			wm.getDefaultDisplay().getMetrics(metrics);
+
+			if (metrics.widthPixels > 1000) {
+				loadDealDetailsFragment();
+
+			}
+		} catch (Exception e) {
+
+		}
+
+	}
 
 }

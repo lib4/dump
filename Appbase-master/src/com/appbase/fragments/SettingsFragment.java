@@ -14,10 +14,12 @@ import android.widget.LinearLayout;
 import com.appbase.R;
 import com.appbase.activities.LauncherActivity;
 import com.appbase.activities.MenuActivity;
+import com.appbase.datastorage.DBManager;
+import com.appbase.httphandler.HTTPResponseListener;
 import com.appbase.httphandler.HttpHandler;
 import com.appbase.utils.Utils;
 
-public class SettingsFragment extends BaseFragment {
+public class SettingsFragment extends BaseFragment implements HTTPResponseListener{
 
 	LinearLayout settingsLayout,menuManagementLayout;
 	Button back_Btn, logout_Btn;
@@ -122,8 +124,9 @@ public class SettingsFragment extends BaseFragment {
 											LauncherActivity.class);
 									intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 									trgrSignOutService();
-									Utils.TOKEN	=	null;
 									
+									DBManager mDbManager	=	new DBManager(getActivity());
+									mDbManager.clearDB();
 									startActivity(intent);
 									getActivity().finish();
 									
@@ -135,6 +138,19 @@ public class SettingsFragment extends BaseFragment {
 
 			// show it
 			alertDialog.show();
+		
+	}
+
+	@Override
+	public void onSuccess() {
+		// TODO Auto-generated method stub
+		Utils.TOKEN	=	null;
+	}
+
+	@Override
+	public void onFailure(int failureCode) {
+		// TODO Auto-generated method stub
+		Utils.TOKEN	=	null;
 		
 	}
 }

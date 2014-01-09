@@ -31,7 +31,7 @@ public class LiveOrderFragment extends BaseFragment implements
 	public LinearLayout view;
 	PinterestUI mPinterestUI;
 	Button setting_Btn;
-	ProgressDialog mDialog;
+	static ProgressDialog mDialog;
 	String CHEK = "Default";
 	boolean isFetchFromServer = false;
 	
@@ -53,6 +53,7 @@ public class LiveOrderFragment extends BaseFragment implements
 			// the view hierarchy; it would just never be used.
 			return null;
 		}
+		mDialog	=	null;
 
 		// Inflate the layout for this fragment
 		view = (LinearLayout) inflater.inflate(R.layout.orderlist_fragment,
@@ -106,7 +107,7 @@ public class LiveOrderFragment extends BaseFragment implements
 	@Override
 	public void onSuccess() {
 		if (mDialog != null && mDialog.isShowing())
-			mDialog.dismiss();
+		mDialog.dismiss();
 		mHandler.sendMessage(new Message());
 
 	}

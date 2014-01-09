@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Appbase</string>
+    <string name="app_name">AirOffers</string>
     <string name="action_settings">Settings</string>
     <string name="fetching">Fetching server response......!</string>
     <string name="fetching_local">Fetching from local store......!</string>
@@ -12,11 +12,11 @@
     <!-- SignIn xml -->
     <string name="email_address">Email Address</string>
     <string name="password">Password</string>
-    <string name="airoffers">Appbase</string>
+    <string name="airoffers">AirOffers</string>
     <string name="signin">SignIn</string>
     <string name="uname_not_matching">Wrong Email and password combination. Please try again!</string>
     <string name="logut_alert">Are you sure you want logout?</string>
-    <string name="verifying">Verifying...</string>
+    <string name="signing">Signing...</string>
     <string name="loading">Loading...</string>
     <string name="singin_panel_text">Lorem ipsum dolor sit amet.</string>
     <string name="account">ACCOUNT</string>

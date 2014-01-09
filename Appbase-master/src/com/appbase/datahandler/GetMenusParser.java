@@ -74,10 +74,14 @@ public class GetMenusParser {
 						values.put(AppSqliteHelper.COLUMN_TYPE,
 								jsonParser.getText());
 						if (jsonParser.getText().equals("offer")) {
+							System.out.println("TYPE equal  "+jsonParser.getText());
 							values.put(AppSqliteHelper.COLUMN_NAME, "Deal");
 						} else if (jsonParser.getText().equals("info")) {
+							System.out.println("TYPE ##equal ##  "+jsonParser.getText());
 							values.put(AppSqliteHelper.COLUMN_NAME, "Info");
 						}
+						
+						System.out.println("TYPE #####  "+jsonParser.getText());
 					}
 					if (HttpConstants._ID_JKEY.equals(token)) {
 

@@ -53,6 +53,8 @@ public class LauncherActivity extends BaseActivity {
 
 		// Commit the transaction
 		fragmentTransaction.commit();
+		
+	
 
 	}
 

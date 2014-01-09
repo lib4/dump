@@ -99,12 +99,10 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener{
 		liveOrderCursor	=	mCursor;
 		
 		TOTAL_NUM_ITEMS	=	liveOrderCursor.getCount();
-		System.out.println("IM HERE TOTAL_NUM_ITEMS>>>>>>>>>>>" + TOTAL_NUM_ITEMS);
+
 		
-		System.out.println("IM HERE>>>>>>>>>>>" + SCREEN_WIDTH);
-		
-		if(SCREEN_WIDTH>900){
-			NUM_COLUMN	=	SCREEN_WIDTH/300;
+		if(SCREEN_WIDTH>1200){
+			NUM_COLUMN	=	SCREEN_WIDTH/400;
 		}
 		for (int i = 0; i < NUM_COLUMN; i++) {
 
@@ -141,7 +139,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener{
 		if(liveOrderCursor.getString(3).compareToIgnoreCase("Pending")==0)
 			mLinearLayout.setOnClickListener(TileClickLister);
 		else{
-			//mLinearLayout.setOnClickListener(TileClickLister);
+			mLinearLayout.setOnClickListener(TileClickLister);
 			
 			((ImageView) mLinearLayout.findViewById(R.id.tick_image)).setVisibility(View.VISIBLE);
 		}
@@ -149,7 +147,12 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener{
 		TextView customerName	=	(TextView) mLinearLayout.findViewById(R.id.customer_name);
 		customerName.setText(liveOrderCursor.getString(0));
 		TextView amount	=	(TextView) mLinearLayout.findViewById(R.id.amount);
-		amount.setText(""+liveOrderCursor.getDouble(1));
+		String price 	=	""+liveOrderCursor.getDouble(1);
+		if(!price.contains("$")){
+			price	=	"$"+price;
+		}
+		
+		amount.setText(""+price);
 		LinearLayout itemLinearLayout	=	(LinearLayout) mLinearLayout.findViewById(R.id.itemsLayout);
 	
 		ImageView mImageView 	=	(ImageView) mLinearLayout.findViewById(R.id.profile_pic);
@@ -165,7 +168,12 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener{
 			TextView itemPrice	=	(TextView) mItemLinearLayout.findViewById(R.id.item_price);
 			itemLinearLayout.addView(mItemLinearLayout);
 			itemName.setText(mJsonObject.getString("name"));
-			itemPrice.setText(""+mJsonObject.getDouble("price"));
+			price 	=	""+mJsonObject.getDouble("price");
+			if(!price.contains("$")){
+				price	=	"$"+price;
+			}
+			
+			itemPrice.setText(price);
 			
 			AQuery aq = new AQuery(mLinearLayout);
 			aq.id(mImageView)
@@ -208,35 +216,46 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener{
 			final LinearLayout mActionpanelLinearLayout	=	(LinearLayout) itemLayoutInflater.inflate(R.layout.action_item_panel,null);
 			mActionpanelLinearLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.slideup_action_item));
 			((FrameLayout)v).addView(mActionpanelLinearLayout);
+			Button confirmBtn		=	(Button)	mActionpanelLinearLayout.findViewById(R.id.accept_btn);
+			Button cancelBtn		=	(Button)	mActionpanelLinearLayout.findViewById(R.id.reject_btn);
+			Button acknowledgeBtn	=	(Button)	mActionpanelLinearLayout.findViewById(R.id.acknowledge_btn);
+			ImageView mImageView	=	(ImageView) v.findViewById(R.id.tick_image);
 			
+			if(mImageView.getVisibility()==View.VISIBLE){
+				acknowledgeBtn.setVisibility(View.GONE);
+				cancelBtn.setVisibility(View.GONE);
+			}
 			
-			Button confirmBtn	=(Button)	mActionpanelLinearLayout.findViewById(R.id.accept_btn);
 			confirmBtn.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
 					new HttpHandler().liveOrderAction(context, PinterestUI.this, (String)v.getTag(), "confirm");
+					v.setVisibility(View.GONE);
 					
 				}
 			});
-			Button cancelBtn	=(Button)	mActionpanelLinearLayout.findViewById(R.id.reject_btn);
+			
 			cancelBtn.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
 					new HttpHandler().liveOrderAction(context, PinterestUI.this, (String)v.getTag(), "cancel");
+					v.setVisibility(View.GONE);
 					
 				}
 			});
-			Button acknowledgeBtn	=(Button)	mActionpanelLinearLayout.findViewById(R.id.acknowledge_btn);
+			
 			acknowledgeBtn.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
 					new HttpHandler().liveOrderAction(context, PinterestUI.this, (String)v.getTag(), "acknowledge");
+					((ImageView) v.findViewById(R.id.tick_image)).setVisibility(View.VISIBLE);
+					mActionpanelLinearLayout.setVisibility(View.GONE);
 					
 				}
 			});

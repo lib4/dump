@@ -66,7 +66,9 @@ public class DBManager {
 	 */
 	public void insertProfile(ContentValues values) {
 		open();
-		long insertId = appSqLiteDatabase.insert(
+		long insertId = appSqLiteDatabase.delete(
+				AppSqliteHelper.TABLE_PROFILE, null, null);
+		insertId = appSqLiteDatabase.insert(
 				sqLiteOpenHelper.TABLE_PROFILE, null, values);
 		fetchProfile();
 		close();
@@ -108,6 +110,19 @@ public class DBManager {
 		open();
 		long insertId = appSqLiteDatabase.delete(
 				AppSqliteHelper.TABLE_CATALOGS, null, null);
+		close();
+
+	}
+	
+	
+	/**
+	 * Flush the data in Profile Table
+	 */
+	public void clearProfile() {
+
+		open();
+		long insertId = appSqLiteDatabase.delete(
+				AppSqliteHelper.TABLE_PROFILE, null, null);
 		close();
 
 	}
@@ -157,6 +172,33 @@ public class DBManager {
 		return cursor;
 	}
 
+	
+	public String getProfileToken() {
+
+		try{
+			open();
+		String[] allColumns = { 
+				sqLiteOpenHelper.COLUMN_ACCESSTOKEN };
+		Cursor cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_PROFILE,
+				allColumns, null, null, null, null, null);
+		Log.e("Curson Size ", "== " + cursor.getCount());
+		
+		if(cursor!=null&&cursor.getCount()>0){
+			cursor.moveToNext();
+			return cursor.getString(0);
+		}else
+			return null;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		finally{
+			close();
+		}
+
+		
+	}
 	public Cursor fetchLiveOrders() {
 		Cursor cursor;
 		try {
@@ -221,6 +263,7 @@ public class DBManager {
 
 	public void startTransaction() {
 		open();
+		
 		appSqLiteDatabase.beginTransaction();
 	}
 

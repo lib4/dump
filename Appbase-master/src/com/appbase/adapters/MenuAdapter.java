@@ -37,20 +37,23 @@ public class MenuAdapter extends BaseAdapter {
 	private MenuFragment menuFragment;
 	public JSONObject cardObject;
 
+	JSONArray cards_Array = new JSONArray();
+
 	public MenuAdapter(Context mContext, Cursor mCursor,
 			MenuFragment menuFragment) {
 
 		this.iContext = (Activity) mContext;
 		this.iCursor = mCursor;
 		this.menuFragment = menuFragment;
+		setCardArray();
 
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		if (iCursor != null && iCursor.getCount() > 0)
-			return iCursor.getCount();
+		if (cards_Array != null && cards_Array.length() > 0)
+			return cards_Array.length();
 		else
 			return 0;
 	}
@@ -58,6 +61,12 @@ public class MenuAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int arg0) {
 		// TODO Auto-generated method stub
+		try {
+			return cards_Array.get(arg0);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -71,156 +80,126 @@ public class MenuAdapter extends BaseAdapter {
 	public View getView(int arg0, View convertView, ViewGroup arg2) {
 		// TODO Auto-generated method stub
 
-		ViewHolder viewHolder = new ViewHolder();
 		View rowView = convertView;
-		// if (rowView == null) {
-		LayoutInflater inflater = iContext.getLayoutInflater();
-		rowView = inflater.inflate(R.layout.deals_holder, null);
+		if (rowView == null) {
+			LayoutInflater inflater = iContext.getLayoutInflater();
+			rowView = inflater.inflate(R.layout.deals_holder, null);
+			ViewHolder viewHolder = new ViewHolder();
+			viewHolder.calaloge_name = (TextView) rowView
+					.findViewById(R.id.cataloge_name);
+			viewHolder.cardHolder = (LinearLayout) rowView
+					.findViewById(R.id.card_holder_layout);
 
-		viewHolder.calaloge_name = (TextView) rowView
-				.findViewById(R.id.cataloge_name);
+			viewHolder.group_name = (TextView) rowView
+					.findViewById(R.id.group_name);
 
-		rowView.setTag(viewHolder);
-		// }
+			viewHolder.card_titleTextView = (TextView) rowView
+					.findViewById(R.id.card_title);
+			viewHolder.card_descriptionTextView = (TextView) rowView
+					.findViewById(R.id.card_description);
 
-		viewHolder.cardHolder = (LinearLayout) rowView
-				.findViewById(R.id.card_holder_layout);
+			viewHolder.priceTextView = (TextView) rowView
+					.findViewById(R.id.price);
+
+			viewHolder.cardImage = (ImageView) rowView.findViewById(R.id.image);
+
+			rowView.setTag(viewHolder);
+		}
+		
+		
+		
+	
+
 		ViewHolder holder = (ViewHolder) rowView.getTag();
+		
+		
 
-		iCursor.moveToPosition(arg0);
+		holder.group_name.setText("");
 
-		holder.calaloge_name.setText(iCursor.getString(0));
-		// holder.txt_description.setText("ID:WXN000"+iCursor.getString(0)+"\n Comment: "+iCursor.getString(1));
+		holder.card_titleTextView .setText("");
+		holder.card_descriptionTextView .setText("");
 
-		System.out.println("***************");
-		System.out.println("iCursor.getString(4)\n" + iCursor.getString(4));
-		System.out.println("***************");
+		holder.priceTextView .setText("");
+
 		try {
-			getGroupDetails(new JSONArray(iCursor.getString(4)), holder, arg0);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			setGroupDetails((JSONObject) cards_Array.get(arg0), holder, rowView);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return rowView;
 	}
 
-	private void getGroupDetails(JSONArray mJsonArray, ViewHolder holder,
-			int index) {
+	private void setGroupDetails(JSONObject card, ViewHolder holder,
+			View rowView) {
 
 		try {
 
-			int size = mJsonArray.length();
-			for (int k = 0; k < size; k++) {
-				JSONObject group = (JSONObject) mJsonArray.get(k);
+			// System.out.println("*****" +
+			// mJsonObject.optString("catalogeName"));
 
-				LayoutInflater inflater = iContext.getLayoutInflater();
-				LinearLayout cardsHolder = (LinearLayout) inflater.inflate(
-						R.layout.cards_holder, null);
-				TextView groupNameTextView = (TextView) cardsHolder
-						.findViewById(R.id.group_name);
-				try {
-					groupNameTextView.setText(group
-							.getString(HttpConstants.NAME_JKEY));
+			if (card.optBoolean("showCatalogeName")) {
+				holder.calaloge_name.setVisibility(View.VISIBLE);
+				holder.calaloge_name.setText(card.optString("catalogeName"));
 
-				} catch (Exception e) {
+			} else {
 
-				}
+				holder.calaloge_name.setVisibility(View.GONE);
+			}
 
-				JSONArray subGroups = group
-						.getJSONArray(HttpConstants.SUBGROUPS_JKEY);
+			if (card.optBoolean("showGroupName")) {
+				holder.group_name.setVisibility(View.VISIBLE);
+				holder.group_name.setText(card.getString("groupName"));
 
-				int length = subGroups.length();
-				for (int i = 0; i < length; i++) {
-					try {
+			} else {
 
-						JSONObject cards = (JSONObject) subGroups.get(i);
+				holder.group_name.setVisibility(View.GONE);
+			}
 
-						JSONArray cardsArray = cards
-								.getJSONArray(HttpConstants.CARDS_JKEY);
-
-						int cardsSize = cardsArray.length();
-
-						LinearLayout cardsLayout = (LinearLayout) cardsHolder
-								.findViewById(R.id.cards_holder);
-						for (int j = 0; j < cardsSize; j++) {
-
-							LayoutInflater infltr = iContext.getLayoutInflater();
-							RelativeLayout cardView = (RelativeLayout) infltr
-									.inflate(R.layout.card, null);
-							JSONObject card = (JSONObject) cardsArray.get(j);
-
-							TextView card_titleTextView = (TextView) cardView
-									.findViewById(R.id.card_title);
-							TextView card_descriptionTextView = (TextView) cardView
-									.findViewById(R.id.card_description);
-
-							TextView priceTextView = (TextView) cardView
-									.findViewById(R.id.price);
-
-							card.put("groupName", groupNameTextView.getText());
-							cardView.setTag(card);
-
-							try {
-								card_titleTextView.setText(card
-										.getString(HttpConstants.NAME_JKEY));
-							} catch (Exception e) {
-
-							}
-							try {
-								card_descriptionTextView
-										.setText(card
-												.getString(HttpConstants.DESCRIPTION_JKEY));
-							} catch (Exception e) {
-
-							}
-
-							try {
-								priceTextView
-										.setText(card
-												.getString(HttpConstants.PRICE_STRING_JKEY));
-							} catch (Exception e) {
-
-							}
-
-							ImageView image = (ImageView) cardView
-									.findViewById(R.id.image);
-							AQuery aq = new AQuery(cardView);
-							aq.id(image)
-									.image("http://design.jboss.org/arquillian/logo/final/arquillian_icon_256px.png",
-											true, true, 0, 0,
-											new BitmapAjaxCallback() {
-												@Override
-												public void callback(
-														String url,
-														ImageView iv,
-														Bitmap bm,
-														AjaxStatus status) {
-													iv.setImageBitmap(bm);
-													// do something to the
-													// bitmap
-													// iv.setColorFilter(tint,
-													// PorterDuff.Mode.SRC_ATOP);
-												}
-											});
-
-							cardView.setOnClickListener(menuFragment);
-							cardsLayout.addView(cardView);
-
-						}
-
-					
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					
-				}
-
-				holder.cardHolder.addView(cardsHolder);
+			try {
+				holder.card_titleTextView.setText(card
+						.getString(HttpConstants.NAME_JKEY));
+			} catch (Exception e) {
 
 			}
+			try {
+				holder.card_descriptionTextView.setText(card
+						.getString(HttpConstants.DESCRIPTION_JKEY));
+			} catch (Exception e) {
+
+			}
+
+			try {
+				
+				String price 	=	card
+						.getString(HttpConstants.PRICE_STRING_JKEY);
+				if(!price.contains("$")){
+					price="$"+price;
+				}
+				holder.priceTextView.setText(price);
+			} catch (Exception e) {
+
+			}
+
+			AQuery aq = new AQuery(rowView);
+			aq.id(holder.cardImage)
+					.image("http://design.jboss.org/arquillian/logo/final/arquillian_icon_256px.png",
+							true, true, 0, 0, new BitmapAjaxCallback() {
+								@Override
+								public void callback(String url, ImageView iv,
+										Bitmap bm, AjaxStatus status) {
+									iv.setImageBitmap(bm);
+									// do something to the
+									// bitmap
+									// iv.setColorFilter(tint,
+									// PorterDuff.Mode.SRC_ATOP);
+								}
+							});
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -231,8 +210,86 @@ public class MenuAdapter extends BaseAdapter {
 
 		public TextView calaloge_name;
 		public LinearLayout cardHolder;
-		// public TextView group_name;
+		public TextView group_name;
+		public TextView card_titleTextView;
+		public TextView card_descriptionTextView;
+		public TextView priceTextView;;
+		public ImageView cardImage;
 
 	}
 
+	private void setCardArray() {
+
+		boolean catalogNameAdded = false;
+		boolean groupNameAdded = false;
+		if(iCursor==null){
+			return;
+		}
+		while (iCursor.moveToNext() != false) {
+			try {
+				
+				System.out.println("--------------------------------------");
+				catalogNameAdded = false;
+				String cataloge_name = iCursor.getString(0);
+				
+				
+				JSONArray mJsonArray = new JSONArray(iCursor.getString(4));
+
+				int size = mJsonArray.length();
+				for (int k = 0; k < size; k++) {
+					JSONObject group = (JSONObject) mJsonArray.get(k);
+					String groupName	=	"";
+					try{
+						groupName = group.getString(HttpConstants.NAME_JKEY);
+					}catch(Exception e){
+						
+					}
+					groupNameAdded = false;
+					JSONArray subGroups = group
+							.getJSONArray(HttpConstants.SUBGROUPS_JKEY);
+
+					int length = subGroups.length();
+					for (int i = 0; i < length; i++) {
+						try {
+
+							JSONObject cards = (JSONObject) subGroups.get(i);
+
+							JSONArray cardsArray = cards
+									.getJSONArray(HttpConstants.CARDS_JKEY);
+
+							int cardsSize = cardsArray.length();
+							for (int j = 0; j < cardsSize; j++) {
+
+								JSONObject card = (JSONObject) cardsArray
+										.get(j);
+								card.put("groupName", groupName);
+								if (!groupNameAdded) {
+									
+									card.put("showGroupName", true);
+									groupNameAdded = true;
+								}
+								card.put("catalogeName", cataloge_name);
+								if (!catalogNameAdded) {
+									card.put("showCatalogeName", true);
+									catalogNameAdded = true;
+								}
+								System.out.println("CARD>>>" + card);
+								cards_Array.put(card);
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				
+			
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("--------------------------------------");
+
+		}
+	}
 }

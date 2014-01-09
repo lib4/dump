@@ -29,8 +29,6 @@ public class DealsDetailsFragment extends BaseFragment {
 		this.hideHeaderBar = hideHeaderBar;
 	}
 
-
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -63,24 +61,64 @@ public class DealsDetailsFragment extends BaseFragment {
 	 */
 	private void init() {
 
-		try{
+		try {
+
+			System.out.println("____________");
+			System.out.println("" + cardJsonObject);
+
+			System.out.println("____________");
+
+			TextView tileText = (TextView) dealsDetailsLayout
+					.findViewById(R.id.title_txt);
+			try {
+				tileText.setText(cardJsonObject.getString("groupName"));
+			} catch (Exception e) {
+
+			}
+
+			TextView cardName = (TextView) dealsDetailsLayout
+					.findViewById(R.id.card_name);
+
+			try {
+				cardName.setText(cardJsonObject
+						.getString(HttpConstants.NAME_JKEY));
+			} catch (Exception e) {
+
+			}
+
+			TextView priceText = (TextView) dealsDetailsLayout
+					.findViewById(R.id.price_text);
+			try {
+				
+				try {
+					
+					String price 	=	cardJsonObject
+							.getString(HttpConstants.PRICE_STRING_JKEY);
+					if(!price.contains("$")){
+						price="$"+price;
+					}
+					
+					priceText.setText(price);
+					
+				} catch (Exception e) {
+
+				}
+				
+				
+			} catch (Exception e) {
+
+			}
+
+			TextView cardDescriptionText = (TextView) dealsDetailsLayout
+					.findViewById(R.id.cardDescription_text);
 			
-			
-		
-		TextView tileText	=	(TextView) dealsDetailsLayout.findViewById(R.id.title_txt);
-		tileText.setText(cardJsonObject.getString("groupName"));
-		
-		
-		TextView cardName	=	(TextView) dealsDetailsLayout.findViewById(R.id.card_name);
-		cardName.setText(cardJsonObject.getString(HttpConstants.NAME_JKEY));
-		
-		TextView priceText	=	(TextView) dealsDetailsLayout.findViewById(R.id.price_text);
-		priceText.setText(cardJsonObject.getString(HttpConstants.PRICE_STRING_JKEY));
-		
-		
-		TextView cardDescriptionText	=	(TextView) dealsDetailsLayout.findViewById(R.id.cardDescription_text);
-		cardDescriptionText.setText(cardJsonObject.getString(HttpConstants.DESCRIPTION_JKEY));
-		}catch(Exception e){
+			try{
+			cardDescriptionText.setText(cardJsonObject
+					.getString(HttpConstants.DESCRIPTION_JKEY));
+			}catch(Exception e){
+				
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		back_Btn = (Button) dealsDetailsLayout.findViewById(R.id.back_btn);
