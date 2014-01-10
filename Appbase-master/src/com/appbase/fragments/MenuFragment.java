@@ -171,7 +171,6 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 
 		} else {
 			Intent intent = new Intent(getActivity(), DealDetailsActivity.class);
-
 			startActivity(intent);
 
 		}
@@ -347,6 +346,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 				System.out.println("--------------------------------------");
 				catalogNameAdded = false;
 				String cataloge_name = iCursor.getString(0);
+				String cataloge_type	=	iCursor.getString(1);
 				
 				
 				JSONArray mJsonArray = new JSONArray(iCursor.getString(4));
@@ -360,6 +360,8 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 					}catch(Exception e){
 						
 					}
+					
+					
 					groupNameAdded = false;
 					JSONArray subGroups = group
 							.getJSONArray(HttpConstants.SUBGROUPS_JKEY);
@@ -390,6 +392,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 									catalogNameAdded = true;
 								}
 								System.out.println("CARD>>>" + card);
+								card.put("cataloge_type", cataloge_type);
 								cards_Array.put(card);
 							}
 						} catch (Exception e) {

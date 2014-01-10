@@ -297,6 +297,12 @@ public class GetMenusParser {
 						jsonParser.nextToken();
 						choiceGroupObject.put(token, jsonParser.getText());
 					}
+					
+					if (HttpConstants.TYPE_JKEY.equals(token)) {
+						jsonParser.nextToken();
+						choiceGroupObject.put(token, jsonParser.getText());
+					}
+
 
 					if (HttpConstants._ID_JKEY.equals(token)) {
 						jsonParser.nextToken();

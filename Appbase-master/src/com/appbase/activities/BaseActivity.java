@@ -1,6 +1,7 @@
 package com.appbase.activities;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -24,6 +25,7 @@ public class BaseActivity extends Activity {
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
 		this.overridePendingTransition(R.anim.enter, R.anim.exit);
 		getActionBar().setHomeButtonEnabled(true);
 		
