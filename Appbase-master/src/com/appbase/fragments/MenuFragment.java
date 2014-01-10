@@ -76,6 +76,9 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 		menuLayout = (LinearLayout) inflater.inflate(R.layout.menu_fragment,
 				container, false);
 		init();
+		if(new DBManager(getActivity()).isCatalogsAvailable()){
+			isFetchFromServer	=	false;
+		}
 		if (isFetchFromServer) {
 			trgrGetMenusService();
 		} else {

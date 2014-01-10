@@ -240,6 +240,30 @@ public class DBManager {
 	}
 	
 	
+	public boolean isCatalogsAvailable() {
+		Cursor cursor;
+		boolean	isCatalogsAvailable	= false;
+		try {
+			open();
+			String[] allColumns = { sqLiteOpenHelper.COLUMN_NAME,
+					sqLiteOpenHelper.COLUMN_TYPE, sqLiteOpenHelper.COLUMN__ID,
+					sqLiteOpenHelper.COLUMN_STATUS,
+					sqLiteOpenHelper.COLUMN_GROUPS };
+			cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_CATALOGS,
+					allColumns, null, null, null, null, null," 1");
+			System.out.println("TABLE_CATALOGS  CURSOR>>>>>>>> " + cursor.getCount());
+			if(cursor!=null&&cursor.getCount()>0){
+				isCatalogsAvailable	=	true;
+			}
+			close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return isCatalogsAvailable;
+	}
+	
+	
 	
 	public Cursor fetchCatalogDetails(String id) {
 		Cursor cursor;

@@ -63,7 +63,7 @@
                 android:typeface="sans" />
         </LinearLayout>
 
-        <TextView
+        <ImageView
             android:id="@+id/right_arrow"
             style="@style/right_arrow"
             android:layout_width="wrap_content"
@@ -71,7 +71,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="right"
-            android:text=">" />
+            android:src="@drawable/arrow"
+            />
     </RelativeLayout>
 
 </RelativeLayout>
