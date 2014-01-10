@@ -292,10 +292,10 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 			DisplayMetrics metrics = new DisplayMetrics();
 			wm.getDefaultDisplay().getMetrics(metrics);
 
-			if (metrics.widthPixels > 1000) {
-				loadDealDetailsFragment();
-
-			}
+//			if (metrics.widthPixels > 1000) {
+//				loadDealDetailsFragment();
+//
+//			}
 		} catch (Exception e) {
 
 		}

@@ -3,11 +3,12 @@ package com.appbase.activities;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.WindowManager;
 import android.widget.SearchView;
 
@@ -24,6 +25,8 @@ public class MenuActivity extends BaseActivity implements SearchView.OnQueryText
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		if (savedInstanceState != null) {
 			fetchFromServer = false;
 		}
@@ -114,20 +117,39 @@ public class MenuActivity extends BaseActivity implements SearchView.OnQueryText
 	
 	private void  resolveWidth(){
 		
-		WindowManager wm = (WindowManager) this
-				.getSystemService(Context.WINDOW_SERVICE);
-		DisplayMetrics metrics = new DisplayMetrics();
-		wm.getDefaultDisplay().getMetrics(metrics);
-
-		if(metrics.widthPixels>1000){
-			setContentView(R.layout.two_pane_layout);
-			loadMenuAndDealsDetailFragment();
-			
-		}else{
-			setContentView(R.layout.launcher);
-			loadMenuFragment();
-			
-		}
+//		WindowManager wm = (WindowManager) this
+//				.getSystemService(Context.WINDOW_SERVICE);
+//		DisplayMetrics metrics = new DisplayMetrics();
+//		wm.getDefaultDisplay().getMetrics(metrics);
+//
+//		if(metrics.widthPixels>1000){
+//			setContentView(R.layout.two_pane_layout);
+//			loadMenuAndDealsDetailFragment();
+//			
+//		}else{
+//			setContentView(R.layout.launcher);
+//			loadMenuFragment();
+//			
+//		}
+//		
+		
+		
+		
+		  final int rotation = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
+          switch (rotation) {
+           case Surface.ROTATION_0:
+           case Surface.ROTATION_180:
+        	   setContentView(R.layout.launcher);
+   				loadMenuFragment();
+   				break;
+           case Surface.ROTATION_90:
+           default:
+        	   setContentView(R.layout.two_pane_layout);
+   				loadMenuAndDealsDetailFragment();
+   				break;
+   			
+           }
+    
 		
 		
 	}

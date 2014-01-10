@@ -3,7 +3,7 @@
                android:fromYDelta="100%"
                android:toYDelta="50%"
         
-               android:interpolator="@android:anim/bounce_interpolator"
+               android:interpolator="@android:anim/linear_interpolator"
                android:duration="@integer/config_mediumAnimTime"
                />
 

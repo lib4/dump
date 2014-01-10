@@ -5,6 +5,4 @@
       android:title="@string/action_search"
       android:showAsAction="always"
       android:actionViewClass="android.widget.SearchView"/>
-    
-
 </menu>

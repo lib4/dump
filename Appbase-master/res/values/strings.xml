@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AirOffers</string>
+    <string name="app_name">AirAdmin</string>
     <string name="action_settings">Settings</string>
     <string name="fetching">Fetching server response......!</string>
     <string name="fetching_local">Fetching from local store......!</string>

@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -63,7 +63,7 @@
         <item name="android:padding">10dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-    </style>
+    </style>
     -->
 
     <style name="menu_type_title" parent="@android:style/TextAppearance">
@@ -121,7 +121,7 @@
         <item name="android:typeface">sans</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12dp</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:padding">1dp</item>
     </style>
 
     <style name="CitrineFont_9pt_shadow">
@@ -135,33 +135,37 @@
     </style>
 
     <!-- the theme applied to the application or activity -->
-    <style name="CustomActionBarTheme" parent="@android:style/Theme.DeviceDefault">
+    <style name="CustomActionBarTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
-       	<item name="android:actionMenuTextColor">@color/white_tile_background_color</item>
-       
+        <item name="android:actionMenuTextColor">@color/white_tile_background_color</item>
+           
     </style>
 
     <!-- ActionBar styles -->
-    <style name="MyActionBar" parent="@android:style/Widget.DeviceDefault.ActionBar.Solid">
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
         <item name="android:background">@color/header_background_color</item>
         <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
-     
-
-         
     </style>
 
-     <!-- ActionBar title text -->
-    <style name="MyActionBarTitleText"  parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+    <!-- ActionBar title text -->
+    <style name="MyActionBarTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/white_tile_background_color</item>
-         <item name="android:textStyle">bold</item>
-          <item name="android:gravity">center</item>
-          
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#8B000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:gravity">center</item>
     </style>
-    
-     <!-- ActionBar tabs text styles -->
-    <style name="MyActionBarMenuText"     parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Menu">
+
+    <!-- ActionBar tabs text styles -->
+    <style name="MyActionBarMenuText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Menu">
         <item name="android:textColor">@color/white_tile_background_color</item>
-         <item name="android:textStyle">bold</item>
-          
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#8B000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
     </style>
+
 </resources>
