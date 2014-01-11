@@ -41,7 +41,6 @@ public class LiveOrderParser {
 				 */
 				try {
 					
-					System.out.println("Parsing... : ");
 					
 					JsonFactory jsonfactory = new JsonFactory();
 					JsonParser jsonParser = jsonfactory.createJsonParser(response);
@@ -339,7 +338,6 @@ public class LiveOrderParser {
 				}
 				
 				finally{
-					System.out.println("Finally...");
 					mDbManager.endTransaction();
 				}
 

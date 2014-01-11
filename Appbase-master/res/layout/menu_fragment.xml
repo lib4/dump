@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Cataloge" >
+           >
         </TextView>
 
 
@@ -46,12 +46,20 @@
         android:background="@color/pane_background_color"
           android:visibility="gone" />
 
+    <TextView      android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/SubTitleHeader"
+        android:id="@+id/no_item_found"
+        android:text="@string/no_item_found"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"/>
     <ListView
         android:id="@+id/menu_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:drawSelectorOnTop="true"
-        android:listSelector="@drawable/selector" >
+      >
     </ListView>
 
 </LinearLayout>

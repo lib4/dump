@@ -7,13 +7,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.appbase.R;
 import com.appbase.activities.MenuActivity;
+import com.appbase.activities.WebViewActivity;
 
 public class SettingsFragment extends BaseFragment {
 
-	LinearLayout settingsLayout,menuManagementLayout;
+	LinearLayout settingsLayout;
 	
 
 	@Override
@@ -43,9 +45,11 @@ public class SettingsFragment extends BaseFragment {
 	 */
 	private void init() {
 
-	
+	/**
+	 * Preview Cards
+	 */
 		
-		menuManagementLayout	=	(LinearLayout) settingsLayout.findViewById(R.id.menu_management);
+		LinearLayout menuManagementLayout	=	(LinearLayout) settingsLayout.findViewById(R.id.menu_management);
 		menuManagementLayout.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -58,7 +62,50 @@ public class SettingsFragment extends BaseFragment {
 				
 			}
 		});
+		
+		
+		LinearLayout sensor_management	=	(LinearLayout) settingsLayout.findViewById(R.id.sensor_management);
+		
+		sensor_management.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getActivity(), "Functinality yet to be implemented.", 1000).show();
+				
+			}
+		});
+		
+		/**
+		 * Load Web Url. While Tapping on
+		 * Security
+		 * Help Center
+		 * Privacy Policy
+		 * Terms Of Service
+		 * 
+		 */
+		LinearLayout security	=	(LinearLayout) settingsLayout.findViewById(R.id.security);
+		security.setOnClickListener(loadWebViewListener);
+		LinearLayout help_center	=	(LinearLayout) settingsLayout.findViewById(R.id.help_center);
+		help_center.setOnClickListener(loadWebViewListener);
+		LinearLayout privacy_policy	=	(LinearLayout) settingsLayout.findViewById(R.id.privacy_policy);
+		privacy_policy.setOnClickListener(loadWebViewListener);
+		LinearLayout terms_of_service	=	(LinearLayout) settingsLayout.findViewById(R.id.terms_of_service);
+		terms_of_service.setOnClickListener(loadWebViewListener);
+		
+		
 	}
+	
+	OnClickListener loadWebViewListener	=	new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(getActivity(),
+					WebViewActivity.class);
+			
+			startActivity(intent);
+		}
+	};
 	
 
 

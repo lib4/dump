@@ -80,7 +80,7 @@
             android:paddingRight="20dp"
             android:paddingTop="10dp"
             android:textColor="@android:color/black"
-            android:textStyle="bold" />
+           />
     </LinearLayout>
 
     <TextView
@@ -89,7 +89,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="@string/singin_panel_text"
-        android:textStyle="bold" />
+        />
     
        <Button
             android:id="@+id/signin_btn"
@@ -97,6 +97,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:background="@drawable/signin_btn_selecton"
+            
             android:text="@string/signin" >
         </Button>
 

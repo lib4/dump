@@ -156,6 +156,7 @@
         <item name="android:shadowDy">2</item>
         <item name="android:shadowRadius">2</item>
         <item name="android:gravity">center</item>
+      
     </style>
 
     <!-- ActionBar tabs text styles -->

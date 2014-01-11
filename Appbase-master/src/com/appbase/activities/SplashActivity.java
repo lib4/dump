@@ -20,7 +20,7 @@ public class SplashActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		String profileToken	=	new DBManager(this).getProfileToken();
 		getActionBar().hide();
-		System.out.println("profileToken"+profileToken);
+		Utils.REFRESH_CATALOGE	=	true;
 		if(profileToken!=null){
 			Utils.TOKEN	=	profileToken;
 			swapToLiveViewActivity();

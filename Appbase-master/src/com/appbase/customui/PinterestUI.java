@@ -109,7 +109,6 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 			mLinearLayout.setPadding(5, 10, 5, 10);
 			addView(mLinearLayout);
 
-			System.out.println("IM HERE>>>>>>>>>>> Layout Creation" + i);
 		}
 
 		draw(0);

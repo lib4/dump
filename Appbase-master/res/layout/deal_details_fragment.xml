@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="match_parent"
+          android:background="@color/pane_background_color"
+    android:layout_height="match_parent">
+<LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/pane_background_color"
@@ -46,7 +50,7 @@
     <ImageView
         android:id="@+id/menu_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:scaleType="fitXY"
         android:src="@drawable/offer_images" >
     </ImageView>
@@ -94,11 +98,13 @@
 
     <LinearLayout
         android:id="@+id/choices_addtion_layout"
+    
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:orientation="vertical" >
 	    
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

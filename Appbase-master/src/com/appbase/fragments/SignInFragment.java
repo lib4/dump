@@ -1,5 +1,7 @@
 package com.appbase.fragments;
 
+import org.apache.commons.validator.EmailValidator;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,6 +27,7 @@ import com.appbase.R;
 import com.appbase.activities.LiveOrderActivity;
 import com.appbase.httphandler.HTTPResponseListener;
 import com.appbase.httphandler.HttpHandler;
+import com.appbase.utils.Utils;
 
 public class SignInFragment extends BaseFragment implements
 		HTTPResponseListener {
@@ -70,6 +73,7 @@ public class SignInFragment extends BaseFragment implements
 			emailAddress_edtTxt.setText(emailAddress_str);
 		if (password_str != null)
 			password_edtTxt.setText(password_str);
+		Utils.REFRESH_CATALOGE	=	true;
 		return signInLayout;
 	}
 
@@ -91,8 +95,8 @@ public class SignInFragment extends BaseFragment implements
 				.findViewById(R.id.password_edtTxt);
 
 		// Hardcodes the emaild and password Need to remove
-		emailAddress_edtTxt.setText("merch27@teamonapp.com");
-		password_edtTxt.setText("123123");
+		//emailAddress_edtTxt.setText("merch27@teamonapp.com");
+		//password_edtTxt.setText("123123");
 
 		password_edtTxt.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
@@ -111,12 +115,28 @@ public class SignInFragment extends BaseFragment implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				trgrSignInWebService();
+				if(validateFields())
+					trgrSignInWebService();
 			}
 		});
 
 	}
 
+	
+	private boolean validateFields(){
+		
+		if(emailAddress_edtTxt.getText().toString().isEmpty()){
+			showAlertDialog(getActivity().getString(R.string.email_blank));
+			return false;
+		}else if(!EmailValidator.getInstance().isValid(emailAddress_edtTxt.getText().toString())){
+			showAlertDialog(getActivity().getString(R.string.invalid_email));
+			return false;
+		}else if(password_edtTxt.getText().toString().isEmpty()){
+			showAlertDialog(getActivity().getString(R.string.password_blank));
+			return false;
+		}
+		return true;
+	}
 	@Override
 	public void onSuccess() {
 		if (mDialog != null && mDialog.isShowing())
@@ -176,7 +196,7 @@ public class SignInFragment extends BaseFragment implements
 
 	}
 
-	private void showAlertDialog() {
+	private void showAlertDialog(String messgae) {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				getActivity());
@@ -186,8 +206,8 @@ public class SignInFragment extends BaseFragment implements
 
 		// set dialog message
 		alertDialogBuilder
-				.setMessage(
-						getActivity().getString(R.string.uname_not_matching))
+				.setMessage(messgae
+						)
 				.setCancelable(false)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
@@ -259,7 +279,7 @@ public class SignInFragment extends BaseFragment implements
 
 				showNoNetworkAlertDialog();
 			} else {
-				showAlertDialog();
+				showAlertDialog(getActivity().getString(R.string.uname_not_matching));
 
 			}
 		}

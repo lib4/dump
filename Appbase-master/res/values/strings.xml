@@ -15,20 +15,27 @@
     <string name="airoffers">AirOffers</string>
     <string name="signin">SignIn</string>
     <string name="uname_not_matching">Wrong Email and password combination. Please try again!</string>
-    <string name="logut_alert">Are you sure you want logout?</string>
-    <string name="signing">Signing...</string>
+    <string name="logut_alert">Do you realy want to logout?</string>
+    <string name="signing">Please wait. Signing in...</string>
     <string name="loading">Loading...</string>
     <string name="singin_panel_text">Lorem ipsum dolor sit amet.</string>
     <string name="account">ACCOUNT</string>
+    <string name="about">ABOUT</string>
     <string name="general">GENERAL</string>
     <string name="manage_menu">Manage Menus</string>
-    <string name="manage_sensors">Sensors</string>
     <string name="left_arrow">&lt;</string>
-     <string name="settings">Settings</string>
-     <string name="search">Search</string>
-     <string name="action_logout">Logout</string>
-      <string name="action_search">Search</string>
-     
-     
-
+    <string name="settings">Settings</string>
+    <string name="search">Search</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_search">Search</string>
+    <string name="preview_cards">Preview Cards</string>
+    <string name="manage_sensors">Sensors</string>
+    <string name="security">Security</string>
+    <string name="help_center">Help Center</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms Of Service</string>
+    <string name="email_blank">Email address cannot be blank. Please provide a valid email address!</string>
+    <string name="invalid_email">Invalid email address. Please provide a valid email address!</string>
+    <string name="password_blank">Password cannot be blank. Please provide a valid password!</string>
+ 	<string name="no_item_found">No Items Found.</string>
 </resources>

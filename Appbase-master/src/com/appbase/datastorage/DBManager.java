@@ -80,7 +80,6 @@ public class DBManager {
 	 */
 	public void insertLiveOrders(ContentValues values) {
 
-		System.out.println("Size Values " + values.size());
 		// open();
 		long insertId = appSqLiteDatabase.insert(
 				sqLiteOpenHelper.TABLE_LIVE_ORDERS, null, values);
@@ -149,7 +148,6 @@ public class DBManager {
 	 */
 	public void insertCataloges(ContentValues values) {
 
-		System.out.println("Size Values " + values.size());
 		long insertId = appSqLiteDatabase.insert(
 				sqLiteOpenHelper.TABLE_CATALOGS, null, values);
 		
@@ -181,7 +179,6 @@ public class DBManager {
 				sqLiteOpenHelper.COLUMN_ACCESSTOKEN };
 		Cursor cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_PROFILE,
 				allColumns, null, null, null, null, null);
-		Log.e("Curson Size ", "== " + cursor.getCount());
 		
 		if(cursor!=null&&cursor.getCount()>0){
 			cursor.moveToNext();
@@ -229,9 +226,8 @@ public class DBManager {
 					sqLiteOpenHelper.COLUMN_GROUPS };
 			cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_CATALOGS,
 					allColumns, null, null, null, null, null);
-			System.out.println("CURSOR>>>>>>>> " + cursor.getCount());
-
-			close();
+			
+			//close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -251,7 +247,6 @@ public class DBManager {
 					sqLiteOpenHelper.COLUMN_GROUPS };
 			cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_CATALOGS,
 					allColumns, null, null, null, null, null," 1");
-			System.out.println("TABLE_CATALOGS  CURSOR>>>>>>>> " + cursor.getCount());
 			if(cursor!=null&&cursor.getCount()>0){
 				isCatalogsAvailable	=	true;
 			}
@@ -275,8 +270,7 @@ public class DBManager {
 					sqLiteOpenHelper.COLUMN_GROUPS };
 			cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_CATALOGS,
 					allColumns, sqLiteOpenHelper.COLUMN__ID +"= '"+id +"'", null, null, null, null);
-			System.out.println("CURSOR>>>>>>>> " + cursor.getCount());
-
+		
 			close();
 		} catch (Exception e) {
 			e.printStackTrace();

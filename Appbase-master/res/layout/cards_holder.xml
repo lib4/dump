@@ -11,6 +11,14 @@
         android:layout_height="wrap_content"
         
         android:text="Deals" />
+    
+       <TextView
+        android:id="@+id/sub_group_name"
+ 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="subgroupname" />
 
     <LinearLayout
         android:id="@+id/cards_holder"

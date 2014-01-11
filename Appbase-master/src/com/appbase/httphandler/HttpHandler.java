@@ -249,7 +249,7 @@ public class HttpHandler extends Thread {
 
 					}
 
-					System.out.println(sb.toString());
+					//System.out.println(sb.toString());
 					break;
 				}
 				break;

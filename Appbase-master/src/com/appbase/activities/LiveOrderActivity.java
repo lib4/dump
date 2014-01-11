@@ -22,7 +22,7 @@ public class LiveOrderActivity extends BaseActivity {
 		}
 		
 		if (getIntent().getBooleanExtra("EXIT", false)) {
-			System.out.println("From Logut button press");
+			
 			Intent intent = new Intent(this,
 					LauncherActivity.class);
 			startActivity(intent);

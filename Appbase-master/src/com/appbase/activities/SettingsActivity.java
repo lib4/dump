@@ -75,8 +75,9 @@ public class SettingsActivity extends BaseActivity {
 		// set dialog message
 		alertDialogBuilder
 				.setMessage(this.getString(R.string.logut_alert))
-				.setCancelable(false)
-				.setPositiveButton("No", new DialogInterface.OnClickListener() {
+				.setCancelable(true)
+				.setTitle(this.getString(R.string.app_name))
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						// if this button is clicked, close
 						// current activity
@@ -84,7 +85,7 @@ public class SettingsActivity extends BaseActivity {
 					}
 				})
 
-				.setNegativeButton("Yes",
+				.setPositiveButton("Logout",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								// if this button is clicked, close
@@ -106,7 +107,7 @@ public class SettingsActivity extends BaseActivity {
 
 							}
 						});
-
+		
 		// create alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
 

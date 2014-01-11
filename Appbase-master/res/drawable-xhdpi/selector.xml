@@ -26,7 +26,9 @@
 #E98D78
  -->
  
-<item android:state_activated="true"   
-    android:drawable="@color/header_background_color" />
+	<item android:state_enabled="false" android:drawable="@android:color/transparent" />
+    <item android:state_pressed="true" android:drawable="@drawable/btn_regular_pressed" />
+    <item android:state_enabled="true" android:drawable="@color/white_tile_background_color" />
+
  
 </selector>

@@ -10,28 +10,31 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
 import com.appbase.R;
 import com.appbase.fragments.DealsDetailsFragment;
 import com.appbase.fragments.MenuFragment;
 
-public class MenuActivity extends BaseActivity implements SearchView.OnQueryTextListener,         SearchView.OnCloseListener {
+public class MenuActivity extends BaseActivity implements
+		SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
 	MenuFragment mMenuFragment;
 
 	boolean fetchFromServer = true;
 	SearchView searchView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		if (savedInstanceState != null) {
 			fetchFromServer = false;
 		}
 		resolveWidth();
-	
+
 	}
 
 	/**
@@ -58,8 +61,7 @@ public class MenuActivity extends BaseActivity implements SearchView.OnQueryText
 		fragmentTransaction.commit();
 
 	}
-	
-	
+
 	/**
 	 * Load the SignIn fragment
 	 * 
@@ -82,15 +84,12 @@ public class MenuActivity extends BaseActivity implements SearchView.OnQueryText
 
 		// Commit the transaction
 		fragmentTransaction.commit();
-		
-		
-		
+
 		DealsDetailsFragment mDealsDetailsFragment = new DealsDetailsFragment();
 		mDealsDetailsFragment.hideHeaderBar(true);
 		fragmentManager = getFragmentManager();
-		fragmentTransaction = fragmentManager
-				.beginTransaction();
-		
+		fragmentTransaction = fragmentManager.beginTransaction();
+
 		// fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit,
 		// R.anim.pop_enter, R.anim.pop_exit);
 		// Replace whatever is in the fragment_container view with this
@@ -113,80 +112,73 @@ public class MenuActivity extends BaseActivity implements SearchView.OnQueryText
 		// ft.commit();
 
 	}
-	
-	
-	private void  resolveWidth(){
-		
-//		WindowManager wm = (WindowManager) this
-//				.getSystemService(Context.WINDOW_SERVICE);
-//		DisplayMetrics metrics = new DisplayMetrics();
-//		wm.getDefaultDisplay().getMetrics(metrics);
-//
-//		if(metrics.widthPixels>1000){
-//			setContentView(R.layout.two_pane_layout);
-//			loadMenuAndDealsDetailFragment();
-//			
-//		}else{
-//			setContentView(R.layout.launcher);
-//			loadMenuFragment();
-//			
-//		}
-//		
-		
-		
-		
-		  final int rotation = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
-          switch (rotation) {
-           case Surface.ROTATION_0:
-           case Surface.ROTATION_180:
-        	   setContentView(R.layout.launcher);
-   				loadMenuFragment();
-   				break;
-           case Surface.ROTATION_90:
-           default:
-        	   setContentView(R.layout.two_pane_layout);
-   				loadMenuAndDealsDetailFragment();
-   				break;
-   			
-           }
-    
-		
-		
+
+	private void resolveWidth() {
+
+		// WindowManager wm = (WindowManager) this
+		// .getSystemService(Context.WINDOW_SERVICE);
+		// DisplayMetrics metrics = new DisplayMetrics();
+		// wm.getDefaultDisplay().getMetrics(metrics);
+		//
+		// if(metrics.widthPixels>1000){
+		// setContentView(R.layout.two_pane_layout);
+		// loadMenuAndDealsDetailFragment();
+		//
+		// }else{
+		// setContentView(R.layout.launcher);
+		// loadMenuFragment();
+		//
+		// }
+		//
+
+		final int rotation = ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
+				.getDefaultDisplay().getOrientation();
+		switch (rotation) {
+		case Surface.ROTATION_0:
+		case Surface.ROTATION_180:
+			setContentView(R.layout.launcher);
+			loadMenuFragment();
+			break;
+		case Surface.ROTATION_90:
+		default:
+			setContentView(R.layout.two_pane_layout);
+			loadMenuAndDealsDetailFragment();
+			break;
+
+		}
+
 	}
-	
-	 	@Override
-	    public boolean onCreateOptionsMenu(Menu menu) {
-	        MenuInflater inflater = getMenuInflater();
-	        inflater.inflate(R.menu.cataloge_list, menu);
-	        searchView = (SearchView) menu.findItem(R.id.action_search)
-	                .getActionView();
-	    	searchView.setOnQueryTextListener(this);
-			searchView.setOnCloseListener(this); 
 
-	        return super.onCreateOptionsMenu(menu);
-	    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.cataloge_list, menu);
+		searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
+		searchView.setOnQueryTextListener(this);
+		searchView.setOnCloseListener(this);
 
-	  /**
-	     * On selecting action bar icons
-	     * */
-	    @Override
-	    public boolean onOptionsItemSelected(MenuItem item) {
-	    	super.onOptionsItemSelected(item);
-	        // Take appropriate action for each action item click
-	    	
-	    	
-	        switch (item.getItemId()) {
-	        case R.id.action_search:
-	        	SearchView searchView = (SearchView) item.getActionView();
-               
+		return super.onCreateOptionsMenu(menu);
+	}
 
-	        	
-	            return true;
-	       
-	        }
-	        
-	        return true;
-	    }
+	/**
+	 * On selecting action bar icons
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		// Take appropriate action for each action item click
+
+		switch (item.getItemId()) {
+		case R.id.action_search:
+			
+
+			return true;
+
+		}
+
+		return true;
+	}
 
 	@Override
 	public boolean onClose() {
@@ -198,16 +190,26 @@ public class MenuActivity extends BaseActivity implements SearchView.OnQueryText
 	public boolean onQueryTextChange(String arg0) {
 		// TODO Auto-generated method stub
 		mMenuFragment.trgrSearch(arg0);
-	
+
 		return false;
 	}
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		// TODO Auto-generated method stub
+		
+		hideKeyboard();
 		return false;
 	}
-
-
+	
+	/**
+	 * Method to hide the keyboard
+	 */
+	
+	private void hideKeyboard(){
+		InputMethodManager imm = (InputMethodManager)this.getSystemService(
+			      Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+	}
 
 }

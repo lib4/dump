@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.appbase.R;
@@ -19,7 +20,7 @@ import com.appbase.httphandler.HttpConstants;
 
 public class DealsDetailsFragment extends BaseFragment {
 
-	LinearLayout dealsDetailsLayout;
+	ScrollView dealsDetailsLayout;
 	boolean hideHeaderBar = false;
 	JSONObject cardJsonObject;
 
@@ -43,7 +44,7 @@ public class DealsDetailsFragment extends BaseFragment {
 		}
 
 		// Inflate the layout for this fragment
-		dealsDetailsLayout = (LinearLayout) inflater.inflate(
+		dealsDetailsLayout = (ScrollView) inflater.inflate(
 				R.layout.deal_details_fragment, container, false);
 		this.cardJsonObject = MenuFragment.cardObject;
 		init();
@@ -59,10 +60,7 @@ public class DealsDetailsFragment extends BaseFragment {
 
 		try {
 
-			System.out.println("____________");
-			System.out.println("" + cardJsonObject);
-
-			System.out.println("____________");
+	
 
 			TextView tileText = (TextView) dealsDetailsLayout
 					.findViewById(R.id.title_txt);
@@ -144,7 +142,6 @@ public class DealsDetailsFragment extends BaseFragment {
 			
 				JSONObject mJsonObject		=	(JSONObject) choices_addtion_array.get(i);
 				
-				System.out.println("XXXX  "+mJsonObject.toString());
 				TextView typeText 	=	(TextView) choiceAddtionItem_container.findViewById(R.id.item_type);
 				if(mJsonObject.getString(HttpConstants.TYPE_JKEY).compareToIgnoreCase("Select")==0){
 					typeText.setText("Choices");
@@ -164,7 +161,8 @@ public class DealsDetailsFragment extends BaseFragment {
 					
 					LinearLayout item = (LinearLayout) mLayoutInflater
 							.inflate(R.layout.choice_addition_item, null);
-					choiceAddtionItem_container.addView(item);
+				
+					((LinearLayout)choiceAddtionItem_container.findViewById(R.id.choices_item_layout)).addView(item);
 					JSONObject choiceObject 	=	choiceItems.getJSONObject(k);
 					TextView choiceName 	=	(TextView) item.findViewById(R.id.choice_name);
 					TextView choicePrice 	=	(TextView) item.findViewById(R.id.choice_price);

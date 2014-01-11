@@ -33,8 +33,7 @@ public class SignInParser {
 		 */
 		try {
 			
-			System.out.println("Parsing... : ");
-
+			
 			JsonFactory jsonfactory = new JsonFactory();
 			JsonParser jsonParser = jsonfactory.createJsonParser(response);
 			ContentValues values	=	new ContentValues();;
@@ -54,36 +53,29 @@ public class SignInParser {
 				if (HttpConstants._ID_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
 					values.put(AppSqliteHelper.COLUMN__ID, jsonParser.getText());
 
 				}
 				if (HttpConstants.BACKGROUND_SCAN_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getBooleanValue());
 					values.put(AppSqliteHelper.COLUMN_BACKGROUNDSCAN, jsonParser.getText());
 
 				}
 				if (HttpConstants.BUSINESS_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
 					values.put(AppSqliteHelper.COLUMN_BUSINESS, jsonParser.getText());
 
 				}
 				if (HttpConstants.CREATED_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
-
 					values.put(AppSqliteHelper.COLUMN_CREATED, jsonParser.getText());
 				}
 				if (HttpConstants.EMAIL_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
-
 					values.put(AppSqliteHelper.COLUMN_EMAIL, jsonParser.getText());
 				}
 				
@@ -91,8 +83,6 @@ public class SignInParser {
 				if (HttpConstants.FNAME_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
-
 					values.put(AppSqliteHelper.COLUMN_FNAME, jsonParser.getText());
 				}
 				
@@ -100,24 +90,18 @@ public class SignInParser {
 				if (HttpConstants.FULLNAME_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
-
 					values.put(AppSqliteHelper.COLUMN_FULLNAME, jsonParser.getText());
 				}
 				
 				if (HttpConstants.GUEST_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getBooleanValue());
-
 					values.put(AppSqliteHelper.COLUMN_GUEST, jsonParser.getText());
 				}
 				
 				if (HttpConstants.ID_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
-
 					values.put(AppSqliteHelper.COLUMN_ID, jsonParser.getText());
 				}
 				
@@ -125,40 +109,30 @@ public class SignInParser {
 				if (HttpConstants.LASTUPDATED_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
-
 					values.put(AppSqliteHelper.COLUMN_LASTUPDATED, jsonParser.getText());
 				}
 				
 				if (HttpConstants.lNAME_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
-
 					values.put(AppSqliteHelper.COLUMN_LNAME, jsonParser.getText());
 				}
 
 				if (HttpConstants.PHONE_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
-
 					values.put(AppSqliteHelper.COLUMN_PHONE, jsonParser.getText());
 				}
 				
 				if (HttpConstants.V_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getIntValue());
-
 					values.put(AppSqliteHelper.COLUMN_V, jsonParser.getText());
 				}
 				
 				if (HttpConstants.TYPE_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
-					System.out.println("members : " + jsonParser.getText());
-
 					values.put(AppSqliteHelper.COLUMN_TYPE, jsonParser.getText());
 				}
 

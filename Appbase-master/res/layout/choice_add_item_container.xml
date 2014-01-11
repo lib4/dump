@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/choices_addtion_layout"
+    android:id="@+id/choices_addition_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:background="@color/pane_background_color"
     android:orientation="vertical" >
 
-    <TextView 
-        android:text="Choice"
+    <TextView
         android:id="@+id/item_type"
+        style="@style/SubTitleHeader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-        "
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:text="Choice" />
+
     <LinearLayout
-        android:id="@+id/choices_addtion_layout"
+        android:id="@+id/choices_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="vertical" >
-
-       
     </LinearLayout>
 
 </LinearLayout>

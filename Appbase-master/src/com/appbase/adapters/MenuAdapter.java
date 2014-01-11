@@ -97,7 +97,7 @@ public class MenuAdapter extends BaseAdapter {
 					.findViewById(R.id.price);
 
 			viewHolder.cardImage = (ImageView) rowView.findViewById(R.id.image);
-
+			viewHolder.sub_group_name	=	(TextView) rowView.findViewById(R.id.sub_group_name);
 			rowView.setTag(viewHolder);
 		}
 		
@@ -108,12 +108,14 @@ public class MenuAdapter extends BaseAdapter {
 		ViewHolder holder = (ViewHolder) rowView.getTag();
 		
 		
-
+		holder.group_name.setVisibility(View.GONE);
+		holder.calaloge_name.setVisibility(View.GONE);
+		holder.sub_group_name.setVisibility(View.GONE);
+		
 		holder.group_name.setText("");
-
+		
 		holder.card_titleTextView .setText("");
-		holder.card_descriptionTextView .setText("");
-
+		holder.card_descriptionTextView .setText("No description available");
 		holder.priceTextView .setText("");
 
 		try {
@@ -130,26 +132,38 @@ public class MenuAdapter extends BaseAdapter {
 			View rowView) {
 
 		try {
-
-			// System.out.println("*****" +
-			// mJsonObject.optString("catalogeName"));
+;
 
 			if (card.optBoolean("showCatalogeName")) {
 				holder.calaloge_name.setVisibility(View.VISIBLE);
 				holder.calaloge_name.setText(card.optString("catalogeName"));
+				
+				
 
 			} else {
 
 				holder.calaloge_name.setVisibility(View.GONE);
+				
 			}
 
 			if (card.optBoolean("showGroupName")) {
-				holder.group_name.setVisibility(View.VISIBLE);
-				holder.group_name.setText(card.getString("groupName"));
+				
+				if(!card.optString("groupName").isEmpty())
+					holder.group_name.setVisibility(View.VISIBLE);
+				
+				holder.group_name.setText(card.optString("groupName"));
+				
+				if(!card.optString("subGroupName").isEmpty())
+					holder.sub_group_name.setVisibility(View.VISIBLE);
+				holder.sub_group_name.setText(card.optString("subGroupName"));
+				
+				
+				
 
 			} else {
 
 				holder.group_name.setVisibility(View.GONE);
+				holder.sub_group_name.setVisibility(View.GONE);
 			}
 
 			try {
@@ -192,10 +206,6 @@ public class MenuAdapter extends BaseAdapter {
 								}
 							});
 
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -206,6 +216,7 @@ public class MenuAdapter extends BaseAdapter {
 		public TextView calaloge_name;
 		public LinearLayout cardHolder;
 		public TextView group_name;
+		public TextView sub_group_name;
 		public TextView card_titleTextView;
 		public TextView card_descriptionTextView;
 		public TextView priceTextView;;

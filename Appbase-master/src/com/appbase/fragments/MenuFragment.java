@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.menu;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -20,17 +19,16 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
-import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.appbase.R;
 import com.appbase.activities.DealDetailsActivity;
@@ -39,9 +37,10 @@ import com.appbase.datastorage.DBManager;
 import com.appbase.httphandler.HTTPResponseListener;
 import com.appbase.httphandler.HttpConstants;
 import com.appbase.httphandler.HttpHandler;
+import com.appbase.utils.Utils;
 
 public class MenuFragment extends BaseFragment implements HTTPResponseListener,
-		OnClickListener, SearchView.OnQueryTextListener,         SearchView.OnCloseListener {
+		OnClickListener{
 
 	LinearLayout menuLayout;
 	ListView mListView;
@@ -52,7 +51,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 	public static JSONObject cardObject;
 	MenuAdapter menuAdapter;
 	JSONArray cards_Array = new JSONArray();
-	SearchView seachView;
+	TextView noItemTextView;
 	public void FetchFromServerNeeded(boolean isFetchFromServer) {
 		// TODO Auto-generated constructor stub
 		this.isFetchFromServer = isFetchFromServer;
@@ -76,7 +75,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 		menuLayout = (LinearLayout) inflater.inflate(R.layout.menu_fragment,
 				container, false);
 		init();
-		if(new DBManager(getActivity()).isCatalogsAvailable()){
+		if(new DBManager(getActivity()).isCatalogsAvailable()&&!Utils.REFRESH_CATALOGE){
 			isFetchFromServer	=	false;
 		}
 		if (isFetchFromServer) {
@@ -126,17 +125,10 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 			}
 		});
 		
-		
-		//prepare the SearchView  
-		SearchView searchView = (SearchView) menuLayout.findViewById(R.id.search);
-		//Sets the default or resting state of the search field. If true, a single search icon is shown by default and 
-		// expands to show the text field and other buttons when pressed. Also, if the default state is iconified, then it
-		// collapses to that state when the close button is pressed. Changes to this property will take effect immediately.
-		//The default value is true.
-		searchView.setIconifiedByDefault(false);
-		searchView.setOnQueryTextListener(this);
-		searchView.setOnCloseListener(this); 
 
+		
+		
+		noItemTextView	=	(TextView) menuLayout.findViewById(R.id.no_item_found);
 		
 	}
 
@@ -151,9 +143,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 				.findViewById(android.R.id.content);
 
 		if (mView.findViewById(R.id.slide_list) != null) {
-			System.out.println("NOT NULLE "
-					+ getActivity().getClass().getCanonicalName());
-
+		
 			DealsDetailsFragment mDealsDetailsFragment = new DealsDetailsFragment();
 			mDealsDetailsFragment.hideHeaderBar(true);
 			FragmentManager fragmentManager = getFragmentManager();
@@ -186,6 +176,8 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 		if (mDialog != null && mDialog.isShowing())
 			mDialog.dismiss();
 		mHandler.sendMessage(new Message());
+		
+		Utils.REFRESH_CATALOGE	=	false;
 
 	}
 
@@ -281,7 +273,6 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		cardObject = (JSONObject) v.getTag();
-		System.out.println("ID>>> " + cardObject);
 		loadDealDetailsFragment();
 
 	}
@@ -304,31 +295,21 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 
 	}
 
-	@Override
-	public boolean onClose() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	@Override
-	public boolean onQueryTextChange(String arg0) {
-		// TODO Auto-generated method stub
-		System.out.println("SEARCH STRING"+arg0);
-		menuAdapter.cards_Array	= searchCardArray(arg0);
-		menuAdapter.notifyDataSetChanged();
-		return false;
-	}
 
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 	public void trgrSearch(String searchStr){
 		
 		menuAdapter.cards_Array	= searchCardArray(searchStr);
-		menuAdapter.notifyDataSetChanged();
+		if(menuAdapter.cards_Array!=null&&menuAdapter.cards_Array.length()>0){
+			mListView.setVisibility(View.VISIBLE);
+			menuAdapter.notifyDataSetChanged();
+			noItemTextView.setVisibility(View.GONE);
+		}
+		else{
+			mListView.setVisibility(View.GONE);
+			noItemTextView.setVisibility(View.VISIBLE);
+			
+		}
 	}
 	
 	/**
@@ -343,10 +324,9 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 		if(iCursor==null){
 			return null;
 		}
-		while (iCursor.moveToNext() != false) {
+		while (!iCursor.isClosed()&&iCursor.moveToNext() != false) {
 			try {
 				
-				System.out.println("--------------------------------------");
 				catalogNameAdded = false;
 				String cataloge_name = iCursor.getString(0);
 				String cataloge_type	=	iCursor.getString(1);
@@ -374,7 +354,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 						try {
 
 							JSONObject cards = (JSONObject) subGroups.get(i);
-
+							String subGroupName	=	cards.optString(HttpConstants.NAME_JKEY);
 							JSONArray cardsArray = cards
 									.getJSONArray(HttpConstants.CARDS_JKEY);
 
@@ -384,6 +364,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 								JSONObject card = (JSONObject) cardsArray
 										.get(j);
 								card.put("groupName", groupName);
+								card.put("subGroupName", subGroupName);
 								if (!groupNameAdded) {
 									
 									card.put("showGroupName", true);
@@ -394,7 +375,6 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 									card.put("showCatalogeName", true);
 									catalogNameAdded = true;
 								}
-								System.out.println("CARD>>>" + card);
 								card.put("cataloge_type", cataloge_type);
 								cards_Array.put(card);
 							}
@@ -410,8 +390,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 				e.printStackTrace();
 			}
 			
-			System.out.println("--------------------------------------");
-
+			
 		}
 		
 		return cards_Array;

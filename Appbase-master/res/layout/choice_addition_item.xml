@@ -4,25 +4,32 @@
     android:layout_height="wrap_content"
     android:background="@color/white_tile_background_color"
     android:orientation="horizontal"
+ 
     android:weightSum="1.0" 
     >
 
     <TextView
-        style="@style/text_view_black"
+    	
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight=".3"
         android:text="dadas" 
-        android:id="@+id/choice_name"/>"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:id="@+id/choice_name"
+        android:padding="5dp"/>"
 
     <TextView
-        style="@style/text_view_black"
+      
         android:gravity="right"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight=".7"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:padding="15dp"
         android:text="$+100"
         android:id="@+id/choice_price"/>"
    
-
+		
 </LinearLayout>
