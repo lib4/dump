@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/pane_background_color"
     android:orientation="vertical" >
+    
+   
+    <TextView      android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/SubTitleHeader"
+        android:id="@+id/no_item_found"
+        android:text="@string/no_live_orders"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:layout_width="fill_parent"

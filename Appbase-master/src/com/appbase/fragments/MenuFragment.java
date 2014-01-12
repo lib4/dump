@@ -258,10 +258,23 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 			else {
 				cards_Array	=	setCardArray( new DBManager(
 						getActivity()).fetchCatalogs());
-				menuAdapter = new MenuAdapter(getActivity(),cards_Array, menuFragment);
-				mListView.setAdapter(menuAdapter);
-				mListView.setSmoothScrollbarEnabled(true);
-				mListView.setOverScrollMode(ScrollView.OVER_SCROLL_ALWAYS);
+				
+				
+			
+				if(cards_Array!=null&&cards_Array.length()>0){
+					menuAdapter = new MenuAdapter(getActivity(),cards_Array, menuFragment);
+					mListView.setAdapter(menuAdapter);
+					mListView.setSmoothScrollbarEnabled(true);
+					mListView.setOverScrollMode(ScrollView.OVER_SCROLL_ALWAYS);
+				}
+				else{
+					mListView.setVisibility(View.GONE);
+					noItemTextView.setVisibility(View.VISIBLE);
+					
+				}
+				
+				
+				
 
 				resolveWidth();
 			}

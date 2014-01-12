@@ -46,10 +46,10 @@ public class GetMenusParser {
 
 			JsonFactory jsonfactory = new JsonFactory();
 			JsonParser jsonParser = jsonfactory.createJsonParser(response);
-
+			//jsonParser.nextToken();
 			ContentValues values = null;
 			while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
-
+				System.out.println("NEXT TOKE +++++");
 				// Begin the parsing procedure
 				while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
 

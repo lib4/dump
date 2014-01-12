@@ -62,5 +62,40 @@ public class HttpConstants {
 	public static final String TEXT_JKEY = "text";
 	
 	
+	/*
+	 *################################### BUSINESS
+	 */
+	
+	public static final String BUSINESS_ID_JKEY	=	"businessID";
+	public static final String CITY_JKEY	=	"city";
+	public static final String COUNTRY_JKEY	=	"country";
+	public static final String LAST_UPDATED_JKEY	=	"lastUpdated";
+	public static final String LOGO_JKEY	=	"logo";
+	public static final String POSTAL_CODE_JKEY	=	"postalCode";
+	public static final String PROXIMITY_ID_JKEY	=	"proximityID";
+	public static final String SENSOR_BATCH_JKEY	=	"sensorBatch";
+	public static final String STATE_JKEY	=	"state";
+	public static final String STREET_ADDRESS_JKEY	=	"streetAddress";
+	public static final String STRIPE_RECEIPIENT_ID_JKEY	=	"stripeRecipientID";
+	public static final String TAX_PERCENT_JEKEY	=	"taxPercent";
+	public static final String SENSORS_JKEY	=	"sensors";
+	
+	public static final String BALANCE_JKEY	=	"balance";
+	public static final String VERIFIED_JKEY	=	"verified";
+	public static final String RATING_SUM_JKEY	=	"ratingsSum";
+	public static final String RATING_COUNT_JKEY	=	"ratingsCount";
+	public static final String GEO_JKEY	=	"geo";
+	
+	public static final String SENSOR_ID_JKEY	=	"sensorID";
+	
+	
+	public static final String ADVERTISING_INTERVAL_JKEY	=	"advertisingInterval";
+	public static final String TX_POWER_JKEY	=	"txPower";
+	
+	
+	
+	
+	
+	
 	
 }

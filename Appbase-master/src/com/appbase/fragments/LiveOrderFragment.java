@@ -16,9 +16,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.appbase.R;
-import com.appbase.activities.LiveOrderActivity;
 import com.appbase.activities.SettingsActivity;
 import com.appbase.customui.PinterestUI;
 import com.appbase.datastorage.DBManager;
@@ -34,6 +34,7 @@ public class LiveOrderFragment extends BaseFragment implements
 	static ProgressDialog mDialog;
 	String CHEK = "Default";
 	boolean isFetchFromServer = false;
+	private TextView NoItemSoundTextView;
 	
 
 	public void FetchFromServerNeeded(boolean isFetchFromServer) {
@@ -96,6 +97,9 @@ public class LiveOrderFragment extends BaseFragment implements
 				loadSettingsFragment();
 			}
 		});
+		
+		
+		NoItemSoundTextView	=	(TextView) view.findViewById(R.id.no_item_found);
 	}
 
 	@Override
@@ -202,8 +206,13 @@ public class LiveOrderFragment extends BaseFragment implements
 			else {
 				Cursor liveOrders = new DBManager(getActivity())
 						.fetchLiveOrders();
-				if (liveOrders != null)
+				if (liveOrders != null&&liveOrders.getCount()>0){
+					NoItemSoundTextView.setVisibility(View.GONE);
 					mPinterestUI.createLayout(liveOrders);
+				}else{
+					
+					NoItemSoundTextView.setVisibility(View.VISIBLE);
+				}
 			}
 		}
 	};

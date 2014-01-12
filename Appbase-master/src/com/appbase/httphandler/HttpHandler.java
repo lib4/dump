@@ -27,6 +27,7 @@ public class HttpHandler extends Thread {
 
 	public static String GET_MENUS = BASE_URL + "/catalogs";
 	public static String LOGUT_URL = BASE_URL + "/account/signout";
+	public static String BUSINESS_URL	=	BASE_URL+"/settings/business";
 
 	public static final String HTTP_POST = "POST";
 	public static final String HTTP_GET = "GET";
@@ -36,6 +37,7 @@ public class HttpHandler extends Thread {
 	final int GET_MENUS_API_CODE = LIVE_ORDER_API_CODE + 1;
 	final int GET_LIVE_ORDER_ACTION_API_CODE = GET_MENUS_API_CODE + 1;
 	final int LOGOUT_API_CODE = GET_LIVE_ORDER_ACTION_API_CODE + 1;
+	final int BUSINESS_API_CODE = LOGOUT_API_CODE + 1;
 	public static final int NO_NETWORK_CODE = 999;
 	public static final int DEFAULT_CODE = 1;
 	String URL;
@@ -135,6 +137,24 @@ public class HttpHandler extends Thread {
 		requestType = HTTP_GET;
 		start();
 	}
+	
+	
+	
+	/**
+	 * 
+	 * BUSINESS Function calls the ServerConnection gateway once the response is
+	 * received Response will sent to appropriate response handled method. which
+	 * in turn stores the data in to RecordStore. 
+	 */
+	public void getBusiness(Context context) {
+
+		URL = BUSINESS_URL;
+		this.context = context;
+		this.mHttpResponseListener = mHttpResponseListener;
+		REQUEST_API_CODE = BUSINESS_API_CODE;
+		requestType = HTTP_GET;
+		start();
+	}
 
 	/**
 	 * 
@@ -208,6 +228,25 @@ public class HttpHandler extends Thread {
 				break;
 
 			case GET_MENUS_API_CODE:
+				switch (mConnection.responseCode) {
+				case 200:
+
+					GetMenusParser mGetMenusParser = new GetMenusParser(
+							mConnection.responseStream, context);
+					System.out.println("Success");
+					mHttpResponseListener.onSuccess();
+
+					break;
+
+				default:
+					mHttpResponseListener.onFailure(DEFAULT_CODE);
+					break;
+				}
+				break;
+				
+				
+				
+			case BUSINESS_API_CODE:
 				switch (mConnection.responseCode) {
 				case 200:
 

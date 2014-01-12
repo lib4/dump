@@ -38,9 +38,8 @@ public class MenuAdapter extends BaseAdapter {
 			MenuFragment menuFragment) {
 
 		this.iContext = (Activity) mContext;
-	
 
-		this.cards_Array	=	jsonArray;
+		this.cards_Array = jsonArray;
 
 	}
 
@@ -97,26 +96,22 @@ public class MenuAdapter extends BaseAdapter {
 					.findViewById(R.id.price);
 
 			viewHolder.cardImage = (ImageView) rowView.findViewById(R.id.image);
-			viewHolder.sub_group_name	=	(TextView) rowView.findViewById(R.id.sub_group_name);
+			viewHolder.sub_group_name = (TextView) rowView
+					.findViewById(R.id.sub_group_name);
 			rowView.setTag(viewHolder);
 		}
-		
-		
-		
-	
 
 		ViewHolder holder = (ViewHolder) rowView.getTag();
-		
-		
+
 		holder.group_name.setVisibility(View.GONE);
 		holder.calaloge_name.setVisibility(View.GONE);
 		holder.sub_group_name.setVisibility(View.GONE);
-		
+
 		holder.group_name.setText("");
-		
-		holder.card_titleTextView .setText("");
-		holder.card_descriptionTextView .setText("No description available");
-		holder.priceTextView .setText("");
+
+		holder.card_titleTextView.setText("");
+		holder.card_descriptionTextView.setText("No description available");
+		holder.priceTextView.setText("");
 
 		try {
 			setGroupDetails((JSONObject) cards_Array.get(arg0), holder, rowView);
@@ -132,33 +127,28 @@ public class MenuAdapter extends BaseAdapter {
 			View rowView) {
 
 		try {
-;
+			;
 
 			if (card.optBoolean("showCatalogeName")) {
 				holder.calaloge_name.setVisibility(View.VISIBLE);
 				holder.calaloge_name.setText(card.optString("catalogeName"));
-				
-				
 
 			} else {
 
 				holder.calaloge_name.setVisibility(View.GONE);
-				
+
 			}
 
 			if (card.optBoolean("showGroupName")) {
-				
-				if(!card.optString("groupName").isEmpty())
+
+				if (!card.optString("groupName").isEmpty())
 					holder.group_name.setVisibility(View.VISIBLE);
-				
+
 				holder.group_name.setText(card.optString("groupName"));
-				
-				if(!card.optString("subGroupName").isEmpty())
+
+				if (!card.optString("subGroupName").isEmpty())
 					holder.sub_group_name.setVisibility(View.VISIBLE);
 				holder.sub_group_name.setText(card.optString("subGroupName"));
-				
-				
-				
 
 			} else {
 
@@ -180,11 +170,10 @@ public class MenuAdapter extends BaseAdapter {
 			}
 
 			try {
-				
-				String price 	=	card
-						.getString(HttpConstants.PRICE_STRING_JKEY);
-				if(!price.contains("$")){
-					price="$"+price;
+
+				String price = card.getString(HttpConstants.PRICE_STRING_JKEY);
+				if (!price.contains("$")) {
+					price = "$" + price;
 				}
 				holder.priceTextView.setText(price);
 			} catch (Exception e) {
@@ -224,5 +213,4 @@ public class MenuAdapter extends BaseAdapter {
 
 	}
 
-	
 }

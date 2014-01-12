@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.appbase.R;
 import com.appbase.activities.MenuActivity;
+import com.appbase.activities.SensorsActivity;
 import com.appbase.activities.WebViewActivity;
 
 public class SettingsFragment extends BaseFragment {
@@ -70,7 +71,13 @@ public class SettingsFragment extends BaseFragment {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getActivity(), "Functinality yet to be implemented.", 1000).show();
+				//Toast.makeText(getActivity(), "Functinality yet to be implemented.", 1000).show();
+				
+				Intent intent = new Intent(getActivity(),
+						SensorsActivity.class);
+				
+				startActivity(intent);
+				
 				
 			}
 		});

@@ -98,6 +98,10 @@ public class SignInFragment extends BaseFragment implements
 		//emailAddress_edtTxt.setText("merch27@teamonapp.com");
 		//password_edtTxt.setText("123123");
 
+		
+		emailAddress_edtTxt.setText("feedo2@teamonapp.com");
+		password_edtTxt.setText("teamonapp");
+
 		password_edtTxt.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId,

@@ -37,5 +37,8 @@
     <string name="email_blank">Email address cannot be blank. Please provide a valid email address!</string>
     <string name="invalid_email">Invalid email address. Please provide a valid email address!</string>
     <string name="password_blank">Password cannot be blank. Please provide a valid password!</string>
- 	<string name="no_item_found">No Items Found.</string>
+    <string name="no_item_found">No Items Found.</string>
+    <string name="estimote">ESTIMOTE</string>
+    <string name="no_live_orders">You dont have any live orders.</string>
+
 </resources>

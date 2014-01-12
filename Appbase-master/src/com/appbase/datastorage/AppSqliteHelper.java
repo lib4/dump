@@ -1,7 +1,5 @@
 package com.appbase.datastorage;
 
-import com.appbase.httphandler.HttpConstants;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -12,7 +10,11 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 	public static final String TABLE_PROFILE = "profile";
 	public static final String TABLE_LIVE_ORDERS = "liveorders";
 	public static final String TABLE_CATALOGS = "catalogs";
+	public static final String TABLE_BUSINESS = "business";
+	
 	private static final String DATABASE_NAME = "airoffers_merchant.db";
+	
+	
 	private static final int DATABASE_VERSION = 1;
 
 	public static final String COLUMN_ID = "id";
@@ -48,6 +50,37 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 	
 	public static final String COLUMN_NAME = "name";
 	public static final String COLUMN_GROUPS = "groups";
+	
+	
+	
+	
+	public static final String COLUMN_BUSINESS_ID	=	"businessID";
+	public static final String COLUMN_CITY	=	"city";
+	public static final String COLUMN_COUNTRY=	"country";
+	public static final String COLUMN_LAST_UPDATED	=	"lastUpdated";
+	public static final String COLUMN_LOGO	=	"logo";
+	public static final String COLUMN_POSTAL_CODE	=	"postalCode";
+	public static final String COLUMN_PROXIMITY_ID	=	"proximityID";
+	public static final String COLUMN_SENSOR_BATCH	=	"sensorBatch";
+	public static final String COLUMN_STATE	=	"state";
+	public static final String COLUMN_STREET_ADDRESS=	"streetAddress";
+	public static final String COLUMN_STRIPE_RECEIPIENT_ID	=	"stripeRecipientID";
+	public static final String COLUMN_TAX_PERCENT	=	"taxPercent";
+	public static final String COLUMN_SENSORS	=	"sensors";
+	
+	public static final String COLUMN_BALANCE	=	"balance";
+	public static final String COLUMN_VERIFIED	=	"verified";
+	public static final String COLUMN_RATING_SUM	=	"ratingsSum";
+	public static final String COLUMN_RATING_COUNT	=	"ratingsCount";
+	public static final String COLUMN_GEO	=	"geo";
+	
+	public static final String COLUMN_SENSOR_ID	=	"sensorID";
+	
+	
+	public static final String COLUMN_ADVERTISING_INTERVAL	=	"advertisingInterval";
+	public static final String COLUMN_TX_POWER	=	"txPower";
+	
+	
 
 	// Database creation sql statement
 	private static final String CREATE_PROFILE_TABLE = "create table "
@@ -59,7 +92,7 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 			+ COLUMN_EMAIL + " text not null," + "" + COLUMN_FNAME
 			+ " text not null," + "" + COLUMN_LASTUPDATED + " text not null,"
 			+ COLUMN_LNAME + " text not null," + COLUMN_PHONE
-			+ " text not null," + COLUMN_TYPE + " text not null," + ""
+			+ " text," + COLUMN_TYPE + " text not null," + ""
 			+ COLUMN_BACKGROUNDSCAN + " boolean not null," + COLUMN_GUEST
 			+ " boolean not null," + COLUMN_FULLNAME + " text not null,"
 			+ COLUMN__ID + " text not null);";
@@ -67,12 +100,12 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 	private static final String CREATE_LIVEORDERS_TABLE = "create table "
 			+ TABLE_LIVE_ORDERS
 			+ " (auto_id integer primary key autoincrement,"
-			+ COLUMN_LASTUPDATED + " text not null," + COLUMN_CREATED
-			+ " text not null," + "" + COLUMN_AMOUNT + " FLOAT not null,"
+			+ COLUMN_LASTUPDATED + " text," + COLUMN_CREATED
+			+ " text," + "" + COLUMN_AMOUNT + " FLOAT not null,"
 			+ COLUMN_TAX + " FLOAT not null, " + COLUMN_CONSUMEREMAIL
-			+ " text not null, " + COLUMN_DEVICE_ID + " text default null," + ""
-			+ COLUMN_TYPE + " text not null, " + COLUMN_CONSUMER__ID
-			+ " text not null, " + COLUMN_CONSUMER_V + " integer not null, "
+			+ " text , " + COLUMN_DEVICE_ID + " text default null," + ""
+			+ COLUMN_TYPE + " text , " + COLUMN_CONSUMER__ID
+			+ " text , " + COLUMN_CONSUMER_V + " integer , "
 			+COLUMN_FNAME+" text, "+COLUMN_LNAME +" text, "+COLUMN_FULLNAME+" text, "
 			+COLUMN_IMAGE+" text, "+COLUMN_THUMB	+" text, "	
 			+ COLUMN_BACKGROUNDSCAN + " boolean not null," + "" + COLUMN_GUEST
@@ -92,6 +125,42 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 			+ COLUMN_STATUS + " TEXT not null, " + COLUMN_GROUPS
 			+ " text not null);";
 
+	
+	
+	private static final String CREATE_BUSINESS_TABLE = "create table "
+			+ TABLE_BUSINESS
+			+ " (auto_id integer primary key autoincrement,"
+			+ COLUMN_V + " int not null," + COLUMN__ID
+			+ " text not null," + "" + COLUMN_BUSINESS_ID + " text not null,"
+			+ COLUMN_COUNTRY + " TEXT not null, " + COLUMN_CREATED
+			+ " text not null,"
+			+ COLUMN_LAST_UPDATED + " TEXT not null, " 
+			+ COLUMN_LOGO + " TEXT not null, " 
+			+ COLUMN_NAME + " TEXT not null, "
+			+ COLUMN_POSTAL_CODE + " TEXT not null,"
+				+ COLUMN_PROXIMITY_ID + " TEXT not null,"
+				+ COLUMN_SENSOR_BATCH + " TEXT not null, "
+					+ COLUMN_STATE + " TEXT not null, "
+						+ COLUMN_STATE + " TEXT not null, "
+							+ COLUMN_STREET_ADDRESS + " TEXT not null, "
+								+ COLUMN_STRIPE_RECEIPIENT_ID + " TEXT not null, "
+									+ COLUMN_TAX_PERCENT + " int not null, "
+										+ COLUMN_SENSORS + " TEXT not null, "
+											+ COLUMN_BALANCE + " flot not null, "
+												+ COLUMN_VERIFIED + " boolean not null, "
+													+ COLUMN_RATING_SUM + " TEXT not null, "
+														+ COLUMN_RATING_COUNT + " TEXT not null, "
+															+ COLUMN_GEO + " TEXT not null "
+															+ COLUMN_SENSOR_ID + " TEXT not null "
+															+ COLUMN_ADVERTISING_INTERVAL + " TEXT not null "
+															+ COLUMN_TX_POWER + " TEXT not null );";
+				
+					
+					
+			
+			
+		
+	
 //	COLUMN_CONSUMER_V
 //	
 //	
@@ -126,6 +195,7 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 		database.execSQL(CREATE_PROFILE_TABLE);
 		database.execSQL(CREATE_LIVEORDERS_TABLE);
 		database.execSQL(CREATE_CATALOG_TABLE);
+		//database.execSQL(CREATE_BUSINESS_TABLE);
 	}
 
 	@Override
