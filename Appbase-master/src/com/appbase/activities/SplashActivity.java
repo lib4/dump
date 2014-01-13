@@ -1,6 +1,8 @@
 package com.appbase.activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -10,7 +12,7 @@ import com.appbase.utils.Utils;
 
 
 
-public class SplashActivity extends BaseActivity{
+public class SplashActivity extends Activity{
 
 
 	private Handler handler = new Handler();
@@ -18,6 +20,8 @@ public class SplashActivity extends BaseActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		String profileToken	=	new DBManager(this).getProfileToken();
 		getActionBar().hide();
 		Utils.REFRESH_CATALOGE	=	true;

@@ -1,40 +1,42 @@
 package com.appbase.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.appbase.R;
+import com.appbase.activities.BaseActivity;
+import com.appbase.activities.HelpCenterActivity;
+import com.appbase.activities.LiveOrderActivity;
 import com.appbase.activities.MenuActivity;
-import com.appbase.activities.SensorsActivity;
-import com.appbase.activities.WebViewActivity;
+import com.appbase.activities.PrivacyPolicyActivity;
+import com.appbase.activities.SecurityActivity;
+import com.appbase.activities.SettingsActivity;
+import com.appbase.activities.TermsOfServiceActivity;
+import com.appbase.datastorage.DBManager;
+import com.appbase.httphandler.HttpHandler;
 
 public class SettingsFragment extends BaseFragment {
 
-	LinearLayout settingsLayout;
-	
+	LinearLayout  security, help_center, privacy_policy,
+			terms_of_service, liveOrdersLayout, menuManagementLayout,
+			sensor_management,logoutLayout;
+	ScrollView settingsLayout;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		if (container == null) {
-			// We have different layouts, and in one of them this
-			// fragment's containing frame doesn't exist. The fragment
-			// may still be created from its saved state, but there is
-			// no reason to try to create its view hierarchy because it
-			// won't be displayed. Note this is not needed -- we could
-			// just run the code below, where we would create and return
-			// the view hierarchy; it would just never be used.
-			return null;
-		}
-
 		// Inflate the layout for this fragment
-		settingsLayout = (LinearLayout) inflater.inflate(
+		settingsLayout = (ScrollView) inflater.inflate(
 				R.layout.settings_fragment, container, false);
 		init();
 		return settingsLayout;
@@ -46,74 +48,240 @@ public class SettingsFragment extends BaseFragment {
 	 */
 	private void init() {
 
-	/**
-	 * Preview Cards
-	 */
-		
-		LinearLayout menuManagementLayout	=	(LinearLayout) settingsLayout.findViewById(R.id.menu_management);
-		menuManagementLayout.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),
-						MenuActivity.class);
-				
-				startActivity(intent);
-				
-			}
-		});
-		
-		
-		LinearLayout sensor_management	=	(LinearLayout) settingsLayout.findViewById(R.id.sensor_management);
-		
-		sensor_management.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				//Toast.makeText(getActivity(), "Functinality yet to be implemented.", 1000).show();
-				
-				Intent intent = new Intent(getActivity(),
-						SensorsActivity.class);
-				
-				startActivity(intent);
-				
-				
-			}
-		});
-		
 		/**
-		 * Load Web Url. While Tapping on
-		 * Security
-		 * Help Center
-		 * Privacy Policy
+		 * Preview Cards
+		 */
+
+		liveOrdersLayout = (LinearLayout) settingsLayout
+				.findViewById(R.id.live_orders);
+		liveOrdersLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				disableHighlight();
+				//((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
+				Intent intent = new Intent(getActivity(),
+						LiveOrderActivity.class);
+				startActivity(intent);
+				((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
+
+			}
+		});
+
+		menuManagementLayout = (LinearLayout) settingsLayout
+				.findViewById(R.id.menu_management);
+		menuManagementLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				disableHighlight();
+			
+				Intent intent = new Intent(getActivity(), MenuActivity.class);
+				startActivity(intent);
+				((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
+		
+			}
+		});
+
+		sensor_management = (LinearLayout) settingsLayout
+				.findViewById(R.id.sensor_management);
+		sensor_management.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				 Toast.makeText(getActivity(),
+				 "Functinality yet to be implemented.", 1000).show();
+
+				//Intent intent = new Intent(getActivity(), SensorsActivity.class);
+
+				//startActivity(intent);
+				//BaseActivity.mDrawerLayout.closeDrawers();
+				//((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
+			}
+		});
+		
+		
+		logoutLayout = (LinearLayout) settingsLayout
+				.findViewById(R.id.logout);
+		logoutLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				
+				signOutAlert();
+				//Intent intent = new Intent(getActivity(), SensorsActivity.class);
+
+				//startActivity(intent);
+				//BaseActivity.mDrawerLayout.closeDrawers();
+				//((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
+			}
+		});
+
+		/**
+		 * Load Web Url. While Tapping on Security Help Center Privacy Policy
 		 * Terms Of Service
 		 * 
 		 */
-		LinearLayout security	=	(LinearLayout) settingsLayout.findViewById(R.id.security);
+		security = (LinearLayout) settingsLayout.findViewById(R.id.security);
 		security.setOnClickListener(loadWebViewListener);
-		LinearLayout help_center	=	(LinearLayout) settingsLayout.findViewById(R.id.help_center);
+		help_center = (LinearLayout) settingsLayout
+				.findViewById(R.id.help_center);
 		help_center.setOnClickListener(loadWebViewListener);
-		LinearLayout privacy_policy	=	(LinearLayout) settingsLayout.findViewById(R.id.privacy_policy);
+		privacy_policy = (LinearLayout) settingsLayout
+				.findViewById(R.id.privacy_policy);
 		privacy_policy.setOnClickListener(loadWebViewListener);
-		LinearLayout terms_of_service	=	(LinearLayout) settingsLayout.findViewById(R.id.terms_of_service);
+		terms_of_service = (LinearLayout) settingsLayout
+				.findViewById(R.id.terms_of_service);
 		terms_of_service.setOnClickListener(loadWebViewListener);
-		
-		
+
 	}
-	
-	OnClickListener loadWebViewListener	=	new OnClickListener() {
-		
+
+	OnClickListener loadWebViewListener = new OnClickListener() {
+
 		@Override
 		public void onClick(View v) {
+			disableHighlight();
 			// TODO Auto-generated method stub
-			Intent intent = new Intent(getActivity(),
-					WebViewActivity.class);
-			
-			startActivity(intent);
+			switch (v.getId()) {
+			case R.id.security:
+				Intent security_intent = new Intent(getActivity(),
+						SecurityActivity.class);
+				startActivity(security_intent);
+				break;
+			case R.id.help_center:
+				Intent help_center_intent = new Intent(getActivity(),
+						HelpCenterActivity.class);
+				startActivity(help_center_intent);
+				break;
+			case R.id.privacy_policy:
+				Intent privacy_policy_intent = new Intent(getActivity(),
+						PrivacyPolicyActivity.class);
+				startActivity(privacy_policy_intent);
+				break;
+			case R.id.terms_of_service:
+				Intent terms_of_service_intent = new Intent(getActivity(),
+						TermsOfServiceActivity.class);
+				startActivity(terms_of_service_intent);
+				break;
+
+			}
+
+			((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
+
 		}
 	};
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		resolveHighlight();
+	}
+
+	private void resolveHighlight() {
+		disableHighlight();
+		String callingActyivityName = getActivity().getComponentName()
+				.getClassName();
+		String packageName = "com.appbase.Activities.";
+		System.out.println("Get package name >>>> " + packageName);
+		if (callingActyivityName.equalsIgnoreCase(packageName
+				+ "LiveOrderActivity")) {
+			liveOrdersLayout.setPressed(true);
+		} else if (callingActyivityName.equalsIgnoreCase(packageName
+				+ "MenuActivity")) {
+			menuManagementLayout.setPressed(true);
+		} else if (callingActyivityName.equalsIgnoreCase(packageName
+				+ "SensorsActivity")) {
+			sensor_management.setPressed(true);
+
+		} else if (callingActyivityName.equalsIgnoreCase(packageName
+				+ "SecurityActivity")) {
+			security.setPressed(true);
+		} else if (callingActyivityName.equalsIgnoreCase(packageName
+				+ "PrivacyPolicyActivity")) {
+			privacy_policy.setPressed(true);
+		} else if (callingActyivityName.equalsIgnoreCase(packageName
+				+ "TermsOfServiceActivity")) {
+			terms_of_service.setPressed(true);
+		} else if (callingActyivityName.equalsIgnoreCase(packageName
+				+ "HelpCenterActivity")) {
+			help_center.setPressed(true);
+		}
+	}
+
+	private void disableHighlight() {
+
+		liveOrdersLayout.setPressed(false);
+		menuManagementLayout.setPressed(false);
+		sensor_management.setPressed(false);
+		security.setPressed(false);
+		logoutLayout.setPressed(false);
+		privacy_policy.setPressed(false);
+		help_center.setPressed(false);
+		terms_of_service.setPressed(false);
+	}
+	
 	
 
+	private void signOutAlert() {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+
+		// set title
+		// alertDialogBuilder.setTitle("Your Title");
+
+		// set dialog message
+		alertDialogBuilder
+				.setMessage(this.getString(R.string.logut_alert))
+				.setCancelable(true)
+				.setTitle(this.getString(R.string.app_name))
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// if this button is clicked, close
+						// current activity
+
+					}
+				})
+
+				.setPositiveButton("Logout",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// if this button is clicked, close
+								// current activity
+
+								Intent intent = new Intent(
+										getActivity(),
+										LiveOrderActivity.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								intent.putExtra("EXIT", true);
+
+								trgrSignOutService();
+
+								DBManager mDbManager = new DBManager(
+										getActivity());
+								mDbManager.clearDB();
+								startActivity(intent);
+								getActivity().finish();
+
+							}
+						});
+		
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+
+	}
+
+	private void trgrSignOutService() {
+
+		new HttpHandler().signOut(getActivity());
+	}
 
 }

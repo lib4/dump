@@ -51,16 +51,16 @@ public class LiveOrderParser {
 					
 					//System.out.println("Json parser >>>>>> "+jsonParser.nextToken());	
 					// Begin the parsing procedure
-					if(jsonParser.nextToken()==JsonToken.START_ARRAY){
-						System.out.println("START ARRAY TOKE +++++"+jsonParser.getCurrentName());
-						
-					}
-					
-					if(jsonParser.nextToken()==JsonToken.END_ARRAY){
-						System.out.println("END ARRAY TOKE +++++"+jsonParser.getCurrentName());
-						
-					}
-					
+//					if(jsonParser.nextToken()==JsonToken.START_ARRAY){
+//						System.out.println("START ARRAY TOKE +++++"+jsonParser.getCurrentName());
+//						
+//					}
+//					
+//					if(jsonParser.nextToken()==JsonToken.END_ARRAY){
+//						System.out.println("END ARRAY TOKE +++++"+jsonParser.getCurrentName());
+//						
+//					}
+//					
 					
 					while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
 					

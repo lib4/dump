@@ -2,23 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/pane_background_color" 
-    android:paddingTop="5dp">
+    android:background="@color/pane_background_color"
+    android:paddingTop="5dp" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:padding="5dp"
-        android:background="@color/white_tile_background_color" >
+        android:background="@color/white_tile_background_color"
+        android:padding="5dp" >
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_margin="5dp"
             android:layout_centerVertical="true"
-             />
+            android:layout_margin="5dp" />
 
         <LinearLayout
             android:id="@+id/title_pricelayout"
@@ -49,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/title_pricelayout"
-            android:layout_toLeftOf="@+id/right_arrow"
             android:layout_toRightOf="@id/image"
             android:orientation="horizontal"
             android:weightSum="1.0" >
@@ -60,21 +58,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".3"
                 android:paddingLeft="10dp"
-           		
                 android:textColor="@color/text_color"
                 android:typeface="sans" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/right_arrow"
-            style="@style/right_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="right"
-            android:src="@drawable/arrow"
-            />
     </RelativeLayout>
 
 </RelativeLayout>

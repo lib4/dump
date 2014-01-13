@@ -24,7 +24,7 @@ import com.appbase.httphandler.HttpConstants;
 
 /**
  * 
- * @author aabuback Dummy base adapter
+ * @author aabuback Menu base adapter
  */
 public class MenuAdapter extends BaseAdapter {
 

@@ -1,96 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView    android:layout_width="fill_parent"
+    android:layout_height="match_parent" 
+     android:background="@color/pane_background_color"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pane_background_color"
+
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/header_height"
-        android:background="@color/header_background_color"
-        android:orientation="horizontal"
-        android:visibility="gone" >
-
-        <Button
-            android:id="@+id/left_arrow_btn"
-            style="@style/header_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/header_button"
-            android:gravity="center"
-            android:text="@string/left_arrow"
-            android:textAlignment="center" />
-
-        <TextView
-            style="@style/TitleHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/app_name" >
-        </TextView>
-
-        <Button
-            android:id="@+id/logout_btn"
-            style="@style/header_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/header_button"
-            android:gravity="center"
-            android:text="Logout" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:background="#000000" >
-        </Button>
-    </RelativeLayout>
-
-    <!-- ACCOUNT -->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <TextView
-            style="@style/SubTitleHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/account" />
-
-        <TextView
-            android:id="@+id/emailAddress"
-            style="@style/list_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/listview_item_margin"
-            android:text="@string/account" />
-
-        <TextView
-            style="@style/list_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/account" />
-
-        <TextView
-            style="@style/list_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/account" />
-
-        <TextView
-            style="@style/list_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/account" />
-    </LinearLayout>
     <!-- GENERAL -->
 
     <TextView
@@ -101,6 +19,26 @@
         android:text="@string/general" />
 
     <LinearLayout
+        android:id="@+id/live_orders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/selector"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent_selector"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="@string/live_orders" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/menu_management"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,53 +46,53 @@
         android:background="@drawable/selector"
         android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal"
-        android:weightSum="1.0" >
+        android:orientation="horizontal" >
 
         <TextView
             style="@style/list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".2"
             android:background="@drawable/transparent_selector"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:text="@string/preview_cards" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight=".8"
-            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/sensor_management"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:id="@+id/sensor_management"
         android:background="@drawable/selector"
-        android:orientation="horizontal"
-        android:weightSum="1.0" >
+        android:clickable="true"
+        android:orientation="horizontal" >
 
         <TextView
             style="@style/list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".2"
             android:background="@drawable/transparent_selector"
             android:text="@string/manage_sensors" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight=".8"
-            android:src="@drawable/arrow" />
     </LinearLayout>
 
+    
+    
+        <LinearLayout
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/selector"
+        android:clickable="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent_selector"
+            android:text="@string/logout" />
+    </LinearLayout>
+    
+        
     <!-- ABOUT -->
 
     <TextView
@@ -162,6 +100,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:focusable="true"
         android:text="@string/about" />
 
     <LinearLayout
@@ -170,23 +110,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:background="@drawable/selector"
-        android:orientation="horizontal"
-        android:weightSum="1.0" >
+        android:clickable="true"
+        android:orientation="horizontal" >
 
         <TextView
             style="@style/list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".2"
             android:background="@drawable/transparent_selector"
             android:text="@string/security" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight=".8"
-            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <LinearLayout
@@ -195,23 +127,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:background="@drawable/selector"
-        android:orientation="horizontal"
-        android:weightSum="1.0" >
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal" >
 
         <TextView
             style="@style/list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".2"
             android:background="@drawable/transparent_selector"
             android:text="@string/help_center" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight=".8"
-            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <LinearLayout
@@ -220,23 +145,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:background="@drawable/selector"
-        android:orientation="horizontal"
-        android:weightSum="1.0" >
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal" >
 
         <TextView
             style="@style/list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".2"
             android:background="@drawable/transparent_selector"
             android:text="@string/privacy_policy" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight=".8"
-            android:src="@drawable/arrow" />
     </LinearLayout>
 
     <LinearLayout
@@ -245,23 +163,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:background="@drawable/selector"
-        android:orientation="horizontal"
-        android:weightSum="1.0" >
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal" >
 
         <TextView
             style="@style/list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".2"
             android:background="@drawable/transparent_selector"
             android:text="@string/terms_of_service" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight=".8"
-            android:src="@drawable/arrow" />
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

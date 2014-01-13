@@ -2,9 +2,12 @@ package com.appbase.activities;
 
 import org.json.JSONException;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.appbase.R;
 import com.appbase.fragments.DealsDetailsFragment;
@@ -20,17 +23,19 @@ public class DealDetailsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.launcher);
 		try {
-			if(MenuFragment.cardObject.getString("cataloge_type").compareToIgnoreCase("info")==0){
-				
+			if (MenuFragment.cardObject.getString("cataloge_type")
+					.compareToIgnoreCase("info") == 0) {
+
 				loadWebViewFragment();
-				
-			}else{
-			loadDealDetailsFragment();
+
+			} else {
+				loadDealDetailsFragment();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		initializeDrawer();
 	}
 
 	/**
@@ -56,8 +61,7 @@ public class DealDetailsActivity extends BaseActivity {
 		fragmentTransaction.commit();
 
 	}
-	
-	
+
 	/**
 	 * Load the SignIn fragment
 	 * 
@@ -87,8 +91,44 @@ public class DealDetailsActivity extends BaseActivity {
 		super.onSaveInstanceState(outState);
 
 	}
+
+	/**
+	 * On selecting action bar icons
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		// Take appropriate action for each action item click
+
+		switch (item.getItemId()) {
+		case android.R.id.home:
+
+			finish();
+			return true;
+
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
 	
-	
-	
+	/**
+	 * When using the ActionBarDrawerToggle, you must call it during
+	 * onPostCreate() and onConfigurationChanged()...
+	 */
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		savedInstanceState	=	new Bundle();
+		savedInstanceState.putBoolean("FromDealDetails", true);
+		super.onPostCreate(savedInstanceState);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggls
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
 
 }

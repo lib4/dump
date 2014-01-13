@@ -18,7 +18,7 @@ import com.appbase.fragments.DealsDetailsFragment;
 import com.appbase.fragments.MenuFragment;
 
 public class MenuActivity extends BaseActivity implements
-		SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+		SearchView.OnQueryTextListener, SearchView.OnCloseListener  {
 
 	MenuFragment mMenuFragment;
 
@@ -34,6 +34,7 @@ public class MenuActivity extends BaseActivity implements
 			fetchFromServer = false;
 		}
 		resolveWidth();
+		initializeDrawer();
 
 	}
 
@@ -107,10 +108,6 @@ public class MenuActivity extends BaseActivity implements
 
 		super.onSaveInstanceState(outState);
 
-		// FragmentTransaction ft = getFragmentManager().beginTransaction();
-		// ft.detach(mSignInFragment);
-		// ft.commit();
-
 	}
 
 	private void resolveWidth() {
@@ -157,7 +154,7 @@ public class MenuActivity extends BaseActivity implements
 				.getActionView();
 		searchView.setOnQueryTextListener(this);
 		searchView.setOnCloseListener(this);
-
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -166,18 +163,18 @@ public class MenuActivity extends BaseActivity implements
 	 * */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
-		// Take appropriate action for each action item click
 
 		switch (item.getItemId()) {
-		case R.id.action_search:
+		case android.R.id.home:
+		     if (mDrawerToggle.onOptionsItemSelected(item)) {
+		            return true;
+		    }
 			
-
 			return true;
 
 		}
+		return super.onOptionsItemSelected(item);
 
-		return true;
 	}
 
 	@Override
@@ -190,26 +187,27 @@ public class MenuActivity extends BaseActivity implements
 	public boolean onQueryTextChange(String arg0) {
 		// TODO Auto-generated method stub
 		mMenuFragment.trgrSearch(arg0);
-
 		return false;
 	}
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		// TODO Auto-generated method stub
-		
+
 		hideKeyboard();
 		return false;
 	}
-	
+
 	/**
 	 * Method to hide the keyboard
 	 */
-	
-	private void hideKeyboard(){
-		InputMethodManager imm = (InputMethodManager)this.getSystemService(
-			      Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+
+	private void hideKeyboard() {
+		InputMethodManager imm = (InputMethodManager) this
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 	}
+	
+	
 
 }

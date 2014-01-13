@@ -28,8 +28,10 @@
     <string name="search">Search</string>
     <string name="action_logout">Logout</string>
     <string name="action_search">Search</string>
+    <string name="live_orders">Live Orders</string>
     <string name="preview_cards">Preview Cards</string>
     <string name="manage_sensors">Sensors</string>
+    <string name="logout">Logout</string>
     <string name="security">Security</string>
     <string name="help_center">Help Center</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -40,5 +42,7 @@
     <string name="no_item_found">No Items Found.</string>
     <string name="estimote">ESTIMOTE</string>
     <string name="no_live_orders">You dont have any live orders.</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
 </resources>

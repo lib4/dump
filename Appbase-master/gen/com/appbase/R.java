@@ -30,6 +30,7 @@ public final class R {
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
  Default screen margins, per the Android Design guidelines. 
+ Default screen margins, per the Android Design guidelines. 
 
          Customize dimensions originally defined in res/values/dimens.xml (such as
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
@@ -37,6 +38,7 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f070000;
         public static final int activity_vertical_margin=0x7f070001;
+        public static final int drawer_width=0x7f070006;
         public static final int header_height=0x7f070003;
         public static final int listview_item_margin=0x7f070002;
         public static final int text_view_black_size=0x7f070004;
@@ -54,16 +56,18 @@ public final class R {
         public static final int content_divider=0x7f020008;
         public static final int default_profile_pic=0x7f020009;
         public static final int depositphotos=0x7f02000a;
-        public static final int header_button=0x7f02000b;
-        public static final int ic_launcher=0x7f02000c;
-        public static final int ic_settings=0x7f02000d;
-        public static final int menu_unpress=0x7f02000e;
-        public static final int offer_images=0x7f02000f;
-        public static final int selector=0x7f020010;
-        public static final int signin_btn_selecton=0x7f020011;
-        public static final int splash=0x7f020012;
-        public static final int tick=0x7f020013;
-        public static final int transparent_selector=0x7f020014;
+        public static final int drawer_shadow=0x7f02000b;
+        public static final int header_button=0x7f02000c;
+        public static final int ic_drawer=0x7f02000d;
+        public static final int ic_launcher=0x7f02000e;
+        public static final int ic_settings=0x7f02000f;
+        public static final int menu_unpress=0x7f020010;
+        public static final int offer_images=0x7f020011;
+        public static final int selector=0x7f020012;
+        public static final int signin_btn_selecton=0x7f020013;
+        public static final int splash=0x7f020014;
+        public static final int tick=0x7f020015;
+        public static final int transparent_selector=0x7f020016;
     }
     public static final class id {
         public static final int accept_btn=0x7f0b0000;
@@ -73,65 +77,65 @@ public final class R {
         public static final int action_settings=0x7f0b0041;
         public static final int alert_message=0x7f0b0004;
         public static final int amount=0x7f0b003a;
-        public static final int back_btn=0x7f0b0016;
-        public static final int cardDescription_text=0x7f0b001b;
-        public static final int card_description=0x7f0b000c;
-        public static final int card_holder_layout=0x7f0b001e;
-        public static final int card_name=0x7f0b0019;
+        public static final int back_btn=0x7f0b0015;
+        public static final int cardDescription_text=0x7f0b001a;
+        public static final int card_description=0x7f0b000b;
+        public static final int card_holder_layout=0x7f0b001d;
+        public static final int card_name=0x7f0b0018;
         public static final int card_title=0x7f0b0009;
-        public static final int cards_holder=0x7f0b000f;
-        public static final int cataloge_name=0x7f0b001d;
-        public static final int choice_name=0x7f0b0013;
-        public static final int choice_price=0x7f0b0014;
-        public static final int choices_addition_layout=0x7f0b0010;
-        public static final int choices_addtion_layout=0x7f0b001c;
-        public static final int choices_item_layout=0x7f0b0012;
+        public static final int cards_holder=0x7f0b000e;
+        public static final int cataloge_name=0x7f0b001c;
+        public static final int choice_name=0x7f0b0012;
+        public static final int choice_price=0x7f0b0013;
+        public static final int choices_addition_layout=0x7f0b000f;
+        public static final int choices_addtion_layout=0x7f0b001b;
+        public static final int choices_item_layout=0x7f0b0011;
         public static final int close_btn=0x7f0b0003;
         public static final int content_pane=0x7f0b003e;
         public static final int customer_name=0x7f0b0039;
-        public static final int emailAddress=0x7f0b002b;
+        public static final int drawer_layout=0x7f0b0020;
         public static final int email_edtTxt=0x7f0b0033;
         public static final int fragment_holder=0x7f0b0021;
-        public static final int group_name=0x7f0b000d;
-        public static final int header_bar=0x7f0b0015;
+        public static final int group_name=0x7f0b000c;
+        public static final int header_bar=0x7f0b0014;
         public static final int help_center=0x7f0b002f;
         public static final int image=0x7f0b0007;
-        public static final int item_name=0x7f0b001f;
-        public static final int item_price=0x7f0b0020;
-        public static final int item_type=0x7f0b0011;
+        public static final int item_name=0x7f0b001e;
+        public static final int item_price=0x7f0b001f;
+        public static final int item_type=0x7f0b0010;
         public static final int itemsLayout=0x7f0b003b;
         public static final int leftButton=0x7f0b0005;
-        public static final int left_arrow_btn=0x7f0b0029;
         public static final int lin=0x7f0b0037;
-        public static final int logout_btn=0x7f0b002a;
-        public static final int menu_list=0x7f0b0018;
-        public static final int menu_management=0x7f0b002c;
-        public static final int no_item_found=0x7f0b0023;
+        public static final int live_orders=0x7f0b002a;
+        public static final int logout=0x7f0b002d;
+        public static final int menu_list=0x7f0b0017;
+        public static final int menu_management=0x7f0b002b;
+        public static final int no_item_found=0x7f0b0024;
         public static final int password_edtTxt=0x7f0b0034;
         public static final int price=0x7f0b000a;
-        public static final int price_text=0x7f0b001a;
+        public static final int price_text=0x7f0b0019;
         public static final int privacy_policy=0x7f0b0030;
         public static final int profile_pic=0x7f0b0038;
         public static final int reject_btn=0x7f0b0001;
         public static final int rightButton=0x7f0b0006;
-        public static final int right_arrow=0x7f0b000b;
-        public static final int search=0x7f0b0022;
+        public static final int search=0x7f0b0023;
         public static final int security=0x7f0b002e;
-        public static final int sensor_adv_id=0x7f0b0027;
-        public static final int sensor_image=0x7f0b0028;
-        public static final int sensor_management=0x7f0b002d;
-        public static final int sensor_title=0x7f0b0026;
-        public static final int sensors_list=0x7f0b0025;
-        public static final int settings_btn=0x7f0b0024;
+        public static final int sensor_adv_id=0x7f0b0028;
+        public static final int sensor_image=0x7f0b0029;
+        public static final int sensor_management=0x7f0b002c;
+        public static final int sensor_title=0x7f0b0027;
+        public static final int sensors_list=0x7f0b0026;
+        public static final int settings_btn=0x7f0b0025;
+        public static final int settings_fragment=0x7f0b0022;
         public static final int signin_btn=0x7f0b0035;
         public static final int signin_btn1=0x7f0b0032;
         public static final int slide_list=0x7f0b003d;
-        public static final int sub_group_name=0x7f0b000e;
+        public static final int sub_group_name=0x7f0b000d;
         public static final int terms_of_service=0x7f0b0031;
         public static final int tick_image=0x7f0b003c;
         public static final int tiles=0x7f0b0036;
         public static final int title_pricelayout=0x7f0b0008;
-        public static final int title_txt=0x7f0b0017;
+        public static final int title_txt=0x7f0b0016;
         public static final int webview=0x7f0b003f;
     }
     public static final class integer {
@@ -176,35 +180,39 @@ public final class R {
         /**  launcher xml 
          */
         public static final int back=0x7f080004;
+        public static final int drawer_close=0x7f080027;
+        public static final int drawer_open=0x7f080026;
         /**  SignIn xml 
          */
         public static final int email_address=0x7f080006;
-        public static final int email_blank=0x7f08001e;
-        public static final int estimote=0x7f080022;
+        public static final int email_blank=0x7f080020;
+        public static final int estimote=0x7f080024;
         public static final int fetching=0x7f080002;
         public static final int fetching_local=0x7f080003;
         public static final int forward=0x7f080005;
         public static final int general=0x7f080011;
-        public static final int help_center=0x7f08001b;
-        public static final int invalid_email=0x7f08001f;
+        public static final int help_center=0x7f08001d;
+        public static final int invalid_email=0x7f080021;
         public static final int left_arrow=0x7f080013;
+        public static final int live_orders=0x7f080018;
         public static final int loading=0x7f08000d;
+        public static final int logout=0x7f08001b;
         public static final int logut_alert=0x7f08000b;
         public static final int manage_menu=0x7f080012;
-        public static final int manage_sensors=0x7f080019;
-        public static final int no_item_found=0x7f080021;
-        public static final int no_live_orders=0x7f080023;
+        public static final int manage_sensors=0x7f08001a;
+        public static final int no_item_found=0x7f080023;
+        public static final int no_live_orders=0x7f080025;
         public static final int password=0x7f080007;
-        public static final int password_blank=0x7f080020;
-        public static final int preview_cards=0x7f080018;
-        public static final int privacy_policy=0x7f08001c;
+        public static final int password_blank=0x7f080022;
+        public static final int preview_cards=0x7f080019;
+        public static final int privacy_policy=0x7f08001e;
         public static final int search=0x7f080015;
-        public static final int security=0x7f08001a;
+        public static final int security=0x7f08001c;
         public static final int settings=0x7f080014;
         public static final int signin=0x7f080009;
         public static final int signing=0x7f08000c;
         public static final int singin_panel_text=0x7f08000e;
-        public static final int terms_of_service=0x7f08001d;
+        public static final int terms_of_service=0x7f08001f;
         public static final int uname_not_matching=0x7f08000a;
     }
     public static final class style {

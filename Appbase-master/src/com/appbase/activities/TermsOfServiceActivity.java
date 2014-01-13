@@ -1,20 +1,22 @@
 package com.appbase.activities;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import com.appbase.R;
 import com.appbase.fragments.WebViewFragment;
 import com.appbase.utils.Utils;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.os.Bundle;
-
-public class WebViewActivity extends BaseActivity {
+public class TermsOfServiceActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.launcher);
 		loadWebViewFragment();
+		initializeDrawer();
 		
 	}
 	
@@ -42,6 +44,28 @@ public class WebViewActivity extends BaseActivity {
 
 		// Commit the transaction
 		fragmentTransaction.commit();
+
+	}
+	
+
+	/**
+	 * On selecting action bar icons
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		// Take appropriate action for each action item click
+
+		switch (item.getItemId()) {
+		case android.R.id.home:
+		     if (mDrawerToggle.onOptionsItemSelected(item)) {
+		            return true;
+		    }
+			
+			return true;
+
+		}
+		return super.onOptionsItemSelected(item);
 
 	}
 	

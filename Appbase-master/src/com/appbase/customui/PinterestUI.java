@@ -5,7 +5,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -17,7 +20,6 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -213,6 +215,70 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 
 		@Override
 		public void onClick(final View v) {
+			
+			
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+			    builder.setTitle("AirAdmin");
+			    //builder.setIcon(R.drawable.icon);
+			    builder
+			            .setMessage(" ");
+			    ImageView mImageView = (ImageView) v.findViewById(R.id.tick_image);
+			    
+				if (mImageView.getVisibility() == View.VISIBLE) {
+					
+				    builder.setNeutralButton("Confirm Order",
+				            new DialogInterface.OnClickListener() {
+				                public void onClick(DialogInterface dialog, int id) {
+
+				                    //context.startActivity(new Intent(context, Setup.class));
+				                    //dialog.cancel();
+				                	new HttpHandler().liveOrderAction(context,
+											PinterestUI.this, (String) v.getTag(), "confirm");
+				                	  dialog.cancel();
+
+				                }
+				            });
+					
+				}else{
+			    builder.setPositiveButton("Acknowledge Order",
+			            new DialogInterface.OnClickListener() {
+			                public void onClick(DialogInterface dialog, int id) {
+			                	new HttpHandler().liveOrderAction(context,
+										PinterestUI.this, (String) v.getTag(),
+										"acknowledge");
+			                	((ImageView) v.findViewById(R.id.tick_image))
+								.setVisibility(View.VISIBLE);
+			                    dialog.cancel();
+
+			                }
+			            });
+
+			    builder.setNeutralButton("Confirm Order",
+			            new DialogInterface.OnClickListener() {
+			                public void onClick(DialogInterface dialog, int id) {
+
+			                    //context.startActivity(new Intent(context, Setup.class));
+			                    //dialog.cancel();
+			                	new HttpHandler().liveOrderAction(context,
+										PinterestUI.this, (String) v.getTag(), "confirm");
+			                	  dialog.cancel();
+
+			                }
+			            });
+
+			    builder.setNegativeButton("Reject Order",
+			            new DialogInterface.OnClickListener() {
+			                public void onClick(DialogInterface dialog, int id) {
+			                	new HttpHandler().liveOrderAction(context,
+										PinterestUI.this, (String) v.getTag(), "cancel");
+			                    dialog.cancel();
+
+			                }
+			            });
+				}
+			    
+			    builder.show();
+			/*
 			// TODO Auto-generated method stub
 			LayoutInflater itemLayoutInflater = LayoutInflater.from(context);
 			final LinearLayout mActionpanelLinearLayout = (LinearLayout) itemLayoutInflater
@@ -283,7 +349,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 					mActionpanelLinearLayout.setVisibility(View.GONE);
 				}
 			});
-
+	*/
 		}
 	};
 
