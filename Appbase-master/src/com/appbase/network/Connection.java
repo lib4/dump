@@ -24,6 +24,7 @@ public class Connection {
 	public void connect(String url, String requestBody, String requestType)
 			throws IOException {
 
+		try{
 		URL obj = new URL(url);
 		// Trusting all the Https server and certificate. This is insecure
 		// should be avoided.
@@ -74,6 +75,10 @@ public class Connection {
 		 */
 
 		responseStream = con.getInputStream();
+		}catch(OutOfMemoryError e){
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static void trustAllHosts() {

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.appbase.datahandler.GetBusinessParser;
 import com.appbase.datahandler.GetMenusParser;
 import com.appbase.datahandler.LiveOrderParser;
 import com.appbase.datahandler.SignInParser;
@@ -45,7 +46,7 @@ public class HttpHandler extends Thread {
 	Context context;
 	String requestType;
 	HTTPResponseListener mHttpResponseListener;
-	boolean isDBOperationMode_transaction	=	false;
+
 
 	/**
 	 * 
@@ -55,7 +56,7 @@ public class HttpHandler extends Thread {
 	 * stores the data in to RecordStore.
 	 */
 	public void getLiveOrders(Context context,
-			HTTPResponseListener mHttpResponseListener,boolean isDBOperationMode_transaction) {
+			HTTPResponseListener mHttpResponseListener) {
 
 		URL = LIVE_ORDER_URL;
 		this.context = context;
@@ -63,7 +64,6 @@ public class HttpHandler extends Thread {
 		REQUEST_API_CODE = LIVE_ORDER_API_CODE;
 		requestType = HTTP_GET;
 		start();
-		this.isDBOperationMode_transaction	=	isDBOperationMode_transaction;
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class HttpHandler extends Thread {
 	 * received Response will sent to appropriate response handled method. which
 	 * in turn stores the data in to RecordStore. 
 	 */
-	public void getBusiness(Context context) {
+	public void getBusiness(Context context,HTTPResponseListener mHttpResponseListener) {
 
 		URL = BUSINESS_URL;
 		this.context = context;
@@ -180,6 +180,8 @@ public class HttpHandler extends Thread {
 	 * parser class. 3.Trigger the UI events
 	 */
 	public void run() {
+		
+	
 		if (!isNetworkOnline()) {
 			mHttpResponseListener.onFailure(NO_NETWORK_CODE);
 			return;
@@ -218,7 +220,7 @@ public class HttpHandler extends Thread {
 				case 200:
 
 					LiveOrderParser mLiveOrderParser = new LiveOrderParser(
-							mConnection.responseStream, context,isDBOperationMode_transaction);
+							mConnection.responseStream, context);
 					mHttpResponseListener.onSuccess();
 
 					break;
@@ -252,7 +254,7 @@ public class HttpHandler extends Thread {
 				switch (mConnection.responseCode) {
 				case 200:
 
-					GetMenusParser mGetMenusParser = new GetMenusParser(
+					GetBusinessParser mGetBusinessParser = new GetBusinessParser(
 							mConnection.responseStream, context);
 					System.out.println("Success");
 					mHttpResponseListener.onSuccess();

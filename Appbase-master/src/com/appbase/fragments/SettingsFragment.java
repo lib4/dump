@@ -20,6 +20,7 @@ import com.appbase.activities.LiveOrderActivity;
 import com.appbase.activities.MenuActivity;
 import com.appbase.activities.PrivacyPolicyActivity;
 import com.appbase.activities.SecurityActivity;
+import com.appbase.activities.SensorsActivity;
 import com.appbase.activities.SettingsActivity;
 import com.appbase.activities.TermsOfServiceActivity;
 import com.appbase.datastorage.DBManager;
@@ -90,14 +91,14 @@ public class SettingsFragment extends BaseFragment {
 
 			@Override
 			public void onClick(View v) {
-				 Toast.makeText(getActivity(),
-				 "Functinality yet to be implemented.", 1000).show();
+				// Toast.makeText(getActivity(),
+				 //"Functinality yet to be implemented.", 1000).show();
+				disableHighlight();
+				Intent intent = new Intent(getActivity(), SensorsActivity.class);
 
-				//Intent intent = new Intent(getActivity(), SensorsActivity.class);
-
-				//startActivity(intent);
+				startActivity(intent);
 				//BaseActivity.mDrawerLayout.closeDrawers();
-				//((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
+				((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
 			}
 		});
 		

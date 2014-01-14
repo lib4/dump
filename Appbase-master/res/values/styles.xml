@@ -143,7 +143,7 @@
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:actionMenuTextColor">@color/white_tile_background_color</item>
          <item name="android:editTextStyle">@style/EditTextAppTheme</item>
-          <item name="android:icon">@drawable/icon_48</item>
+          <item name="android:icon">@drawable/ic_launcher_action_bar</item>
            
     </style>
 

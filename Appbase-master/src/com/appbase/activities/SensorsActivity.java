@@ -17,6 +17,7 @@ public class SensorsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.launcher);
 		loadSensorsFragment();
+		initializeDrawer();
 		
 	}
 	

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/pane_background_color"
-    android:padding="3dp" >
+    android:padding="5dp" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight=".1"
-                    android:background="@drawable/dot_48"
+                    android:background="@drawable/ic_vdots"
                     android:scaleType="center" >
                 </ImageButton>
             </LinearLayout>
@@ -88,7 +88,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/lin"
             android:layout_margin="2dp"
-            android:background="@drawable/tick"
+            android:background="@drawable/ic_tick"
             android:visibility="gone" />
     </RelativeLayout>
 

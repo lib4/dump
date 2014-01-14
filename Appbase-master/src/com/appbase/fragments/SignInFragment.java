@@ -118,7 +118,8 @@ public class SignInFragment extends BaseFragment implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				hideKeyboard();
+			
 				if(validateFields())
 					trgrSignInWebService();
 			}

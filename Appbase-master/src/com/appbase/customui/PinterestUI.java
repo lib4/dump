@@ -72,7 +72,11 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	}
 
 	public void createLayout(Cursor mCursor) {
+	
 		ITEM_DRAWN_INDEX=0;
+		
+		removeAllViews();
+		NextLayout	=	null;
 		ViewTreeObserver vto = getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
@@ -106,8 +110,10 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 		if (SCREEN_WIDTH > 1200) {
 			NUM_COLUMN = SCREEN_WIDTH / 400;
 		}
+		
+	
 		for (int i = 0; i < NUM_COLUMN; i++) {
-
+			
 			LinearLayout mLinearLayout = new LinearLayout(context);
 			mLinearLayout.setLayoutParams(new LayoutParams(SCREEN_WIDTH
 					/ NUM_COLUMN, LayoutParams.WRAP_CONTENT));
@@ -118,7 +124,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 			addView(mLinearLayout);
 
 		}
-
+	
 		draw(0);
 
 	}
@@ -135,6 +141,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 				LayoutInflater mLayoutInflater = LayoutInflater.from(context);
 				FrameLayout mLinearLayout = (FrameLayout) mLayoutInflater
 						.inflate(R.layout.tiles, null);
+				
 				//mLinearLayout.setTag(liveOrderCursor.getString(2));// SettingId
 				ImageButton popMenuIcon	=	(ImageButton) mLinearLayout.findViewById(R.id.pop_menu);
 				mLinearLayout.startAnimation(AnimationUtils.loadAnimation(
@@ -220,7 +227,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
+				 		
 				NextLayout.addView(mLinearLayout);
 			}
 		} catch (Exception e) {
@@ -433,6 +440,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 			i++;
 		}
 
+		
 		return layoutIndex;
 	}
 

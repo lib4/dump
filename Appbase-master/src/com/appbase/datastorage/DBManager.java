@@ -72,7 +72,7 @@ public class DBManager {
 				AppSqliteHelper.TABLE_PROFILE, null, null);
 		insertId = appSqLiteDatabase.insert(
 				sqLiteOpenHelper.TABLE_PROFILE, null, values);
-		fetchProfile();
+		
 		close();
 
 	}
@@ -87,6 +87,18 @@ public class DBManager {
 				sqLiteOpenHelper.TABLE_LIVE_ORDERS, null, values);
 		// fetchLiveOrders();
 		// close();
+
+	}
+	
+	/**
+	 * Inserting on to Profile Table. After succeful signup
+	 */
+	public void insertBusiness(ContentValues values) {
+		
+		long insertId = 
+		 appSqLiteDatabase.insert(
+				sqLiteOpenHelper.TABLE_BUSINESS, null, values);
+		
 
 	}
 
@@ -237,6 +249,25 @@ public class DBManager {
 		return cursor;
 	}
 	
+	
+	public Cursor fetchBusinessSensors() {
+		Cursor cursor;
+		try {
+			open();
+			String[] allColumns = { sqLiteOpenHelper.COLUMN__ID,
+					sqLiteOpenHelper.COLUMN_BUSINESS_ID, sqLiteOpenHelper.COLUMN_PROXIMITY_ID,
+					sqLiteOpenHelper.COLUMN_SENSORS,
+					};
+			cursor = appSqLiteDatabase.query(AppSqliteHelper.TABLE_BUSINESS,
+					allColumns, null, null, null, null, null);
+			
+			//close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return cursor;
+	}
 	
 	public boolean isCatalogsAvailable() {
 		Cursor cursor;

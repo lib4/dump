@@ -24,10 +24,10 @@ public class LiveOrderParser {
 
 			String response;
 			Context context;
-			boolean isDBOperationMode_transaction;
-			public LiveOrderParser(InputStream inputStream,Context context,boolean isDBOperationMode_transaction) {
+			
+			public LiveOrderParser(InputStream inputStream,Context context) {
 				this.context	=	context;
-				this.isDBOperationMode_transaction	=	isDBOperationMode_transaction;
+				
 				parse(inputStream);
 			}
 
@@ -37,7 +37,7 @@ public class LiveOrderParser {
 			private void parse(InputStream response) {
 				
 				DBManager mDbManager	=	new DBManager(context);
-				if(isDBOperationMode_transaction)
+		
 					mDbManager.startTransaction();
 				/*
 				 * Parse the response here
@@ -48,22 +48,7 @@ public class LiveOrderParser {
 					JsonFactory jsonfactory = new JsonFactory();
 					JsonParser jsonParser = jsonfactory.createJsonParser(response);
 					ContentValues values	=	new ContentValues();
-					
-					//jsonParser.nextToken();
-					//System.out.println("NEXT TOKE +++++"+jsonParser.getCurrentName());
-					
-					//System.out.println("Json parser >>>>>> "+jsonParser.nextToken());	
-					// Begin the parsing procedure
-//					if(jsonParser.nextToken()==JsonToken.START_ARRAY){
-//						System.out.println("START ARRAY TOKE +++++"+jsonParser.getCurrentName());
-//						
-//					}
-//					
-//					if(jsonParser.nextToken()==JsonToken.END_ARRAY){
-//						System.out.println("END ARRAY TOKE +++++"+jsonParser.getCurrentName());
-//						
-//					}
-//					
+
 					
 					jsonParser.nextToken();
 					while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
@@ -364,7 +349,7 @@ public class LiveOrderParser {
 				}
 				
 				finally{
-					if(isDBOperationMode_transaction)
+		
 						mDbManager.endTransaction();
 					
 					System.out.println("Transaction Ended");

@@ -130,30 +130,31 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 	private static final String CREATE_BUSINESS_TABLE = "create table "
 			+ TABLE_BUSINESS
 			+ " (auto_id integer primary key autoincrement,"
-			+ COLUMN_V + " int not null," + COLUMN__ID
-			+ " text not null," + "" + COLUMN_BUSINESS_ID + " text not null,"
-			+ COLUMN_COUNTRY + " TEXT not null, " + COLUMN_CREATED
-			+ " text not null,"
-			+ COLUMN_LAST_UPDATED + " TEXT not null, " 
-			+ COLUMN_LOGO + " TEXT not null, " 
-			+ COLUMN_NAME + " TEXT not null, "
-			+ COLUMN_POSTAL_CODE + " TEXT not null,"
-				+ COLUMN_PROXIMITY_ID + " TEXT not null,"
-				+ COLUMN_SENSOR_BATCH + " TEXT not null, "
-					+ COLUMN_STATE + " TEXT not null, "
-						+ COLUMN_STATE + " TEXT not null, "
-							+ COLUMN_STREET_ADDRESS + " TEXT not null, "
-								+ COLUMN_STRIPE_RECEIPIENT_ID + " TEXT not null, "
-									+ COLUMN_TAX_PERCENT + " int not null, "
-										+ COLUMN_SENSORS + " TEXT not null, "
-											+ COLUMN_BALANCE + " flot not null, "
-												+ COLUMN_VERIFIED + " boolean not null, "
-													+ COLUMN_RATING_SUM + " TEXT not null, "
-														+ COLUMN_RATING_COUNT + " TEXT not null, "
-															+ COLUMN_GEO + " TEXT not null "
-															+ COLUMN_SENSOR_ID + " TEXT not null "
-															+ COLUMN_ADVERTISING_INTERVAL + " TEXT not null "
-															+ COLUMN_TX_POWER + " TEXT not null );";
+			+ COLUMN_V + " int  null," + COLUMN__ID
+			+ " text  null," + "" + COLUMN_BUSINESS_ID + " text  null,"
+			+ COLUMN_CITY +" text null, "
+			+ COLUMN_COUNTRY + " TEXT  null, " + COLUMN_CREATED
+			+ " text  null,"
+			+ COLUMN_LAST_UPDATED + " TEXT  null, " 
+			+ COLUMN_LOGO + " TEXT  null, " 
+			+ COLUMN_NAME + " TEXT  null, "
+			+ COLUMN_POSTAL_CODE + " TEXT  null,"
+				+ COLUMN_PROXIMITY_ID + " TEXT  null,"
+				+ COLUMN_SENSOR_BATCH + " TEXT  null, "
+					+ COLUMN_STATE + " TEXT null, "
+					
+							+ COLUMN_STREET_ADDRESS + " TEXT null, "
+								+ COLUMN_STRIPE_RECEIPIENT_ID + " TEXT  null, "
+									+ COLUMN_TAX_PERCENT + " int  null, "
+										+ COLUMN_SENSORS + " TEXT  null, "
+											+ COLUMN_BALANCE + " flot  null, "
+												+ COLUMN_VERIFIED + " boolean  null, "
+													+ COLUMN_RATING_SUM + " TEXT  null, "
+														+ COLUMN_RATING_COUNT + " TEXT  null, "
+															+ COLUMN_GEO + " TEXT  null, "
+															+ COLUMN_SENSOR_ID + " TEXT  null, "
+															+ COLUMN_ADVERTISING_INTERVAL + " TEXT  null, "
+															+ COLUMN_TX_POWER + " TEXT  null );";
 				
 					
 					
@@ -161,29 +162,7 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 			
 		
 	
-//	COLUMN_CONSUMER_V
-//	
-//	
-//	
-//	
-//		 status=pending
-//		 consumer_email=guest-E6015209-0E76-41C5-A340-216F0B7D5EC0@airoffers.co 
-//		 lastUpdated=2013-12-17T09:29:38.430Z  
-//		 type=consumer
-//		 business=52ac9a8a55b534020000000c
-//		 consumer__id=52ac7ed44240b7020000019f
-//		 id=52ac7ed44240b7020000019f
-//		 amount=11.95
-//		 v=0 
-//		 _id=52b01982de5091020000001a
-//		 tax=1.195
-//		 items=[{"image":"http:\/\/i.imgur.com\/vTOtpTG.jpg","price":11.949999809265137,"_id":"52b01982de5091020000001b","choices":[],"name":"Mahi-Mahi Sandwich"}] 
-//				 created=2013-12-17T09:29:38.430Z
-//				 guest=true
-//				 backgroundScan=false
-//				 rated=false 
-//				 feeCollected=false
-//				 consumer_device_id=E6015209-0E76-41C5-A340-216F0B7D5EC0
+
 
 	
 	public AppSqliteHelper(Context context) {
@@ -195,7 +174,7 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 		database.execSQL(CREATE_PROFILE_TABLE);
 		database.execSQL(CREATE_LIVEORDERS_TABLE);
 		database.execSQL(CREATE_CATALOG_TABLE);
-		//database.execSQL(CREATE_BUSINESS_TABLE);
+		database.execSQL(CREATE_BUSINESS_TABLE);
 	}
 
 	@Override

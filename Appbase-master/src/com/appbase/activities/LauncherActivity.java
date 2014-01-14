@@ -32,7 +32,7 @@ public class LauncherActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
-		setContentView(R.layout.launcher);
+		setContentView(R.layout.launcher_no_drawer);
 		loadSignInFragment();
 	}
 

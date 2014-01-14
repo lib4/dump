@@ -5,9 +5,14 @@ import java.util.TimerTask;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.CharArrayBuffer;
+import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.DataSetObserver;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -38,6 +43,7 @@ public class LiveOrderFragment extends BaseFragment implements
 	boolean isFetchFromServer = false;
 	private TextView NoItemSoundTextView;
 	boolean isPollingResponsePending	=	false;
+	ScrollView mScrollView;
 	Timer t;
 	public void FetchFromServerNeeded(boolean isFetchFromServer) {
 		// TODO Auto-generated constructor stub
@@ -85,7 +91,7 @@ public class LiveOrderFragment extends BaseFragment implements
 	private void init() {
 
 		mPinterestUI = new PinterestUI(getActivity());
-		ScrollView mScrollView = new ScrollView(getActivity());
+		mScrollView = new ScrollView(getActivity());
 		mScrollView.setOverScrollMode(ScrollView.OVER_SCROLL_ALWAYS);
 
 		mScrollView.addView(mPinterestUI);
@@ -158,7 +164,7 @@ public class LiveOrderFragment extends BaseFragment implements
 		mDialog.setMessage(getActivity().getString(R.string.loading));
 		mDialog.setCancelable(false);
 		mDialog.show();
-		new HttpHandler().getLiveOrders(getActivity(), this,true);
+		new HttpHandler().getLiveOrders(getActivity(), this);
 	}
 
 	private void showNoNetworkAlertDialog() {
@@ -218,14 +224,22 @@ public class LiveOrderFragment extends BaseFragment implements
 			}
 
 			else {
-				Cursor liveOrders = new DBManager(getActivity())
+				Cursor liveOrders =new DBManager(getActivity())
 						.fetchLiveOrders();
 				if (liveOrders != null && liveOrders.getCount() > 0) {
 
 					
 					Log.e("HANDLER not null","HANDLER ");
 					NoItemSoundTextView.setVisibility(View.GONE);
+					
+					int y 	=	mScrollView.getScrollY();
+			
+					Log.e("HANDLER not null","HANDLER "+y +"  "+mScrollView.getScrollX());
+					
 					mPinterestUI.createLayout(liveOrders);
+					
+					mScrollView.smoothScrollTo(0, y) ;
+				
 				} else {
 
 					NoItemSoundTextView.setVisibility(View.VISIBLE);
@@ -234,17 +248,7 @@ public class LiveOrderFragment extends BaseFragment implements
 		}
 	};
 
-	/**
-	 * Load the Settings fragment
-	 * 
-	 */
-
-	private void loadSettingsFragment() {
-
-		Intent intent = new Intent(getActivity(), SettingsActivity.class);
-		startActivity(intent);
-
-	}
+	
 	
 	private void startService(){
 		isPollingResponsePending	=	false;
@@ -259,7 +263,7 @@ public class LiveOrderFragment extends BaseFragment implements
 		    	if(!isPollingResponsePending){
 		    	isPollingResponsePending	=	true;
 		    	new DBManager(getActivity()).clearLiveOrders();
-		    	new HttpHandler().getLiveOrders(getActivity(), LiveOrderFragment.this,true);
+		    	new HttpHandler().getLiveOrders(getActivity(), LiveOrderFragment.this);
 		    	Log.e("Polling ","Polling");
 		    	}
 		    }
