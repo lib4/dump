@@ -48,16 +48,18 @@ public class GetMenusParser {
 			JsonParser jsonParser = jsonfactory.createJsonParser(response);
 			//jsonParser.nextToken();
 			ContentValues values = null;
+			jsonParser.nextToken();
 			while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
-				System.out.println("NEXT TOKE +++++");
+				if (jsonParser.getCurrentToken() == JsonToken.START_OBJECT) {
+					values = new ContentValues();
+				}
 				// Begin the parsing procedure
 				while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
 
 					String token = jsonParser.getCurrentName();
+					//System.out.println("Token "+token);
 
-					if (jsonParser.getCurrentToken() == JsonToken.START_OBJECT) {
-						values = new ContentValues();
-					}
+				
 					if (HttpConstants.NAME_JKEY.equals(token)) {
 
 						// get the next token which will be the value...

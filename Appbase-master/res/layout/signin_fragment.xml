@@ -57,8 +57,6 @@
             android:hint="@string/email_address"
             android:inputType="textEmailAddress"
             android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:paddingTop="10dp"
             android:textColor="@android:color/black" />
 
@@ -76,30 +74,20 @@
             android:hint="@string/password"
             android:inputType="textPassword"
             android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:paddingTop="10dp"
-            android:textColor="@android:color/black"
-           />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/signin_btn"
+        style="@style/btn"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+         android:layout_marginRight="5dp"
+        android:background="@drawable/signin_btn_selecton"
         android:gravity="center"
-        android:text="@string/singin_panel_text"
-        />
-    
-       <Button
-            android:id="@+id/signin_btn"
-            style="@style/btn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@drawable/signin_btn_selecton"
-            
-            android:text="@string/signin" >
-        </Button>
+        android:text="@string/signin" >
+    </Button>
 
 </LinearLayout>

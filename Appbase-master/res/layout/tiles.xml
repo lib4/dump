@@ -3,31 +3,40 @@
     android:id="@+id/tiles"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector"
-    android:clickable="true"
+    android:background="@color/pane_background_color"
     android:padding="3dp" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="3dp">
+        android:layout_height="wrap_content" >
+
         <LinearLayout
+            android:id="@+id/lin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:id="@+id/lin"
             android:background="@color/white_tile_background_color"
-            android:orientation="vertical" >
-		
+            android:orientation="vertical"
+            android:padding="5dp" >
+
             <ImageView
                 android:id="@+id/profile_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="false"
+                android:background="@drawable/default_profile_pic"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/amount"
+                style="@style/blue_text_view"
                 android:layout_width="match_parent"
-          
-                  android:layout_height="wrap_content"
-                      android:scaleType="fitCenter"
-                      android:adjustViewBounds="true" 
-                android:background="@drawable/default_profile_pic" />
-   
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:text="213323" >
+            </TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,24 +47,25 @@
                 <TextView
                     android:id="@+id/customer_name"
                     style="@style/text_view_black"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".3"
+                    android:layout_weight=".9"
                     android:text="AnasAbubacker" >
                 </TextView>
 
-                <TextView
-                    android:id="@+id/amount"
-                    style="@style/text_view_black"
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/pop_menu"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".7"
-                    android:text="$200.1" >
-                </TextView>
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight=".1"
+                    android:background="@drawable/dot_48"
+                    android:scaleType="center" >
+                </ImageButton>
             </LinearLayout>
 
             <TextView
-                style="@style/blue_text_view"
+                style="@style/text_view_black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Items" >
@@ -70,16 +80,16 @@
                 android:weightSum="1.0" >
             </LinearLayout>
         </LinearLayout>
-        
-            <ImageView
+
+        <ImageView
+            android:id="@+id/tick_image"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/lin"
+            android:layout_margin="2dp"
             android:background="@drawable/tick"
-       		android:layout_alignParentRight="true"
-       		android:layout_margin="2dp"
-        	android:id="@+id/tick_image"
-        	android:visibility="gone"
-            android:layout_alignTop="@+id/lin" />
+            android:visibility="gone" />
     </RelativeLayout>
 
 </FrameLayout>

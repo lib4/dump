@@ -62,6 +62,7 @@ public class SettingsFragment extends BaseFragment {
 				//((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
 				Intent intent = new Intent(getActivity(),
 						LiveOrderActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
 

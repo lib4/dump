@@ -12,7 +12,7 @@ public class DBManager {
 
 	private AppSqliteHelper sqLiteOpenHelper; // SQLITE Helper instance
 
-	private SQLiteDatabase appSqLiteDatabase; // Database instance
+	public static SQLiteDatabase appSqLiteDatabase; // Database instance
 
 	/**
 	 * Constructor initializes the Sqlitehelper
@@ -32,9 +32,11 @@ public class DBManager {
 	 */
 	public void open() throws SQLException {
 		try {
-			appSqLiteDatabase = sqLiteOpenHelper.getWritableDatabase();
-			Uri mUril = Uri.parse(appSqLiteDatabase.getPath());
-			Log.e("URI ", "" + mUril.toString());
+			if(appSqLiteDatabase==null||!appSqLiteDatabase.isOpen())
+				appSqLiteDatabase = sqLiteOpenHelper.getWritableDatabase();
+			
+			//Uri mUril = Uri.parse(appSqLiteDatabase.getPath());
+			//Log.e("URI ", "" + mUril.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,7 +46,7 @@ public class DBManager {
 	 * Method closes the database.
 	 */
 	public void close() {
-		sqLiteOpenHelper.close();
+		//sqLiteOpenHelper.close();
 	}
 
 	// /**
@@ -281,14 +283,16 @@ public class DBManager {
 
 	public void startTransaction() {
 		open();
-		
-		appSqLiteDatabase.beginTransaction();
+		if(!appSqLiteDatabase.inTransaction())
+			appSqLiteDatabase.beginTransaction();
 	}
 
 	public void endTransaction() {
-		appSqLiteDatabase.setTransactionSuccessful();
-
-		appSqLiteDatabase.endTransaction();
+		
+		if(appSqLiteDatabase.inTransaction()){
+			appSqLiteDatabase.setTransactionSuccessful();
+			appSqLiteDatabase.endTransaction();
+		}
 		close();
 
 	}

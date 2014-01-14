@@ -1,0 +1,181 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="TitleHeader" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="SubTitleHeader" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/subtitle_color</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">1dp</item>
+    </style>
+
+    <style name="list_item" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#000000</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:background">@color/white_tile_background_color</item>
+    </style>
+
+    <style name="right_arrow" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/header_background_color</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">2dp</item>
+    </style>
+    <!--
+    <style name="left_arrow" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white_tile_background_color</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+    -->
+
+    <style name="menu_type_title" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/header_background_color</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="header_btn">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="btn">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="text_view_black" parent="@android:style/TextAppearance.Small.Inverse">
+        <item name="android:textColor">#45494A</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:padding">1dp</item>
+    </style>
+    
+     <style name="text_view_grey" parent="@android:style/TextAppearance.Small.Inverse">
+        <item name="android:textColor">#737778</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:padding">1dp</item>
+    </style>
+
+    <style name="blue_text_view" parent="@android:style/TextAppearance.Small.Inverse">
+        <item name="android:textColor">#5CC5E6</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textStyle">bold</item>
+ 
+        <item name="android:padding">1dp</item>
+    </style>
+
+    <style name="text_view_white" parent="@android:style/TextAppearance.Small.Inverse">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:typeface">sans</item>
+    
+        <item name="android:padding">1dp</item>
+    </style>
+
+    <style name="CitrineFont_9pt_shadow">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:shadowColor">#8B000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- the theme applied to the application or activity -->
+    <style name="CustomActionBarTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:actionMenuTextColor">@color/white_tile_background_color</item>
+         <item name="android:editTextStyle">@style/EditTextAppTheme</item>
+          <item name="android:icon">@drawable/action_48</item>
+           
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/header_background_color</item>
+        <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
+    </style>
+
+    <!-- ActionBar title text -->
+    <style name="MyActionBarTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white_tile_background_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#8B000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:gravity">center</item>
+      
+    </style>
+
+    <!-- ActionBar tabs text styles -->
+    <style name="MyActionBarMenuText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Menu">
+        <item name="android:textColor">@color/white_tile_background_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#8B000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+    <style name="EditTextAppTheme" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/apptheme_edit_text_holo_light</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+</resources>

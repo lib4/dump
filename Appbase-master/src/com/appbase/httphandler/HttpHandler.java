@@ -45,6 +45,7 @@ public class HttpHandler extends Thread {
 	Context context;
 	String requestType;
 	HTTPResponseListener mHttpResponseListener;
+	boolean isDBOperationMode_transaction	=	false;
 
 	/**
 	 * 
@@ -54,7 +55,7 @@ public class HttpHandler extends Thread {
 	 * stores the data in to RecordStore.
 	 */
 	public void getLiveOrders(Context context,
-			HTTPResponseListener mHttpResponseListener) {
+			HTTPResponseListener mHttpResponseListener,boolean isDBOperationMode_transaction) {
 
 		URL = LIVE_ORDER_URL;
 		this.context = context;
@@ -62,6 +63,7 @@ public class HttpHandler extends Thread {
 		REQUEST_API_CODE = LIVE_ORDER_API_CODE;
 		requestType = HTTP_GET;
 		start();
+		this.isDBOperationMode_transaction	=	isDBOperationMode_transaction;
 	}
 
 	/**
@@ -216,7 +218,7 @@ public class HttpHandler extends Thread {
 				case 200:
 
 					LiveOrderParser mLiveOrderParser = new LiveOrderParser(
-							mConnection.responseStream, context);
+							mConnection.responseStream, context,isDBOperationMode_transaction);
 					mHttpResponseListener.onSuccess();
 
 					break;

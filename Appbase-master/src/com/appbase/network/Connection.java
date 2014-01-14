@@ -19,6 +19,7 @@ public class Connection {
 
 	public InputStream responseStream;
 	public int responseCode;
+	public String responseMessage;
 
 	public void connect(String url, String requestBody, String requestType)
 			throws IOException {
@@ -56,6 +57,9 @@ public class Connection {
 		}
 
 		responseCode = con.getResponseCode();
+		
+		responseMessage	=	con.getResponseMessage();
+		System.out.println("RESPONSE MESSAG E"+responseMessage);
 
 		System.out.println("Response Code : " + responseCode);
 		/*

@@ -1,5 +1,8 @@
 package com.appbase.fragments;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -9,11 +12,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -24,23 +26,24 @@ import com.appbase.customui.PinterestUI;
 import com.appbase.datastorage.DBManager;
 import com.appbase.httphandler.HTTPResponseListener;
 import com.appbase.httphandler.HttpHandler;
+import com.appbase.utils.Utils;
 
 public class LiveOrderFragment extends BaseFragment implements
 		HTTPResponseListener {
 
 	public LinearLayout view;
 	PinterestUI mPinterestUI;
-	Button setting_Btn;
 	static ProgressDialog mDialog;
 	String CHEK = "Default";
 	boolean isFetchFromServer = false;
 	private TextView NoItemSoundTextView;
-	
-
+	boolean isPollingResponsePending	=	false;
+	Timer t;
 	public void FetchFromServerNeeded(boolean isFetchFromServer) {
 		// TODO Auto-generated constructor stub
-		this.isFetchFromServer	=	isFetchFromServer;
+		this.isFetchFromServer = isFetchFromServer;
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -54,25 +57,25 @@ public class LiveOrderFragment extends BaseFragment implements
 			// the view hierarchy; it would just never be used.
 			return null;
 		}
-		mDialog	=	null;
+		mDialog = null;
 
 		// Inflate the layout for this fragment
 		view = (LinearLayout) inflater.inflate(R.layout.orderlist_fragment,
 				container, false);
 		init();
-		if(isFetchFromServer){
+		if (isFetchFromServer) {
 			trgrLiveOrderWebService();
-		}else{
+		} else {
 			onSuccess();
 		}
-		
+
 		return view;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
+		startService();
 	}
 
 	/**
@@ -88,18 +91,8 @@ public class LiveOrderFragment extends BaseFragment implements
 		mScrollView.addView(mPinterestUI);
 
 		view.addView(mScrollView);
-		setting_Btn = (Button) view.findViewById(R.id.settings_btn);
-		setting_Btn.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				loadSettingsFragment();
-			}
-		});
-		
-		
-		NoItemSoundTextView	=	(TextView) view.findViewById(R.id.no_item_found);
+		NoItemSoundTextView = (TextView) view.findViewById(R.id.no_item_found);
 	}
 
 	@Override
@@ -107,11 +100,28 @@ public class LiveOrderFragment extends BaseFragment implements
 		super.onStart();
 
 	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		
+		
+
+	}
+
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		t.cancel();
+
+	}
 
 	@Override
 	public void onSuccess() {
 		if (mDialog != null && mDialog.isShowing())
-		mDialog.dismiss();
+			mDialog.dismiss();
 		mHandler.sendMessage(new Message());
 
 	}
@@ -127,7 +137,7 @@ public class LiveOrderFragment extends BaseFragment implements
 
 		Message message = new Message();
 		message.arg1 = failureCode;
-	
+
 		mHandler.sendMessage(message);
 	}
 
@@ -148,10 +158,8 @@ public class LiveOrderFragment extends BaseFragment implements
 		mDialog.setMessage(getActivity().getString(R.string.loading));
 		mDialog.setCancelable(false);
 		mDialog.show();
-		new HttpHandler().getLiveOrders(getActivity(), this);
+		new HttpHandler().getLiveOrders(getActivity(), this,true);
 	}
-
-
 
 	private void showNoNetworkAlertDialog() {
 
@@ -193,7 +201,13 @@ public class LiveOrderFragment extends BaseFragment implements
 
 	final Handler mHandler = new Handler(Looper.getMainLooper()) {
 
+		
+		
 		public void handleMessage(Message msg) {
+			
+			isPollingResponsePending	=	false;
+			
+			Log.e("HANDLER ","HANDLER ");
 
 			if (msg.arg1 == HttpHandler.NO_NETWORK_CODE) {
 
@@ -206,16 +220,20 @@ public class LiveOrderFragment extends BaseFragment implements
 			else {
 				Cursor liveOrders = new DBManager(getActivity())
 						.fetchLiveOrders();
-				if (liveOrders != null&&liveOrders.getCount()>0){
+				if (liveOrders != null && liveOrders.getCount() > 0) {
+
+					
+					Log.e("HANDLER not null","HANDLER ");
 					NoItemSoundTextView.setVisibility(View.GONE);
 					mPinterestUI.createLayout(liveOrders);
-				}else{
-					
+				} else {
+
 					NoItemSoundTextView.setVisibility(View.VISIBLE);
 				}
 			}
 		}
 	};
+
 	/**
 	 * Load the Settings fragment
 	 * 
@@ -228,4 +246,29 @@ public class LiveOrderFragment extends BaseFragment implements
 
 	}
 	
+	private void startService(){
+		isPollingResponsePending	=	false;
+		//Declare the timer
+		t = new Timer();
+		//Set the schedule function and rate
+		t.scheduleAtFixedRate(new TimerTask() {
+
+		    @Override
+		    public void run() {
+		        //Called each time when 1000 milliseconds (1 second) (the period parameter)
+		    	if(!isPollingResponsePending){
+		    	isPollingResponsePending	=	true;
+		    	new DBManager(getActivity()).clearLiveOrders();
+		    	new HttpHandler().getLiveOrders(getActivity(), LiveOrderFragment.this,true);
+		    	Log.e("Polling ","Polling");
+		    	}
+		    }
+		         
+		},
+		//Set how long before to start calling the TimerTask (in milliseconds)
+		Utils.REFRESH_INTERVAL,
+		//Set the amount of time between each execution (in milliseconds)
+		Utils.REFRESH_INTERVAL);
+	}
+
 }

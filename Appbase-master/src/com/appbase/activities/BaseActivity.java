@@ -8,14 +8,12 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
 
 import com.appbase.R;
-import com.appbase.fragments.SettingsFragment;
 
 /**
  * 
@@ -119,7 +117,7 @@ public class BaseActivity extends Activity {
 	 * */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+		Log.e("OnOption Selected","On option");
 		
 	      if (mDrawerToggle.onOptionsItemSelected(item)) {
 	            return true;
@@ -155,19 +153,22 @@ public class BaseActivity extends Activity {
 		) {
 			public void onDrawerClosed(View view) {
 				// getActionBar().setTitle("Closed");
-				invalidateOptionsMenu(); // creates call to
+				//invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				// getActionBar().setTitle("Opened");
-				invalidateOptionsMenu(); // creates call to
+				//invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		mDrawerLayout.closeDrawers();
+		
+		
+		
 	}
 	
 	/**
@@ -178,6 +179,7 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+		Log.e("OnPostCreetae","Create");
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 	 if(savedInstanceState!=null&&savedInstanceState.get("FromDealDetails")!=null){
 		 
@@ -189,6 +191,7 @@ public class BaseActivity extends Activity {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
+		Log.e("OnPostCreetae","onConfigurationChanged");
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}

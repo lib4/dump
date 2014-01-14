@@ -24,8 +24,10 @@ public class LiveOrderParser {
 
 			String response;
 			Context context;
-			public LiveOrderParser(InputStream inputStream,Context context) {
+			boolean isDBOperationMode_transaction;
+			public LiveOrderParser(InputStream inputStream,Context context,boolean isDBOperationMode_transaction) {
 				this.context	=	context;
+				this.isDBOperationMode_transaction	=	isDBOperationMode_transaction;
 				parse(inputStream);
 			}
 
@@ -35,7 +37,8 @@ public class LiveOrderParser {
 			private void parse(InputStream response) {
 				
 				DBManager mDbManager	=	new DBManager(context);
-				mDbManager.startTransaction();
+				if(isDBOperationMode_transaction)
+					mDbManager.startTransaction();
 				/*
 				 * Parse the response here
 				 */
@@ -62,11 +65,12 @@ public class LiveOrderParser {
 //					}
 //					
 					
+					jsonParser.nextToken();
 					while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
 					
-					//if(jsonParser.nextToken()==JsonToken.START_OBJECT){	
+						
 									while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
-				
+										
 										String token = jsonParser.getCurrentName();
 				
 										if (HttpConstants.LASTUPDATED_JKEY.equals(token)) {
@@ -360,7 +364,10 @@ public class LiveOrderParser {
 				}
 				
 				finally{
-					mDbManager.endTransaction();
+					if(isDBOperationMode_transaction)
+						mDbManager.endTransaction();
+					
+					System.out.println("Transaction Ended");
 				}
 
 			}

@@ -5,10 +5,13 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Surface;
+import android.view.View;
+import android.view.View.OnDragListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
@@ -35,6 +38,8 @@ public class MenuActivity extends BaseActivity implements
 		}
 		resolveWidth();
 		initializeDrawer();
+		
+
 
 	}
 
@@ -180,6 +185,7 @@ public class MenuActivity extends BaseActivity implements
 	@Override
 	public boolean onClose() {
 		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
