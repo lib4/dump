@@ -79,7 +79,7 @@ public class SensorsAdapter extends BaseAdapter {
 		ViewHolder holder = (ViewHolder) rowView.getTag();
 
 		holder.sensorType.setVisibility(View.GONE);
-		JSONObject mJsonObject;
+		JSONObject mJsonObject = null;
 		try {
 			mJsonObject = sensorsArray.getJSONObject(arg0);
 			holder.sensorName.setText(mJsonObject
@@ -97,7 +97,7 @@ public class SensorsAdapter extends BaseAdapter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		rowView.setTag(mJsonObject);
 		return rowView;
 	}
 

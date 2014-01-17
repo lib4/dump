@@ -1,7 +1,5 @@
 package com.appbase.fragments;
 
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -9,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -48,21 +45,12 @@ public class SensorsFragment extends BaseFragment implements
 	JSONArray sensorArray = new JSONArray();
 	BeaconManager beaconManager;
 	Region ALL_ESTIMOTE_BEACONS_REGION;
-	final int REQUEST_ENABLE_BT = 1234;
-	
-	List<Beacon> found_beacons;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		if (container == null) {
-			// We have different layouts, and in one of them this
-			// fragment's containing frame doesn't exist. The fragment
-			// may still be created from its saved state, but there is
-			// no reason to try to create its view hierarchy because it
-			// won't be displayed. Note this is not needed -- we could
-			// just run the code below, where we would create and return
-			// the view hierarchy; it would just never be used.
+
 			return null;
 		}
 
@@ -190,6 +178,13 @@ public class SensorsFragment extends BaseFragment implements
 				int size = sensorArray.length();
 				for (int k = 0; k < size; k++) {
 					JSONObject sensJsonObject = sensorArray.getJSONObject(k);
+
+					sensJsonObject.put(HttpConstants.PROXIMITY_ID_JKEY,
+							iCursor.getString(2));
+					sensJsonObject.put("major", iCursor.getInt(1));
+					sensJsonObject
+							.put("minor", sensJsonObject
+									.getInt(HttpConstants.SENSOR_ID_JKEY));
 					if (sensJsonObject.getString(HttpConstants.STATUS_JKEY)
 							.compareToIgnoreCase("Archived") != 0) {
 						String sensorType = sensJsonObject
@@ -246,73 +241,71 @@ public class SensorsFragment extends BaseFragment implements
 	public void validateSensor() {
 		// final String EXTRAS_BEACON = "extrasBeacon";
 
-		String ESTIMOTE_PROXIMITY_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
-		ALL_ESTIMOTE_BEACONS_REGION = new Region("rid",
-				ESTIMOTE_PROXIMITY_UUID, null, null);
-
-		// Configure BeaconManager.
-		beaconManager = new BeaconManager(getActivity());
-		beaconManager.setRangingListener(new BeaconManager.RangingListener() {
-			@Override
-			public void onBeaconsDiscovered(Region region,
-					final List<Beacon> beacons) {
-				found_beacons	=	beacons;
-				if (beacons.size() > 0) {
-					Beacon mBeacon = beacons.get(0);
-					Toast.makeText(
-							getActivity(),
-							"found Beacons" + beacons.size() + " Proximity  ID"
-									+ mBeacon.getProximityUUID() + " "
-									+ mBeacon.getName(), 1000).show();
-				}
-
-				// Note that results are not delivered on UI thread.
-				// runOnUiThread(new Runnable() {
-				// @Override
-				// public void run() {
-				// //getActionBar().setSubtitle("Found beacons: " +
-				// beacons.size());
-				// //adapter.replaceWith(beacons);
-				// }
-				// });
-			}
-		});
-
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
 		// Check if device supports Bluetooth Low Energy.
-		if (!beaconManager.hasBluetooth()) {
-			Toast.makeText(getActivity(),
-					"Device does not have Bluetooth Low Energy",
-					Toast.LENGTH_LONG).show();
-			return;
-		}
+		// if (!beaconManager.hasBluetooth()) {
+		// Toast.makeText(getActivity(),
+		// "Device does not have Bluetooth Low Energy",
+		// Toast.LENGTH_LONG).show();
+		// return;
+		// }
 
 		// If Bluetooth is not enabled, let user enable it.
-		if (!beaconManager.isBluetoothEnabled()) {
-			Intent enableBtIntent = new Intent(
-					BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-		} else {
-			connectToService();
-		}
+		// if (!beaconManager.isBluetoothEnabled()) {
+		// Intent enableBtIntent = new Intent(
+		// BluetoothAdapter.ACTION_REQUEST_ENABLE);
+		// startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+		// } else {
+		// connectToService();
+		// }
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
 		try {
-			beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS_REGION);
+			if (beaconManager != null)
+				beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS_REGION);
 		} catch (RemoteException e) {
 			Log.d("TAG", "Error while stopping ranging", e);
 		}
 
 	}
 
-	private void connectToService() {
+	@Override
+	public void onDestroy() {
+		if (beaconManager != null)
+			beaconManager.disconnect();
+		super.onDestroy();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+		JSONObject mJsonObject = (JSONObject) arg1.getTag();
+		try {
+			findThisBeacon(
+					mJsonObject.getString(HttpConstants.PROXIMITY_ID_JKEY),
+					mJsonObject.getInt("major"), mJsonObject.getInt("minor"));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void findThisBeacon(String proximityId, int major, int minor) {
+
+		String ESTIMOTE_PROXIMITY_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
+		ALL_ESTIMOTE_BEACONS_REGION = new Region("rid",
+				ESTIMOTE_PROXIMITY_UUID, null, null);
+
+		// Configure BeaconManager.
+		beaconManager = new BeaconManager(getActivity());
 
 		beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
 			@Override
@@ -328,42 +321,24 @@ public class SensorsFragment extends BaseFragment implements
 				}
 			}
 		});
-	}
 
-	@Override
-	public void onDestroy() {
-		beaconManager.disconnect();
-		super.onDestroy();
-	}
+		beaconManager.setRangingListener(new BeaconManager.RangingListener() {
+			@Override
+			public void onBeaconsDiscovered(Region region,
+					final List<Beacon> beacons) {
 
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				if (beacons.size() > 0) {
+					Beacon mBeacon = beacons.get(0);
+					Toast.makeText(
+							getActivity(),
+							"found Beacons" + beacons.size() + " Proximity  ID"
+									+ mBeacon.getProximityUUID() + " "
+									+ mBeacon.getName(), 1000).show();
+				}
 		
-		
-		Toast.makeText(getActivity(), "clicked "+arg2, 1000).show();
-		
-		JSONObject mJsonObject	=	(JSONObject) arg1.getTag();
-		//findThisBeacon(proximityId, major, minor);
-		// TODO Auto-generated method stub
-		//sensorArray
-	}
-	
-	public void findThisBeacon(String proximityId,int major,int minor){
-		
-		
-		Iterator mIterator	=	found_beacons.iterator();
-		
-		while(mIterator.hasNext()){
-			Beacon mBeacon	=	(Beacon) mIterator.next();
-			if(mBeacon.getProximityUUID().compareToIgnoreCase(proximityId)==0&&
-					mBeacon.getMajor()==major&&mBeacon.getMinor()==0){
-				
-				
-				
 			}
-					
-			
-		}
+		});
+
 	}
 
 }

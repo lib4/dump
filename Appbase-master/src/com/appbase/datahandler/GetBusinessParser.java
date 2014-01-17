@@ -210,7 +210,7 @@ public class GetBusinessParser {
 			}
 
 			jsonParser.close();
-			System.out.println("Values "+values.size());
+			System.out.println("Values "+values.size() +values.toString());
 			new DBManager(context).insertBusiness(values);
 		} catch (JsonGenerationException e) {
 
