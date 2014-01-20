@@ -1,6 +1,12 @@
 package com.appbase.adapters;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +16,6 @@ import android.widget.TextView;
 import com.appbase.R;
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.Utils;
-
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 
 
@@ -81,10 +81,16 @@ public class LeDeviceListAdapter extends BaseAdapter {
   private void bind(Beacon beacon, View view) {
     ViewHolder holder = (ViewHolder) view.getTag();
     holder.macTextView.setText(String.format("MAC: %s (%.2fm)", beacon.getMacAddress(), Utils.computeAccuracy(beacon)));
+    
+    //holder.rssiTextView.setText("NAME " + beacon.getRssi());
+    //holder.measuredPowerTextView.setText("Name: " + beacon.getName());
     holder.majorTextView.setText("Major: " + beacon.getMajor());
     holder.minorTextView.setText("Minor: " + beacon.getMinor());
     holder.measuredPowerTextView.setText("MPower: " + beacon.getMeasuredPower());
     holder.rssiTextView.setText("RSSI: " + beacon.getRssi());
+    
+    
+    Log.e("NAME ",""+beacon.getName() +" Major "+beacon.getMajor());
   }
 
 

@@ -28,9 +28,9 @@ import com.appbase.httphandler.HttpHandler;
 
 public class SettingsFragment extends BaseFragment {
 
-	LinearLayout  security, help_center, privacy_policy,
-			terms_of_service, liveOrdersLayout, menuManagementLayout,
-			sensor_management,logoutLayout;
+	LinearLayout security, help_center, privacy_policy, terms_of_service,
+			liveOrdersLayout, menuManagementLayout, sensor_management,
+			logoutLayout;
 	ScrollView settingsLayout;
 
 	@Override
@@ -60,12 +60,10 @@ public class SettingsFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				disableHighlight();
-				//((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
 				Intent intent = new Intent(getActivity(),
 						LiveOrderActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
 
 			}
 		});
@@ -77,11 +75,10 @@ public class SettingsFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				disableHighlight();
-			
+
 				Intent intent = new Intent(getActivity(), MenuActivity.class);
 				startActivity(intent);
-				((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
-		
+
 			}
 		});
 
@@ -92,30 +89,23 @@ public class SettingsFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getActivity(),
-				 //"Functinality yet to be implemented.", 1000).show();
+				// "Functinality yet to be implemented.", 1000).show();
 				disableHighlight();
 				Intent intent = new Intent(getActivity(), SensorsActivity.class);
 
 				startActivity(intent);
-				//BaseActivity.mDrawerLayout.closeDrawers();
-				((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
+
 			}
 		});
-		
-		
-		logoutLayout = (LinearLayout) settingsLayout
-				.findViewById(R.id.logout);
+
+		logoutLayout = (LinearLayout) settingsLayout.findViewById(R.id.logout);
 		logoutLayout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				
-				signOutAlert();
-				//Intent intent = new Intent(getActivity(), SensorsActivity.class);
 
-				//startActivity(intent);
-				//BaseActivity.mDrawerLayout.closeDrawers();
-				//((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
+				signOutAlert();
+
 			}
 		});
 
@@ -168,8 +158,6 @@ public class SettingsFragment extends BaseFragment {
 
 			}
 
-			((BaseActivity)getActivity()).mDrawerLayout.closeDrawers();
-
 		}
 	};
 
@@ -183,6 +171,12 @@ public class SettingsFragment extends BaseFragment {
 	public void onStart() {
 		super.onStart();
 		resolveHighlight();
+	}
+
+	@Override
+	public void onStop() {
+		((BaseActivity) getActivity()).mDrawerLayout.closeDrawers();
+		super.onStop();
 	}
 
 	private void resolveHighlight() {
@@ -227,28 +221,25 @@ public class SettingsFragment extends BaseFragment {
 		help_center.setPressed(false);
 		terms_of_service.setPressed(false);
 	}
-	
-	
 
 	private void signOutAlert() {
 
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-
-		// set title
-		// alertDialogBuilder.setTitle("Your Title");
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				getActivity());
 
 		// set dialog message
 		alertDialogBuilder
 				.setMessage(this.getString(R.string.logut_alert))
 				.setCancelable(true)
 				.setTitle(this.getString(R.string.app_name))
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// if this button is clicked, close
-						// current activity
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// if this button is clicked, close
+								// current activity
 
-					}
-				})
+							}
+						})
 
 				.setPositiveButton("Logout",
 						new DialogInterface.OnClickListener() {
@@ -256,8 +247,7 @@ public class SettingsFragment extends BaseFragment {
 								// if this button is clicked, close
 								// current activity
 
-								Intent intent = new Intent(
-										getActivity(),
+								Intent intent = new Intent(getActivity(),
 										LiveOrderActivity.class);
 								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								intent.putExtra("EXIT", true);
@@ -272,7 +262,7 @@ public class SettingsFragment extends BaseFragment {
 
 							}
 						});
-		
+
 		// create alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
 

@@ -77,7 +77,8 @@ public final class R {
         public static final int acknowledge_btn=0x7f0b0002;
         public static final int acknowledge_order=0x7f0b0042;
         public static final int action_add=0x7f0b0045;
-        public static final int action_logout=0x7f0b0046;
+        public static final int action_logout=0x7f0b0047;
+        public static final int action_refresh=0x7f0b0046;
         public static final int action_search=0x7f0b0040;
         public static final int action_settings=0x7f0b0041;
         public static final int amount=0x7f0b0038;
@@ -178,7 +179,8 @@ public final class R {
         public static final int order_options=0x7f0a0002;
         public static final int order_options_confirm_only=0x7f0a0003;
         public static final int sensors=0x7f0a0004;
-        public static final int settings=0x7f0a0005;
+        public static final int sensors_list=0x7f0a0005;
+        public static final int settings=0x7f0a0006;
     }
     public static final class string {
         public static final int about=0x7f080010;

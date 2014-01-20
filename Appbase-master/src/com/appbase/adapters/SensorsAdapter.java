@@ -97,7 +97,7 @@ public class SensorsAdapter extends BaseAdapter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		rowView.setTag(mJsonObject);
+		//rowView.setTag(mJsonObject);
 		return rowView;
 	}
 

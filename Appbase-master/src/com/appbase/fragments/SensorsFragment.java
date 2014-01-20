@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,7 +36,9 @@ import com.appbase.httphandler.HttpConstants;
 import com.appbase.httphandler.HttpHandler;
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.ReadCharacteristics.BeaconCharacteristics;
 import com.estimote.sdk.Region;
+import com.estimote.sdk.service.BeaconService;
 
 public class SensorsFragment extends BaseFragment implements
 		HTTPResponseListener, OnItemClickListener {
@@ -45,6 +49,7 @@ public class SensorsFragment extends BaseFragment implements
 	JSONArray sensorArray = new JSONArray();
 	BeaconManager beaconManager;
 	Region ALL_ESTIMOTE_BEACONS_REGION;
+	static ProgressDialog mDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,28 +58,43 @@ public class SensorsFragment extends BaseFragment implements
 
 			return null;
 		}
-
+		 mDialog	=	null;
 		// Inflate the layout for this fragment
 		sensorsLayout = (LinearLayout) inflater.inflate(
 				R.layout.sensors_fragment, container, false);
 		sensorsList = (ListView) sensorsLayout.findViewById(R.id.sensors_list);
-
-		new HttpHandler().getBusiness(getActivity(), this);
-		validateSensor();
+		
+		trgrGetBusiness();
 		return sensorsLayout;
+	}
+	
+	
+	private void trgrGetBusiness(){
+		
+
+		mDialog = new ProgressDialog(getActivity());
+		mDialog.setMessage(getActivity().getString(R.string.loading));
+		mDialog.setCancelable(false);
+		//mDialog.show();
+		
+		new DBManager(getActivity()).clearBusiness();
+		new HttpHandler().getBusiness(getActivity(), this);
+
 	}
 
 	@Override
 	public void onSuccess() {
-		// TODO Auto-generated method stub
-
+	
+		if (mDialog != null && mDialog.isShowing())
+			mDialog.dismiss();
 		mHandler.sendMessage(new Message());
 
 	}
 
 	@Override
 	public void onFailure(int failureCode) {
-		// TODO Auto-generated method stub
+		if (mDialog != null && mDialog.isShowing())
+			mDialog.dismiss();
 		Message message = new Message();
 		message.arg1 = failureCode;
 
@@ -185,6 +205,9 @@ public class SensorsFragment extends BaseFragment implements
 					sensJsonObject
 							.put("minor", sensJsonObject
 									.getInt(HttpConstants.SENSOR_ID_JKEY));
+
+					Log.e("Estimote>>> name",
+							"" + sensJsonObject.getString("name"));
 					if (sensJsonObject.getString(HttpConstants.STATUS_JKEY)
 							.compareToIgnoreCase("Archived") != 0) {
 						String sensorType = sensJsonObject
@@ -238,30 +261,11 @@ public class SensorsFragment extends BaseFragment implements
 
 	}
 
-	public void validateSensor() {
-		// final String EXTRAS_BEACON = "extrasBeacon";
 
-	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		// Check if device supports Bluetooth Low Energy.
-		// if (!beaconManager.hasBluetooth()) {
-		// Toast.makeText(getActivity(),
-		// "Device does not have Bluetooth Low Energy",
-		// Toast.LENGTH_LONG).show();
-		// return;
-		// }
-
-		// If Bluetooth is not enabled, let user enable it.
-		// if (!beaconManager.isBluetoothEnabled()) {
-		// Intent enableBtIntent = new Intent(
-		// BluetoothAdapter.ACTION_REQUEST_ENABLE);
-		// startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-		// } else {
-		// connectToService();
-		// }
 	}
 
 	@Override
@@ -329,15 +333,19 @@ public class SensorsFragment extends BaseFragment implements
 
 				if (beacons.size() > 0) {
 					Beacon mBeacon = beacons.get(0);
+					
+					 
 					Toast.makeText(
 							getActivity(),
 							"found Beacons" + beacons.size() + " Proximity  ID"
 									+ mBeacon.getProximityUUID() + " "
 									+ mBeacon.getName(), 1000).show();
 				}
-		
+
 			}
 		});
+		
+		
 
 	}
 

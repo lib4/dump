@@ -181,7 +181,8 @@ public class BaseActivity extends Activity {
 		super.onPostCreate(savedInstanceState);
 		Log.e("OnPostCreetae","Create");
 		// Sync the toggle state after onRestoreInstanceState has occurred.
-	 if(savedInstanceState!=null&&savedInstanceState.get("FromDealDetails")!=null){
+	 if(savedInstanceState!=null&&savedInstanceState.get("FromDealDetails")!=null||
+			 savedInstanceState!=null&&savedInstanceState.get("FromSensorsList")!=null){
 		 
 	 }else{
 		mDrawerToggle.syncState();

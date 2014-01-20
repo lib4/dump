@@ -2,7 +2,6 @@ package com.appbase.activities;
 
 import org.json.JSONException;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;

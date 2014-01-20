@@ -162,7 +162,7 @@ public class LiveOrderFragment extends BaseFragment implements
 		new DBManager(getActivity()).clearLiveOrders();
 		mDialog = new ProgressDialog(getActivity());
 		mDialog.setMessage(getActivity().getString(R.string.loading));
-		mDialog.setCancelable(false);
+		mDialog.setCancelable(true);
 		mDialog.show();
 		new HttpHandler().getLiveOrders(getActivity(), this);
 	}

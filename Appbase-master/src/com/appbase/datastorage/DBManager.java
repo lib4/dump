@@ -142,6 +142,18 @@ public class DBManager {
 	
 	
 	/**
+	 * Flush the data in Business Table
+	 */
+	public void clearBusiness() {
+
+		open();
+		long insertId = appSqLiteDatabase.delete(
+				AppSqliteHelper.TABLE_BUSINESS, null, null);
+		close();
+
+	}
+	
+	/**
 	 * Flush the data in Menus  Table
 	 */
 	public void clearDB() {
@@ -153,6 +165,9 @@ public class DBManager {
 				AppSqliteHelper.TABLE_CATALOGS, null, null);
 		 insertId = appSqLiteDatabase.delete(
 				AppSqliteHelper.TABLE_LIVE_ORDERS, null, null);
+		 
+		 insertId = appSqLiteDatabase.delete(
+					AppSqliteHelper.TABLE_BUSINESS, null, null);
 		close();
 
 	}

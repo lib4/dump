@@ -2,7 +2,10 @@ package com.appbase.httphandler;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +19,7 @@ import com.appbase.datahandler.LiveOrderParser;
 import com.appbase.datahandler.SignInParser;
 import com.appbase.network.Connection;
 import com.appbase.utils.Utils;
+import com.estimote.sdk.Beacon;
 
 public class HttpHandler extends Thread {
 
@@ -29,6 +33,7 @@ public class HttpHandler extends Thread {
 	public static String GET_MENUS = BASE_URL + "/catalogs";
 	public static String LOGUT_URL = BASE_URL + "/account/signout";
 	public static String BUSINESS_URL	=	BASE_URL+"/settings/business";
+	public static String SENSORS_URL	=	BASE_URL+"/sensors/active";
 
 	public static final String HTTP_POST = "POST";
 	public static final String HTTP_GET = "GET";
@@ -39,6 +44,7 @@ public class HttpHandler extends Thread {
 	final int GET_LIVE_ORDER_ACTION_API_CODE = GET_MENUS_API_CODE + 1;
 	final int LOGOUT_API_CODE = GET_LIVE_ORDER_ACTION_API_CODE + 1;
 	final int BUSINESS_API_CODE = LOGOUT_API_CODE + 1;
+	final int GET_SENSORS_API_CODE = BUSINESS_API_CODE + 1;
 	public static final int NO_NETWORK_CODE = 999;
 	public static final int DEFAULT_CODE = 1;
 	String URL;
@@ -157,6 +163,54 @@ public class HttpHandler extends Thread {
 		requestType = HTTP_GET;
 		start();
 	}
+	
+	
+	
+	/**
+	 * 
+	 * SENSORS Function calls the ServerConnection gateway once the response is
+	 * received Response will sent to appropriate response handled method. which
+	 * in turn stores the data in to RecordStore. 
+	 */
+	public void getSensors(Context context,HTTPResponseListener mHttpResponseListener,List<Beacon> mBeacons) {
+
+		URL = SENSORS_URL;
+		this.context = context;
+		this.mHttpResponseListener = mHttpResponseListener;
+		Iterator mIterator	=	mBeacons.iterator();
+		JSONArray sensJsonArray	=	new JSONArray();
+		while(mIterator.hasNext()){
+			
+			Beacon mBeacon	=	(Beacon) mIterator.next();
+			JSONObject sensorObject 	=	new JSONObject();
+			try {
+				sensorObject.put(HttpConstants.PROXIMITY_ID_JKEY, mBeacon.getProximityUUID());
+				sensorObject.put("major", mBeacon.getMajor());
+				sensorObject.put("minor", mBeacon.getMinor());
+				sensJsonArray.put(sensorObject);
+			
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+		JSONObject requestObject	=	new JSONObject();
+		try{
+	
+		requestObject.put("sensors", sensJsonArray);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		requestBody = requestObject.toString();
+		
+		System.out.println("Request "+requestBody.toString());
+		REQUEST_API_CODE = GET_SENSORS_API_CODE;
+		requestType = HTTP_POST;
+		start();
+	}
 
 	/**
 	 * 
@@ -268,6 +322,7 @@ public class HttpHandler extends Thread {
 				break;
 
 			case GET_LIVE_ORDER_ACTION_API_CODE:
+			case GET_SENSORS_API_CODE:
 				switch (mConnection.responseCode) {
 				// case 200:
 				// String myString = IOUtils.toString(myInputStream, "UTF-8");
@@ -292,11 +347,19 @@ public class HttpHandler extends Thread {
 
 					}
 
-					//System.out.println(sb.toString());
+					System.out.println(sb.toString());
+					mHttpResponseListener.onSuccess();
 					break;
 				}
 				break;
+			
+
+			default:
+				mHttpResponseListener.onFailure(DEFAULT_CODE);
+				break;
 			}
+		
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
