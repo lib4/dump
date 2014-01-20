@@ -179,10 +179,11 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		Log.e("OnPostCreetae","Create");
+	
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 	 if(savedInstanceState!=null&&savedInstanceState.get("FromDealDetails")!=null||
-			 savedInstanceState!=null&&savedInstanceState.get("FromSensorsList")!=null){
+			 savedInstanceState!=null&&savedInstanceState.get("FromSensorsList")!=null||
+					 savedInstanceState!=null&&savedInstanceState.get("FromSensorDetails")!=null){
 		 
 	 }else{
 		mDrawerToggle.syncState();
@@ -192,7 +193,7 @@ public class BaseActivity extends Activity {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		Log.e("OnPostCreetae","onConfigurationChanged");
+		
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}

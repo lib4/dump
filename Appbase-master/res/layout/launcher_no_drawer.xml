@@ -8,7 +8,7 @@
         android:id="@+id/fragment_holder"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#FFFFFF"
+         android:background="@color/pane_background_color"
         android:orientation="vertical" >
     </FrameLayout>
 

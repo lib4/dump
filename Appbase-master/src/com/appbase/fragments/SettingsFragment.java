@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.appbase.R;
 import com.appbase.activities.BaseActivity;
@@ -21,7 +19,6 @@ import com.appbase.activities.MenuActivity;
 import com.appbase.activities.PrivacyPolicyActivity;
 import com.appbase.activities.SecurityActivity;
 import com.appbase.activities.SensorsActivity;
-import com.appbase.activities.SettingsActivity;
 import com.appbase.activities.TermsOfServiceActivity;
 import com.appbase.datastorage.DBManager;
 import com.appbase.httphandler.HttpHandler;
@@ -184,7 +181,7 @@ public class SettingsFragment extends BaseFragment {
 		String callingActyivityName = getActivity().getComponentName()
 				.getClassName();
 		String packageName = "com.appbase.Activities.";
-		System.out.println("Get package name >>>> " + packageName);
+		
 		if (callingActyivityName.equalsIgnoreCase(packageName
 				+ "LiveOrderActivity")) {
 			liveOrdersLayout.setPressed(true);

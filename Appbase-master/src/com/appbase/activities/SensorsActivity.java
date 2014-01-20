@@ -1,18 +1,17 @@
 package com.appbase.activities;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.appbase.R;
-import com.appbase.fragments.MenuFragment;
 import com.appbase.fragments.SensorsFragment;
+import com.appbase.utils.Utils;
 
 public class SensorsActivity extends BaseActivity {
 
@@ -48,20 +47,13 @@ public class SensorsActivity extends BaseActivity {
 	}
 	
 	
-	
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.sensors, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
 	/**
 	 * On selecting action bar icons
 	 * */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+
+		// Take appropriate action for each action item click
 
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -70,18 +62,31 @@ public class SensorsActivity extends BaseActivity {
 		    }
 			
 			return true;
-	
-		case R.id.action_add:
-			Log.e("Tapped","tapped");
-			
-			Intent intent = new Intent(SensorsActivity.this, SensorsListActivity.class);
-			startActivity(intent);
-		break;
 
 		}
 		return super.onOptionsItemSelected(item);
 
 	}
+
+
+	 @Override
+	  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		 
+		 Log.e("On Activity Result","on  Activity result.");
+	    if (requestCode == Utils.REQUEST_ENABLE_BT) {
+	      if (resultCode == Activity.RESULT_OK) {
+	    	  if(mSensorsFragment!=null){
+	    		  mSensorsFragment.findThisBeacon(mSensorsFragment.ProximityId, 
+	    				  mSensorsFragment.major, mSensorsFragment.minor, mSensorsFragment.itemindex);
+	    	  }
+	      } else {
+	        Toast.makeText(this, "Bluetooth not enabled", Toast.LENGTH_LONG).show();
+	        getActionBar().setSubtitle("Bluetooth not enabled");
+	      }
+	    }
+	    super.onActivityResult(requestCode, resultCode, data);
+	  }
+
 	
 	
 }

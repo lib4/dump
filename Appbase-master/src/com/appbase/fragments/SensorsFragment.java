@@ -1,5 +1,7 @@
 package com.appbase.fragments;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -8,7 +10,7 @@ import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -29,16 +31,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appbase.R;
+import com.appbase.activities.SensorDetailsActivity;
 import com.appbase.adapters.SensorsAdapter;
 import com.appbase.datastorage.DBManager;
 import com.appbase.httphandler.HTTPResponseListener;
 import com.appbase.httphandler.HttpConstants;
 import com.appbase.httphandler.HttpHandler;
+import com.appbase.utils.Utils;
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
-import com.estimote.sdk.ReadCharacteristics.BeaconCharacteristics;
 import com.estimote.sdk.Region;
-import com.estimote.sdk.service.BeaconService;
 
 public class SensorsFragment extends BaseFragment implements
 		HTTPResponseListener, OnItemClickListener {
@@ -50,6 +52,8 @@ public class SensorsFragment extends BaseFragment implements
 	BeaconManager beaconManager;
 	Region ALL_ESTIMOTE_BEACONS_REGION;
 	static ProgressDialog mDialog;
+	public String ProximityId;
+	public int major, minor, itemindex;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,25 +62,22 @@ public class SensorsFragment extends BaseFragment implements
 
 			return null;
 		}
-		 mDialog	=	null;
+		mDialog = null;
 		// Inflate the layout for this fragment
 		sensorsLayout = (LinearLayout) inflater.inflate(
 				R.layout.sensors_fragment, container, false);
 		sensorsList = (ListView) sensorsLayout.findViewById(R.id.sensors_list);
-		
-		trgrGetBusiness();
-		return sensorsLayout;
-	}
-	
-	
-	private void trgrGetBusiness(){
-		
-
 		mDialog = new ProgressDialog(getActivity());
 		mDialog.setMessage(getActivity().getString(R.string.loading));
 		mDialog.setCancelable(false);
-		//mDialog.show();
-		
+		trgrGetBusiness();
+		return sensorsLayout;
+	}
+
+	private void trgrGetBusiness() {
+
+		mDialog.show();
+
 		new DBManager(getActivity()).clearBusiness();
 		new HttpHandler().getBusiness(getActivity(), this);
 
@@ -84,17 +85,15 @@ public class SensorsFragment extends BaseFragment implements
 
 	@Override
 	public void onSuccess() {
-	
-		if (mDialog != null && mDialog.isShowing())
-			mDialog.dismiss();
+
+		dismissProgressDialog();
 		mHandler.sendMessage(new Message());
 
 	}
 
 	@Override
 	public void onFailure(int failureCode) {
-		if (mDialog != null && mDialog.isShowing())
-			mDialog.dismiss();
+		dismissProgressDialog();
 		Message message = new Message();
 		message.arg1 = failureCode;
 
@@ -106,14 +105,14 @@ public class SensorsFragment extends BaseFragment implements
 
 		public void handleMessage(Message msg) {
 
-			Log.e("HANDLER ", "HANDLER ");
-
 			if (msg.arg1 == HttpHandler.NO_NETWORK_CODE) {
 
 				showNoNetworkAlertDialog();
 			} else if (msg.arg1 == HttpHandler.DEFAULT_CODE) {// Empty Message
-																// layout.
 
+				TextView no_sensors = (TextView) sensorsLayout
+						.findViewById(R.id.no_active_sensors);
+				no_sensors.setVisibility(View.VISIBLE);
 			}
 
 			else {
@@ -140,6 +139,239 @@ public class SensorsFragment extends BaseFragment implements
 			}
 		}
 	};
+
+	private JSONArray setSensorsArray(Cursor iCursor) {
+		boolean displaySensorType_Estimote = true;
+		boolean displaySensorType_AirSensor = true;
+		sensorArray = new JSONArray();
+		JSONArray airsensorArray = new JSONArray();
+
+		if (iCursor == null) {
+			return null;
+		}
+
+		try {
+			if (!iCursor.isClosed() && iCursor.moveToNext() != false) {
+
+				JSONObject mJsonObject = new JSONObject(iCursor.getString(3));
+				JSONArray sensorArray = mJsonObject
+						.getJSONArray(HttpConstants.SENSORS_JKEY);
+				int size = sensorArray.length();
+				for (int k = 0; k < size; k++) {
+					JSONObject sensJsonObject = sensorArray.getJSONObject(k);
+
+					sensJsonObject.put(HttpConstants.PROXIMITY_ID_JKEY,
+							iCursor.getString(2));
+					sensJsonObject.put(HttpConstants.MAJOR_JKEY,
+							iCursor.getInt(1));
+					sensJsonObject
+							.put(HttpConstants.MINOR_JKEY, sensJsonObject
+									.getInt(HttpConstants.SENSOR_ID_JKEY));
+
+					if (sensJsonObject.getString(HttpConstants.STATUS_JKEY)
+							.compareToIgnoreCase("Archived") != 0) {
+						String sensorType = sensJsonObject
+								.optString(HttpConstants.TYPE_JKEY);
+						if (sensorType
+								.compareToIgnoreCase(HttpConstants.ESTIMOTE) == 0) {
+							if (displaySensorType_Estimote) {
+								sensJsonObject.put(
+										HttpConstants.DISPLAY_SENSOR_TYPE_JKEY,
+										HttpConstants.ESTIMOTE);
+								displaySensorType_Estimote = false;
+							}
+							this.sensorArray.put(sensJsonObject);
+						} else {
+							if (displaySensorType_AirSensor) {
+								sensJsonObject.put(
+										HttpConstants.DISPLAY_SENSOR_TYPE_JKEY,
+										HttpConstants.AIRSENSOR);
+								displaySensorType_AirSensor = false;
+							}
+							airsensorArray.put(sensJsonObject);
+						}
+
+					}
+
+				}
+
+			}
+
+			concatArray(airsensorArray);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return sensorArray;
+
+	}
+
+	private void concatArray(JSONArray arr) throws JSONException {
+
+		for (int i = 0; i < arr.length(); i++) {
+
+			sensorArray.put(sensorArray.length(), arr.get(i));
+		}
+
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		try {
+			if (beaconManager != null)
+				beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS_REGION);
+		} catch (RemoteException e) {
+			Log.d("TAG", "Error while stopping ranging", e);
+		}
+
+	}
+
+	@Override
+	public void onDestroy() {
+		if (beaconManager != null)
+			beaconManager.disconnect();
+		super.onDestroy();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+		try {
+			JSONObject mJsonObject = (JSONObject) sensorArray.get(arg2);
+			String sensorType = mJsonObject.optString(HttpConstants.TYPE_JKEY);
+			String validated = mJsonObject
+					.optString(HttpConstants.VALIDATE_STATUS);
+			if ((sensorType.compareToIgnoreCase(HttpConstants.ESTIMOTE) == 0
+					&& (!validated.isEmpty() && validated
+							.compareToIgnoreCase(HttpConstants.FAILURE) == 0) || (sensorType
+					.compareToIgnoreCase(HttpConstants.ESTIMOTE) == 0 && validated
+					.isEmpty()))) {
+				showValidateAlert(
+						mJsonObject.getString(HttpConstants.PROXIMITY_ID_JKEY),
+						mJsonObject.getInt(HttpConstants.MAJOR_JKEY),
+						mJsonObject.getInt(HttpConstants.MINOR_JKEY), arg2);
+			} else if (sensorType.compareToIgnoreCase(HttpConstants.ESTIMOTE) == 0
+					&& (!validated.isEmpty() && validated
+							.compareToIgnoreCase(HttpConstants.SUCCESS) == 0)) {
+				loadSensorDetailsFragment();
+			}
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void findThisBeacon(String proximityId, int major, int minor,
+			final int itemindex) {
+		
+		this.ProximityId	=	proximityId;
+		this.major			=	major;
+		this.minor			=	minor;
+		this.itemindex		=	itemindex;
+		
+		
+		String ESTIMOTE_PROXIMITY_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
+		ALL_ESTIMOTE_BEACONS_REGION = new Region("rid",
+				ESTIMOTE_PROXIMITY_UUID, 65000, 65000);
+
+		// Configure BeaconManager.
+		beaconManager = new BeaconManager(getActivity());
+		beaconManager.setBackgroundScanPeriod(3000, 1000);
+		beaconManager.setForegroundScanPeriod(3000, 1000);
+
+		beaconManager.setRangingListener(new BeaconManager.RangingListener() {
+			@Override
+			public void onBeaconsDiscovered(Region region,
+					final List<Beacon> beacons) {
+
+				if (beacons.size() > 0) {
+					try {
+						dismissProgressDialog();
+						beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS_REGION);
+						beaconManager.disconnect();
+						updateValidationStatus(itemindex, HttpConstants.SUCCESS);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+
+				} else {
+					try {
+						dismissProgressDialog();
+						beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS_REGION);
+						beaconManager.disconnect();
+						updateValidationStatus(itemindex, HttpConstants.FAILURE);
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+					noSensorAlert();
+				}
+
+			}
+
+		});
+
+		beaconManager.setErrorListener(new BeaconManager.ErrorListener() {
+
+			@Override
+			public void onError(Integer arg0) {
+
+				try {
+
+					dismissProgressDialog();
+					beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS_REGION);
+					beaconManager.disconnect();
+					updateValidationStatus(itemindex, HttpConstants.FAILURE);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				noSensorAlert();
+
+				Log.e("error", "error");
+			}
+		});
+
+		// Check if device supports Bluetooth Low Energy.
+		if (!beaconManager.hasBluetooth()) {
+			dismissProgressDialog();
+			Toast.makeText(getActivity(),
+					"Device does not have Bluetooth Low Energy",
+					Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		// If Bluetooth is not enabled, let user enable it.
+		if (!beaconManager.isBluetoothEnabled()) {
+			dismissProgressDialog();
+			Intent enableBtIntent = new Intent(
+					BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			startActivityForResult(enableBtIntent, Utils.REQUEST_ENABLE_BT);
+		} else {
+			beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+				@Override
+				public void onServiceReady() {
+					try {
+						beaconManager.startRanging(ALL_ESTIMOTE_BEACONS_REGION);
+					} catch (RemoteException e) {
+						Toast.makeText(
+								getActivity(),
+								"Cannot start ranging, something terrible happened",
+								Toast.LENGTH_LONG).show();
+
+					}
+				}
+			});
+		}
+
+	}
 
 	private void showNoNetworkAlertDialog() {
 
@@ -179,174 +411,115 @@ public class SensorsFragment extends BaseFragment implements
 		alertDialog.show();
 	}
 
-	private JSONArray setSensorsArray(Cursor iCursor) {
-		boolean displaySensorType_Estimote = true;
-		boolean displaySensorType_AirSensor = true;
-		sensorArray = new JSONArray();
-		JSONArray airsensorArray = new JSONArray();
+	private void showValidateAlert(final String proximityId, final int major,
+			final int minor, final int itemindex) {
 
-		if (iCursor == null) {
-			return null;
-		}
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				getActivity());
+		alertDialogBuilder
+				.setMessage(
+						getActivity().getString(R.string.alert_validate_sensor))
+				.setCancelable(false)
+				.setNegativeButton(
+						getActivity().getString(R.string.cancel_btn),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// if this button is clicked, close
+								// current activity
+
+							}
+						})
+
+				.setPositiveButton(
+						getActivity().getString(R.string.validate_btn),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// if this button is clicked, close
+								// current activity
+								mDialog.setMessage(getActivity().getText(
+										R.string.please_wait_validating));
+								mDialog.show();
+								findThisBeacon(proximityId, major, minor,
+										itemindex);
+							}
+						});
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+	}
+
+	private void noSensorAlert() {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				getActivity());
+		alertDialogBuilder
+				.setMessage(
+						getActivity().getString(R.string.could_not_find_sensor))
+				.setCancelable(false)
+				.setNegativeButton(
+						getActivity().getString(R.string.cancel_btn),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// if this button is clicked, close
+								// current activity
+
+							}
+						})
+
+				.setPositiveButton(getActivity().getString(R.string.archive),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// if this button is clicked, close
+								// current activity
+
+							}
+						});
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+	}
+
+	private void dismissProgressDialog() {
+		if (mDialog != null && mDialog.isShowing())
+			mDialog.dismiss();
+	}
+
+	private void updateValidationStatus(int itemIndex, String status) {
 
 		try {
-			if (!iCursor.isClosed() && iCursor.moveToNext() != false) {
 
-				JSONObject mJsonObject = new JSONObject(iCursor.getString(3));
-				JSONArray sensorArray = mJsonObject
-						.getJSONArray(HttpConstants.SENSORS_JKEY);
-				int size = sensorArray.length();
-				for (int k = 0; k < size; k++) {
-					JSONObject sensJsonObject = sensorArray.getJSONObject(k);
-
-					sensJsonObject.put(HttpConstants.PROXIMITY_ID_JKEY,
-							iCursor.getString(2));
-					sensJsonObject.put("major", iCursor.getInt(1));
-					sensJsonObject
-							.put("minor", sensJsonObject
-									.getInt(HttpConstants.SENSOR_ID_JKEY));
-
-					Log.e("Estimote>>> name",
-							"" + sensJsonObject.getString("name"));
-					if (sensJsonObject.getString(HttpConstants.STATUS_JKEY)
-							.compareToIgnoreCase("Archived") != 0) {
-						String sensorType = sensJsonObject
-								.optString(HttpConstants.TYPE_JKEY);
-						if (sensorType.compareToIgnoreCase("ESTIMOTE") == 0) {
-							if (displaySensorType_Estimote) {
-								sensJsonObject.put("displaySensorType",
-										"ESTIMOTE");
-								displaySensorType_Estimote = false;
-							}
-							this.sensorArray.put(sensJsonObject);
-						} else {
-							if (displaySensorType_AirSensor) {
-								sensJsonObject.put("displaySensorType",
-										"AIRSENSOR");
-								displaySensorType_AirSensor = false;
-							}
-							airsensorArray.put(sensJsonObject);
-						}
-
-					}
-
-				}
-
-			}
-
-			concatArray(airsensorArray);
-			System.out.println("ARRAY " + sensorArray);
-
+			String pattern = "MMM dd, hh:mm a";
+			SimpleDateFormat format = new SimpleDateFormat(pattern);
+			JSONObject mJsonObject = (JSONObject) sensorArray.get(itemIndex);
+			mJsonObject.put(HttpConstants.VALIDATE_STATUS, status);
+			mJsonObject.put(HttpConstants.VALIDATE_TIME,
+					"" + format.format(Calendar.getInstance().getTime()));
+			mSensorsAdapter.notifyDataSetChanged();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return sensorArray;
+	}
+
+	private void trgrArchiveSensor(int itemIndex) {
 
 	}
 
-	/*
-	 * private JSONArray concatArray(JSONArray... arrs) throws JSONException {
-	 * JSONArray result = new JSONArray(); for (JSONArray arr : arrs) { for (int
-	 * i = 0; i < arr.length(); i++) { result.put(arr.get(i)); } } return
-	 * result; }
+	/**
+	 * Load the SensorDetailsFragment
+	 * 
 	 */
 
-	private void concatArray(JSONArray arr) throws JSONException {
+	private void loadSensorDetailsFragment() {
 
-		for (int i = 0; i < arr.length(); i++) {
-
-			sensorArray.put(sensorArray.length(), arr.get(i));
-		}
+		Intent intent = new Intent(getActivity(), SensorDetailsActivity.class);
+		startActivity(intent);
 
 	}
-
-
-
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		try {
-			if (beaconManager != null)
-				beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS_REGION);
-		} catch (RemoteException e) {
-			Log.d("TAG", "Error while stopping ranging", e);
-		}
-
-	}
-
-	@Override
-	public void onDestroy() {
-		if (beaconManager != null)
-			beaconManager.disconnect();
-		super.onDestroy();
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-
-		JSONObject mJsonObject = (JSONObject) arg1.getTag();
-		try {
-			findThisBeacon(
-					mJsonObject.getString(HttpConstants.PROXIMITY_ID_JKEY),
-					mJsonObject.getInt("major"), mJsonObject.getInt("minor"));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	public void findThisBeacon(String proximityId, int major, int minor) {
-
-		String ESTIMOTE_PROXIMITY_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
-		ALL_ESTIMOTE_BEACONS_REGION = new Region("rid",
-				ESTIMOTE_PROXIMITY_UUID, null, null);
-
-		// Configure BeaconManager.
-		beaconManager = new BeaconManager(getActivity());
-
-		beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
-			@Override
-			public void onServiceReady() {
-				try {
-					beaconManager.startRanging(ALL_ESTIMOTE_BEACONS_REGION);
-				} catch (RemoteException e) {
-					Toast.makeText(
-							getActivity(),
-							"Cannot start ranging, something terrible happened",
-							Toast.LENGTH_LONG).show();
-					Log.e("TAG", "Cannot start ranging", e);
-				}
-			}
-		});
-
-		beaconManager.setRangingListener(new BeaconManager.RangingListener() {
-			@Override
-			public void onBeaconsDiscovered(Region region,
-					final List<Beacon> beacons) {
-
-				if (beacons.size() > 0) {
-					Beacon mBeacon = beacons.get(0);
-					
-					 
-					Toast.makeText(
-							getActivity(),
-							"found Beacons" + beacons.size() + " Proximity  ID"
-									+ mBeacon.getProximityUUID() + " "
-									+ mBeacon.getName(), 1000).show();
-				}
-
-			}
-		});
-		
-		
-
-	}
-
 }

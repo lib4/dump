@@ -83,12 +83,12 @@
 
         <ImageView
             android:id="@+id/tick_image"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/lin"
             android:layout_margin="2dp"
-            android:background="@drawable/ic_tick"
+            android:background="@drawable/ic_tick_mark"
             android:visibility="gone" />
     </RelativeLayout>
 

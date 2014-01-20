@@ -21,7 +21,7 @@ import com.appbase.fragments.DealsDetailsFragment;
 import com.appbase.fragments.MenuFragment;
 
 public class MenuActivity extends BaseActivity implements
-		SearchView.OnQueryTextListener, SearchView.OnCloseListener  {
+		SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
 	MenuFragment mMenuFragment;
 
@@ -38,8 +38,6 @@ public class MenuActivity extends BaseActivity implements
 		}
 		resolveWidth();
 		initializeDrawer();
-		
-
 
 	}
 
@@ -159,7 +157,7 @@ public class MenuActivity extends BaseActivity implements
 				.getActionView();
 		searchView.setOnQueryTextListener(this);
 		searchView.setOnCloseListener(this);
-		
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -171,10 +169,10 @@ public class MenuActivity extends BaseActivity implements
 
 		switch (item.getItemId()) {
 		case android.R.id.home:
-		     if (mDrawerToggle.onOptionsItemSelected(item)) {
-		            return true;
-		    }
-			
+			if (mDrawerToggle.onOptionsItemSelected(item)) {
+				return true;
+			}
+
 			return true;
 
 		}
@@ -185,7 +183,7 @@ public class MenuActivity extends BaseActivity implements
 	@Override
 	public boolean onClose() {
 		// TODO Auto-generated method stub
-		
+
 		return false;
 	}
 
@@ -213,7 +211,5 @@ public class MenuActivity extends BaseActivity implements
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 	}
-	
-	
 
 }

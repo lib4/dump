@@ -5,15 +5,20 @@
     android:orientation="vertical" >
     <ListView 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:drawSelectorOnTop="true"
         android:id="@+id/sensors_list">
         
     </ListView>
     <TextView 
         android:id="@+id/no_active_sensors"
+          android:layout_height="match_parent"
+        style="@style/SubTitleHeader"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+      
         android:text="@string/no_active_sensors"
         />
 </LinearLayout>

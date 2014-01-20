@@ -58,17 +58,13 @@ public class SignInFragment extends BaseFragment implements
 				false);
 		init();
 		if (savedInstanceState != null) {
-			System.out.println("Save instance oncreate not null");
+			
 			emailAddress_str = savedInstanceState
 					.getString("emailAddress_edtTxt");
 			password_str = savedInstanceState.getString("password_edtTxt");
 
 		}
-		System.out.println("Save instance oncreate outside");
-
-		System.out.println("emailAddrss "
-				+ emailAddress_edtTxt.getText().toString());
-
+		
 		if (emailAddress_str != null)
 			emailAddress_edtTxt.setText(emailAddress_str);
 		if (password_str != null)
@@ -197,7 +193,7 @@ public class SignInFragment extends BaseFragment implements
 				.toString());
 		outState.putString("password_edtTxt", password_edtTxt.getText()
 				.toString());
-		System.out.println("Save instance");
+	
 
 	}
 

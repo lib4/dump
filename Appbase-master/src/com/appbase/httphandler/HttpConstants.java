@@ -92,10 +92,16 @@ public class HttpConstants {
 	public static final String ADVERTISING_INTERVAL_JKEY	=	"advertisingInterval";
 	public static final String TX_POWER_JKEY	=	"txPower";
 	
+	public static final String	MAJOR_JKEY	=	"major";
+	public static final String	MINOR_JKEY	=	"minor";
+	
+	public static final String	DISPLAY_SENSOR_TYPE_JKEY	=	"displaySensorType";
 	
 	
-	
-	
-	
-	
+	public static final String	ESTIMOTE	=	"ESTIMOTE";
+	public static final String	AIRSENSOR	=	"AIRSENSOR";
+	public static final String	VALIDATE_STATUS	=	"validation_status";
+	public static final String	FAILURE	=	"failure";
+	public static final String	SUCCESS	=	"success";
+	public static final String	VALIDATE_TIME	=	"validation_status_time";
 }

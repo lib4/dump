@@ -34,6 +34,7 @@ import com.appbase.R;
 import com.appbase.androidquery.AQuery;
 import com.appbase.androidquery.callback.AjaxStatus;
 import com.appbase.androidquery.callback.BitmapAjaxCallback;
+import com.appbase.fragments.LiveOrderFragment;
 import com.appbase.httphandler.HTTPResponseListener;
 import com.appbase.httphandler.HttpHandler;
 
@@ -71,12 +72,12 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 
 	}
 
-	public void createLayout(Cursor mCursor) {
-	
-		ITEM_DRAWN_INDEX=0;
-		
+	public void createLayout(Cursor mCursor, final LiveOrderFragment mFragment) {
+
+		ITEM_DRAWN_INDEX = 0;
+
 		removeAllViews();
-		NextLayout	=	null;
+		NextLayout = null;
 		ViewTreeObserver vto = getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
@@ -89,6 +90,9 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 
 				if (ITEM_DRAWN_INDEX >= TOTAL_NUM_ITEMS) {
 
+					if (mFragment != null) {
+						mFragment.updateScrollPosition();
+					}
 					ViewTreeObserver obs = getViewTreeObserver();
 
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -110,10 +114,9 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 		if (SCREEN_WIDTH > 1200) {
 			NUM_COLUMN = SCREEN_WIDTH / 400;
 		}
-		
-	
+
 		for (int i = 0; i < NUM_COLUMN; i++) {
-			
+
 			LinearLayout mLinearLayout = new LinearLayout(context);
 			mLinearLayout.setLayoutParams(new LayoutParams(SCREEN_WIDTH
 					/ NUM_COLUMN, LayoutParams.WRAP_CONTENT));
@@ -124,7 +127,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 			addView(mLinearLayout);
 
 		}
-	
+
 		draw(0);
 
 	}
@@ -132,7 +135,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	private void draw(int itemIndex) {
 
 		try {
-			System.out.println("Drawing "+itemIndex);
+			System.out.println("Drawing " + itemIndex);
 			if (liveOrderCursor != null) {
 				liveOrderCursor.moveToPosition(itemIndex);
 				if (NextLayout == null) {
@@ -141,22 +144,23 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 				LayoutInflater mLayoutInflater = LayoutInflater.from(context);
 				FrameLayout mLinearLayout = (FrameLayout) mLayoutInflater
 						.inflate(R.layout.tiles, null);
-				
-				//mLinearLayout.setTag(liveOrderCursor.getString(2));// SettingId
-				ImageButton popMenuIcon	=	(ImageButton) mLinearLayout.findViewById(R.id.pop_menu);
+
+				ImageButton popMenuIcon = (ImageButton) mLinearLayout
+						.findViewById(R.id.pop_menu);
 				mLinearLayout.startAnimation(AnimationUtils.loadAnimation(
 						context, R.anim.scale_alpha));
-				
-				if (liveOrderCursor.getString(3).compareToIgnoreCase("Pending") == 0){
-					
-					ImageView mImageView	=	((ImageView) mLinearLayout.findViewById(R.id.tick_image));
+
+				if (liveOrderCursor.getString(3).compareToIgnoreCase("Pending") == 0) {
+
+					ImageView mImageView = ((ImageView) mLinearLayout
+							.findViewById(R.id.tick_image));
 					popMenuIcon.setTag(mLinearLayout);
 					mImageView.setTag(liveOrderCursor.getString(2));
 					popMenuIcon.setOnClickListener(TileClickLister);
-				}
-				else {
-					
-					ImageView mImageView	=	((ImageView) mLinearLayout.findViewById(R.id.tick_image));
+				} else {
+
+					ImageView mImageView = ((ImageView) mLinearLayout
+							.findViewById(R.id.tick_image));
 					mImageView.setTag(liveOrderCursor.getString(2));
 					mImageView.setVisibility(View.VISIBLE);
 					popMenuIcon.setTag(mLinearLayout);
@@ -174,7 +178,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 					price = "$" + price;
 				}
 
-				price	=	"("+price+")";
+				price = "(" + price + ")";
 				amount.setText("" + price);
 				LinearLayout itemLinearLayout = (LinearLayout) mLinearLayout
 						.findViewById(R.id.itemsLayout);
@@ -227,7 +231,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				 		
+
 				NextLayout.addView(mLinearLayout);
 			}
 		} catch (Exception e) {
@@ -237,186 +241,59 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	}
 
 	public OnClickListener TileClickLister = new OnClickListener() {
-		
 
 		@Override
 		public void onClick(final View v) {
-			
-			
-			
-			
-	           //Creating the instance of PopupMenu  
-            PopupMenu popup = new PopupMenu(context, v);  
-            final FrameLayout mLinearLayout	=	(FrameLayout) v.getTag();
-            
-            final ImageView mTickImage	=	(ImageView) mLinearLayout.findViewById(R.id.tick_image);
-            if(mTickImage.getVisibility()==View.VISIBLE){
-                popup.getMenuInflater().inflate(R.menu.order_options_confirm_only, popup.getMenu());  
-            	
-            }else{
-            //Inflating the Popup using xml file  
-            popup.getMenuInflater().inflate(R.menu.order_options, popup.getMenu());  
-            }
-            //registering popup with OnMenuItemClickListener  
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {  
-             public boolean onMenuItemClick(MenuItem item) {  
-              
-              switch(item.getItemId()){
-              
-              case R.id.acknowledge_order:
-            	  new HttpHandler().liveOrderAction(context,
-							PinterestUI.this, (String) mTickImage.getTag(),
-							"acknowledge");
-            	  
-            	  mTickImage.setVisibility(View.VISIBLE);
-            	  
-            	  break;
-              case R.id.confirm_order:
-            	  new HttpHandler().liveOrderAction(context,
-							PinterestUI.this, (String) mTickImage.getTag(),
-							"confirm");
-            	  mLinearLayout.setVisibility(View.GONE);
-            	  break;
-              case R.id.reject_order:
-            	  new HttpHandler().liveOrderAction(context,
-							PinterestUI.this, (String) mTickImage.getTag(),
-							"cancel");
-            	  mLinearLayout.setVisibility(View.GONE);
-            	  break;
-            	  
-              }
-              return true;  
-             }  
-            });  
-            
-            popup.show();//showing popup menu  
-			
-			
-			/*
-			
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-			builder.setTitle("AirAdmin");
-			// builder.setIcon(R.drawable.icon);
-			builder.setMessage(" ");
-			ImageView mImageView = (ImageView) v.findViewById(R.id.tick_image);
+			// Creating the instance of PopupMenu
+			PopupMenu popup = new PopupMenu(context, v);
+			final FrameLayout mLinearLayout = (FrameLayout) v.getTag();
 
-			if (mImageView.getVisibility() == View.VISIBLE) {
-
-				builder.setNeutralButton("Confirm Order",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-
-								// context.startActivity(new Intent(context,
-								// Setup.class));
-								// dialog.cancel();
-								new HttpHandler().liveOrderAction(context,
-										PinterestUI.this, (String) v.getTag(),
-										"confirm");
-								dialog.cancel();
-
-							}
-						});
+			final ImageView mTickImage = (ImageView) mLinearLayout
+					.findViewById(R.id.tick_image);
+			if (mTickImage.getVisibility() == View.VISIBLE) {
+				popup.getMenuInflater().inflate(
+						R.menu.order_options_confirm_only, popup.getMenu());
 
 			} else {
-				builder.setPositiveButton("Acknowledge Order",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								new HttpHandler().liveOrderAction(context,
-										PinterestUI.this, (String) v.getTag(),
-										"acknowledge");
-								((ImageView) v.findViewById(R.id.tick_image))
-										.setVisibility(View.VISIBLE);
-								dialog.cancel();
-
-							}
-						});
-
-				builder.setNeutralButton("Confirm Order",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-
-								// context.startActivity(new Intent(context,
-								// Setup.class));
-								// dialog.cancel();
-								new HttpHandler().liveOrderAction(context,
-										PinterestUI.this, (String) v.getTag(),
-										"confirm");
-								dialog.cancel();
-
-							}
-						});
-
-				builder.setNegativeButton("Reject Order",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								new HttpHandler().liveOrderAction(context,
-										PinterestUI.this, (String) v.getTag(),
-										"cancel");
-								dialog.cancel();
-
-							}
-						});
+				// Inflating the Popup using xml file
+				popup.getMenuInflater().inflate(R.menu.order_options,
+						popup.getMenu());
 			}
+			// registering popup with OnMenuItemClickListener
+			popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
 
-			builder.show();
-			/*
-			 * // TODO Auto-generated method stub LayoutInflater
-			 * itemLayoutInflater = LayoutInflater.from(context); final
-			 * LinearLayout mActionpanelLinearLayout = (LinearLayout)
-			 * itemLayoutInflater .inflate(R.layout.action_item_panel, null);
-			 * mActionpanelLinearLayout.startAnimation(AnimationUtils
-			 * .loadAnimation(context, R.anim.slideup_action_item));
-			 * ((FrameLayout) v).addView(mActionpanelLinearLayout); Button
-			 * confirmBtn = (Button) mActionpanelLinearLayout
-			 * .findViewById(R.id.accept_btn); Button cancelBtn = (Button)
-			 * mActionpanelLinearLayout .findViewById(R.id.reject_btn); Button
-			 * acknowledgeBtn = (Button) mActionpanelLinearLayout
-			 * .findViewById(R.id.acknowledge_btn); ImageView mImageView =
-			 * (ImageView) v.findViewById(R.id.tick_image);
-			 * 
-			 * if (mImageView.getVisibility() == View.VISIBLE) {
-			 * acknowledgeBtn.setVisibility(View.GONE);
-			 * cancelBtn.setVisibility(View.GONE); }
-			 * 
-			 * confirmBtn.setOnClickListener(new OnClickListener() {
-			 * 
-			 * @Override public void onClick(View arg0) { // TODO Auto-generated
-			 * method stub new HttpHandler().liveOrderAction(context,
-			 * PinterestUI.this, (String) v.getTag(), "confirm");
-			 * v.setVisibility(View.GONE);
-			 * 
-			 * } });
-			 * 
-			 * cancelBtn.setOnClickListener(new OnClickListener() {
-			 * 
-			 * @Override public void onClick(View arg0) { // TODO Auto-generated
-			 * method stub new HttpHandler().liveOrderAction(context,
-			 * PinterestUI.this, (String) v.getTag(), "cancel");
-			 * v.setVisibility(View.GONE);
-			 * 
-			 * } });
-			 * 
-			 * acknowledgeBtn.setOnClickListener(new OnClickListener() {
-			 * 
-			 * @Override public void onClick(View arg0) { // TODO Auto-generated
-			 * method stub new HttpHandler().liveOrderAction(context,
-			 * PinterestUI.this, (String) v.getTag(), "acknowledge");
-			 * ((ImageView) v.findViewById(R.id.tick_image))
-			 * .setVisibility(View.VISIBLE);
-			 * mActionpanelLinearLayout.setVisibility(View.GONE);
-			 * 
-			 * } });
-			 * 
-			 * Button closeBtn = (Button) mActionpanelLinearLayout
-			 * .findViewById(R.id.close_btn); closeBtn.setOnClickListener(new
-			 * OnClickListener() {
-			 * 
-			 * @Override public void onClick(View arg0) { // TODO Auto-generated
-			 * method stub
-			 * 
-			 * mActionpanelLinearLayout.setVisibility(View.GONE); } });
-			 */
+					switch (item.getItemId()) {
+
+					case R.id.acknowledge_order:
+						new HttpHandler().liveOrderAction(context,
+								PinterestUI.this, (String) mTickImage.getTag(),
+								"acknowledge");
+
+						mTickImage.setVisibility(View.VISIBLE);
+
+						break;
+					case R.id.confirm_order:
+						new HttpHandler().liveOrderAction(context,
+								PinterestUI.this, (String) mTickImage.getTag(),
+								"confirm");
+						mLinearLayout.setVisibility(View.GONE);
+						break;
+					case R.id.reject_order:
+						new HttpHandler().liveOrderAction(context,
+								PinterestUI.this, (String) mTickImage.getTag(),
+								"cancel");
+						mLinearLayout.setVisibility(View.GONE);
+						break;
+
+					}
+					return true;
+				}
+			});
+
+			popup.show();// showing popup menu
+
 		}
 	};
 
@@ -440,7 +317,6 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 			i++;
 		}
 
-		
 		return layoutIndex;
 	}
 

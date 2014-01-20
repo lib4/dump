@@ -38,7 +38,7 @@ public class GetBusinessParser {
 		 * Parse the response here
 		 */
 		try {
-			System.out.println("Parsing....");
+			
 			
 			JsonFactory jsonfactory = new JsonFactory();
 			JsonParser jsonParser = jsonfactory.createJsonParser(response);
@@ -201,7 +201,7 @@ public class GetBusinessParser {
 
 				if (HttpConstants.GEO_JKEY.equals(token)) {//GEO is not come from servee in proper format.
 					jsonParser.nextToken();
-					System.out.println("GEO "+jsonParser.getText());
+					
 					parseGeo(jsonParser);
 					values.put(AppSqliteHelper.COLUMN_GEO,
 							jsonParser.getText());
@@ -210,7 +210,7 @@ public class GetBusinessParser {
 			}
 
 			jsonParser.close();
-			System.out.println("Values "+values.size() +values.toString());
+			
 			new DBManager(context).insertBusiness(values);
 		} catch (JsonGenerationException e) {
 
@@ -237,7 +237,7 @@ public class GetBusinessParser {
 				JSONObject snesorObject = new JSONObject();
 				while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
 					String token = jsonParser.getCurrentName();
-					System.out.println("token"+token);
+				
 					if (HttpConstants.NAME_JKEY.equals(token)) {
 						jsonParser.nextToken();
 						snesorObject.put(token, jsonParser.getText());
@@ -302,7 +302,7 @@ public class GetBusinessParser {
 			while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
 				try{
 					String token = jsonParser.getCurrentName();
-					System.out.println("token"+token +" "+jsonParser.getText());
+					
 				}catch(Exception e){
 					e.printStackTrace();
 				}

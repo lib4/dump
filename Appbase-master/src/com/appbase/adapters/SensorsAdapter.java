@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbase.R;
 import com.appbase.adapters.MenuAdapter.ViewHolder;
+import com.appbase.androidquery.auth.GoogleHandle;
 import com.appbase.fragments.SensorsFragment;
 import com.appbase.httphandler.HttpConstants;
 
@@ -24,8 +26,10 @@ public class SensorsAdapter extends BaseAdapter {
 	SensorsFragment mContext;
 	JSONArray sensorsArray;
 
-	public SensorsAdapter(SensorsFragment mContext, JSONArray sensorArray) {
 
+	
+	public SensorsAdapter(SensorsFragment mContext, JSONArray sensorArray) {
+		
 		this.mContext = mContext;
 		this.sensorsArray = sensorArray;
 	}
@@ -57,6 +61,8 @@ public class SensorsAdapter extends BaseAdapter {
 	@Override
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 		// TODO Auto-generated method stub
+		
+		
 		View rowView = arg1;
 		if (rowView == null) {
 			LayoutInflater inflater = mContext.getActivity()
@@ -72,13 +78,18 @@ public class SensorsAdapter extends BaseAdapter {
 
 			viewHolder.sensorStatImage = (ImageView) rowView
 					.findViewById(R.id.sensor_image);
-
+			viewHolder.validationStatusLayout = (LinearLayout) rowView
+					.findViewById(R.id.validationStatusLayout);
 			rowView.setTag(viewHolder);
 		}
 
 		ViewHolder holder = (ViewHolder) rowView.getTag();
 
 		holder.sensorType.setVisibility(View.GONE);
+		holder.validationStatusLayout.setVisibility(View.GONE);
+		
+		
+		
 		JSONObject mJsonObject = null;
 		try {
 			mJsonObject = sensorsArray.getJSONObject(arg0);
@@ -86,18 +97,53 @@ public class SensorsAdapter extends BaseAdapter {
 					.getString(HttpConstants.NAME_JKEY));
 			holder.sensorAdvId.setText("Advertising ID : "
 					+ mJsonObject.getInt(HttpConstants.SENSOR_ID_JKEY));
-			String type = mJsonObject.optString("displaySensorType");
-			System.out.println("TYPE=== " + type);
+			String type = mJsonObject.optString(HttpConstants.DISPLAY_SENSOR_TYPE_JKEY);
+		
 			if (!type.isEmpty()) {
 				holder.sensorType.setVisibility(View.VISIBLE);
 				holder.sensorType.setText(type);
+				
+				
 			}
+			
+			
+			String sensorType = mJsonObject
+					.optString(HttpConstants.TYPE_JKEY);
+			
+			if(sensorType.compareToIgnoreCase(HttpConstants.ESTIMOTE)==0){
+				holder.sensorStatImage.setVisibility(View.VISIBLE);
+			}else{
+				holder.sensorStatImage.setVisibility(View.GONE);
+			}
+			
+			//Check for validation layout display
+			String validation_status = mJsonObject.optString(HttpConstants.VALIDATE_STATUS);
+			if(!validation_status.isEmpty()){
+				holder.sensorStatImage.setVisibility(View.GONE);
+				holder.validationStatusLayout.setVisibility(View.VISIBLE);
+				ImageView mImageView	=	(ImageView) holder.validationStatusLayout.findViewById(R.id.validation_status_image);
+				TextView mTextView		=	(TextView) holder.validationStatusLayout.findViewById(R.id.validation_status_text);
+				if(validation_status.compareToIgnoreCase(HttpConstants.FAILURE)==0){
+					mTextView.setText("Validation failed on "+mJsonObject.optString(HttpConstants.VALIDATE_TIME));
+					mImageView.setImageResource(R.drawable.ic_cross);
+					
+				}else if(validation_status.compareToIgnoreCase(HttpConstants.SUCCESS)==0){
+					holder.sensorStatImage.setVisibility(View.GONE);
+					mTextView.setText("Validated on "+mJsonObject.optString(HttpConstants.VALIDATE_TIME));
+					mImageView.setImageResource(R.drawable.ic_tick_mark);
+				}
+				
+			
+			}else{
+				holder.validationStatusLayout.setVisibility(View.GONE);
+			}
+		
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-		//rowView.setTag(mJsonObject);
+
 		return rowView;
 	}
 
@@ -106,6 +152,7 @@ public class SensorsAdapter extends BaseAdapter {
 		public TextView sensorName;
 		public TextView sensorAdvId;
 		public ImageView sensorStatImage;
+		public LinearLayout validationStatusLayout;
 
 	}
 

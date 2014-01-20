@@ -282,7 +282,7 @@ public class LiveOrderParser {
 																
 																if (HttpConstants.PRICE_JKEY.equals(token)) {
 																	jsonParser.nextToken();
-																	System.out.println("PRICE>>> "+Float.valueOf(jsonParser.getText()));
+																
 																	mJsonObject.put(token, Float.valueOf(jsonParser.getText()));
 																	choiceObject.put(token, Float.valueOf(jsonParser.getText()));
 																	
@@ -353,7 +353,7 @@ public class LiveOrderParser {
 		
 						mDbManager.endTransaction();
 					
-					System.out.println("Transaction Ended");
+				
 				}
 
 			}

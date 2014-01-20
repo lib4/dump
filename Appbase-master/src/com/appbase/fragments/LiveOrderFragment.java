@@ -45,6 +45,8 @@ public class LiveOrderFragment extends BaseFragment implements
 	boolean isPollingResponsePending	=	false;
 	ScrollView mScrollView;
 	Timer t;
+	private int scrollY;
+	LiveOrderFragment mLiveOrderFragment;
 	public void FetchFromServerNeeded(boolean isFetchFromServer) {
 		// TODO Auto-generated constructor stub
 		this.isFetchFromServer = isFetchFromServer;
@@ -74,6 +76,8 @@ public class LiveOrderFragment extends BaseFragment implements
 		} else {
 			onSuccess();
 		}
+		
+		mLiveOrderFragment	=	this;
 
 		return view;
 	}
@@ -81,6 +85,7 @@ public class LiveOrderFragment extends BaseFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
+		isPollingResponsePending	=	false;
 		startService();
 	}
 
@@ -118,9 +123,10 @@ public class LiveOrderFragment extends BaseFragment implements
 	
 	@Override
 	public void onPause() {
+		Log.e("paused","Paused");
+		if(t!=null)
+			t.cancel();
 		super.onPause();
-		
-		t.cancel();
 
 	}
 
@@ -159,6 +165,7 @@ public class LiveOrderFragment extends BaseFragment implements
 
 	private void trgrLiveOrderWebService() {
 
+		isPollingResponsePending	=	true;
 		new DBManager(getActivity()).clearLiveOrders();
 		mDialog = new ProgressDialog(getActivity());
 		mDialog.setMessage(getActivity().getString(R.string.loading));
@@ -232,13 +239,14 @@ public class LiveOrderFragment extends BaseFragment implements
 					Log.e("HANDLER not null","HANDLER ");
 					NoItemSoundTextView.setVisibility(View.GONE);
 					
-					int y 	=	mScrollView.getScrollY();
+					scrollY  	=	mScrollView.getScrollY();
 			
-					Log.e("HANDLER not null","HANDLER "+y +"  "+mScrollView.getScrollX());
+					Log.e("HANDLER not null","HANDLER "+scrollY +"  "+mScrollView.getScaleY());
 					
-					mPinterestUI.createLayout(liveOrders);
+				 	mPinterestUI.createLayout(liveOrders,mLiveOrderFragment);
 					
-					mScrollView.smoothScrollTo(0, y) ;
+					  
+				
 				
 				} else {
 
@@ -251,7 +259,7 @@ public class LiveOrderFragment extends BaseFragment implements
 	
 	
 	private void startService(){
-		isPollingResponsePending	=	false;
+	
 		//Declare the timer
 		t = new Timer();
 		//Set the schedule function and rate
@@ -264,7 +272,7 @@ public class LiveOrderFragment extends BaseFragment implements
 		    	isPollingResponsePending	=	true;
 		    	new DBManager(getActivity()).clearLiveOrders();
 		    	new HttpHandler().getLiveOrders(getActivity(), LiveOrderFragment.this);
-		    	Log.e("Polling ","Polling");
+		    	
 		    	}
 		    }
 		         
@@ -273,6 +281,22 @@ public class LiveOrderFragment extends BaseFragment implements
 		Utils.REFRESH_INTERVAL,
 		//Set the amount of time between each execution (in milliseconds)
 		Utils.REFRESH_INTERVAL);
+	}
+	
+	
+	public void updateScrollPosition(){
+		
+			
+		  mScrollView.post(new Runnable() {
+	            public void run() {
+	            	try{
+	                mScrollView.scrollTo(0, scrollY);
+	            	}catch(Exception e){
+	            		
+	            	}
+					
+	            }
+	        });
 	}
 
 }
