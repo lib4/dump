@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -43,7 +44,7 @@ import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 
 public class SensorsFragment extends BaseFragment implements
-		HTTPResponseListener, OnItemClickListener {
+		HTTPResponseListener {
 
 	LinearLayout sensorsLayout;
 	ListView sensorsList;
@@ -54,6 +55,7 @@ public class SensorsFragment extends BaseFragment implements
 	static ProgressDialog mDialog;
 	public String ProximityId;
 	public int major, minor, itemindex;
+	private SensorsFragment mSensorsFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +64,7 @@ public class SensorsFragment extends BaseFragment implements
 
 			return null;
 		}
+		getActivity().getActionBar().setTitle(Utils.SENSORS_TEXT);
 		mDialog = null;
 		// Inflate the layout for this fragment
 		sensorsLayout = (LinearLayout) inflater.inflate(
@@ -71,6 +74,7 @@ public class SensorsFragment extends BaseFragment implements
 		mDialog.setMessage(getActivity().getString(R.string.loading));
 		mDialog.setCancelable(false);
 		trgrGetBusiness();
+		mSensorsFragment = this;
 		return sensorsLayout;
 	}
 
@@ -85,18 +89,35 @@ public class SensorsFragment extends BaseFragment implements
 
 	@Override
 	public void onSuccess() {
-
 		dismissProgressDialog();
 		mHandler.sendMessage(new Message());
 
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		// check whether user comes from Sensor details screen screen after
+		// Archiving
+		if (Utils.ARCHIVE_INDEX != -1 && sensorArray != null
+				&& sensorArray.length() > 0) {
+
+			removeJson(Utils.ARCHIVE_INDEX);
+			Utils.ARCHIVE_INDEX = -1;
+			mSensorsAdapter = new SensorsAdapter(mSensorsFragment, sensorArray);
+			sensorsList.setAdapter(mSensorsAdapter);
+			mSensorsAdapter.notifyDataSetChanged();
+
+		}
+	}
+
+	@Override
 	public void onFailure(int failureCode) {
+
 		dismissProgressDialog();
+
 		Message message = new Message();
 		message.arg1 = failureCode;
-
 		mHandler.sendMessage(message);
 
 	}
@@ -113,6 +134,20 @@ public class SensorsFragment extends BaseFragment implements
 				TextView no_sensors = (TextView) sensorsLayout
 						.findViewById(R.id.no_active_sensors);
 				no_sensors.setVisibility(View.VISIBLE);
+			} else if (msg.arg1 == Utils.DELETE_SENSOR) {
+
+				try {
+					if (sensorArray != null) {
+
+						removeJson(itemindex);
+						mSensorsAdapter = new SensorsAdapter(mSensorsFragment,
+								sensorArray);
+						sensorsList.setAdapter(mSensorsAdapter);
+						mSensorsAdapter.notifyDataSetChanged();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 
 			else {
@@ -126,7 +161,7 @@ public class SensorsFragment extends BaseFragment implements
 					no_sensors.setVisibility(View.GONE);
 					mSensorsAdapter = new SensorsAdapter(SensorsFragment.this,
 							sensorArray);
-					sensorsList.setOnItemClickListener(SensorsFragment.this);
+
 					sensorsList.setAdapter(mSensorsAdapter);
 					mSensorsAdapter.notifyDataSetChanged();
 				} else {
@@ -240,11 +275,12 @@ public class SensorsFragment extends BaseFragment implements
 		super.onDestroy();
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void sensorItemTapped(int itemSelected) {
 
 		try {
-			JSONObject mJsonObject = (JSONObject) sensorArray.get(arg2);
+			JSONObject mJsonObject = (JSONObject) sensorArray.get(itemSelected);
+
+			System.out.println("JSON " + mJsonObject.toString());
 			String sensorType = mJsonObject.optString(HttpConstants.TYPE_JKEY);
 			String validated = mJsonObject
 					.optString(HttpConstants.VALIDATE_STATUS);
@@ -256,7 +292,8 @@ public class SensorsFragment extends BaseFragment implements
 				showValidateAlert(
 						mJsonObject.getString(HttpConstants.PROXIMITY_ID_JKEY),
 						mJsonObject.getInt(HttpConstants.MAJOR_JKEY),
-						mJsonObject.getInt(HttpConstants.MINOR_JKEY), arg2);
+						mJsonObject.getInt(HttpConstants.MINOR_JKEY),
+						itemSelected);
 			} else if (sensorType.compareToIgnoreCase(HttpConstants.ESTIMOTE) == 0
 					&& (!validated.isEmpty() && validated
 							.compareToIgnoreCase(HttpConstants.SUCCESS) == 0)) {
@@ -267,21 +304,22 @@ public class SensorsFragment extends BaseFragment implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
+
+	private int SCANN_CYCLE = 0;
 
 	public void findThisBeacon(String proximityId, int major, int minor,
 			final int itemindex) {
-		
-		this.ProximityId	=	proximityId;
-		this.major			=	major;
-		this.minor			=	minor;
-		this.itemindex		=	itemindex;
-		
-		
-		String ESTIMOTE_PROXIMITY_UUID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
-		ALL_ESTIMOTE_BEACONS_REGION = new Region("rid",
-				ESTIMOTE_PROXIMITY_UUID, 65000, 65000);
+
+		this.ProximityId = proximityId;
+		this.major = major;
+		this.minor = minor;
+		this.itemindex = itemindex;
+
+		// String ESTIMOTE_PROXIMITY_UUID =
+		// "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
+		ALL_ESTIMOTE_BEACONS_REGION = new Region("rid", proximityId, major,
+				minor);
 
 		// Configure BeaconManager.
 		beaconManager = new BeaconManager(getActivity());
@@ -293,6 +331,11 @@ public class SensorsFragment extends BaseFragment implements
 			public void onBeaconsDiscovered(Region region,
 					final List<Beacon> beacons) {
 
+				if (SCANN_CYCLE < 4) {
+					SCANN_CYCLE++;
+					return;
+				}
+				SCANN_CYCLE = 0;
 				if (beacons.size() > 0) {
 					try {
 						dismissProgressDialog();
@@ -304,6 +347,7 @@ public class SensorsFragment extends BaseFragment implements
 					}
 
 				} else {
+
 					try {
 						dismissProgressDialog();
 						beaconManager.stopRanging(ALL_ESTIMOTE_BEACONS_REGION);
@@ -312,7 +356,7 @@ public class SensorsFragment extends BaseFragment implements
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
-					noSensorAlert();
+					noSensorAlert(itemindex);
 				}
 
 			}
@@ -333,9 +377,8 @@ public class SensorsFragment extends BaseFragment implements
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
-				noSensorAlert();
+				noSensorAlert(itemindex);
 
-				Log.e("error", "error");
 			}
 		});
 
@@ -451,7 +494,7 @@ public class SensorsFragment extends BaseFragment implements
 		alertDialog.show();
 	}
 
-	private void noSensorAlert() {
+	private void noSensorAlert(final int itemIndex) {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				getActivity());
@@ -474,6 +517,7 @@ public class SensorsFragment extends BaseFragment implements
 							public void onClick(DialogInterface dialog, int id) {
 								// if this button is clicked, close
 								// current activity
+								trgrArchiveSensor(itemIndex);
 
 							}
 						});
@@ -494,7 +538,7 @@ public class SensorsFragment extends BaseFragment implements
 
 		try {
 
-			String pattern = "MMM dd, hh:mm a";
+			String pattern = "MMM dd, hh:mm aa";
 			SimpleDateFormat format = new SimpleDateFormat(pattern);
 			JSONObject mJsonObject = (JSONObject) sensorArray.get(itemIndex);
 			mJsonObject.put(HttpConstants.VALIDATE_STATUS, status);
@@ -509,6 +553,18 @@ public class SensorsFragment extends BaseFragment implements
 
 	private void trgrArchiveSensor(int itemIndex) {
 
+		mDialog.setMessage(getActivity().getText(R.string.wait_archiving));
+
+		mDialog.show();
+		String sensorId = null;
+		try {
+			JSONObject mJsonObject = sensorArray.getJSONObject(itemIndex);
+			sensorId = mJsonObject.getString(HttpConstants._ID_JKEY);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		new HttpHandler().archiveSensor(sensorId, getActivity(), this);
+
 	}
 
 	/**
@@ -517,9 +573,38 @@ public class SensorsFragment extends BaseFragment implements
 	 */
 
 	private void loadSensorDetailsFragment() {
+		try {
+			Utils.SELECTED_OBJECT = sensorArray.getJSONObject(itemindex);
+			Utils.SELECTED_OBJECT.put("index", itemindex);
+			Intent intent = new Intent(getActivity(),
+					SensorDetailsActivity.class);
+			startActivity(intent);
+		} catch (Exception e) {
 
-		Intent intent = new Intent(getActivity(), SensorDetailsActivity.class);
-		startActivity(intent);
+		}
+
+	}
+
+	private void removeJson(int itemIndex) {
+
+		try {
+			JSONArray list = new JSONArray();
+
+			int len = sensorArray.length();
+			if (sensorArray != null) {
+				for (int i = 0; i < len; i++) {
+					// Excluding the item at position
+					if (i != itemIndex) {
+						list.put(sensorArray.get(i));
+
+					}
+				}
+			}
+			sensorArray = list;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 }

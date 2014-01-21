@@ -56,7 +56,7 @@ public class SettingsFragment extends BaseFragment {
 
 			@Override
 			public void onClick(View v) {
-				disableHighlight();
+				disableHighlight(v);
 				Intent intent = new Intent(getActivity(),
 						LiveOrderActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -71,7 +71,7 @@ public class SettingsFragment extends BaseFragment {
 
 			@Override
 			public void onClick(View v) {
-				disableHighlight();
+				disableHighlight(v);
 
 				Intent intent = new Intent(getActivity(), MenuActivity.class);
 				startActivity(intent);
@@ -87,7 +87,7 @@ public class SettingsFragment extends BaseFragment {
 			public void onClick(View v) {
 				// Toast.makeText(getActivity(),
 				// "Functinality yet to be implemented.", 1000).show();
-				disableHighlight();
+				disableHighlight(v);
 				Intent intent = new Intent(getActivity(), SensorsActivity.class);
 
 				startActivity(intent);
@@ -129,7 +129,7 @@ public class SettingsFragment extends BaseFragment {
 
 		@Override
 		public void onClick(View v) {
-			disableHighlight();
+			disableHighlight(v);
 			// TODO Auto-generated method stub
 			switch (v.getId()) {
 			case R.id.security:
@@ -177,7 +177,7 @@ public class SettingsFragment extends BaseFragment {
 	}
 
 	private void resolveHighlight() {
-		disableHighlight();
+		disableHighlight(null);
 		String callingActyivityName = getActivity().getComponentName()
 				.getClassName();
 		String packageName = "com.appbase.Activities.";
@@ -207,7 +207,7 @@ public class SettingsFragment extends BaseFragment {
 		}
 	}
 
-	private void disableHighlight() {
+	private void disableHighlight(View v) {
 
 		liveOrdersLayout.setPressed(false);
 		menuManagementLayout.setPressed(false);
@@ -217,6 +217,11 @@ public class SettingsFragment extends BaseFragment {
 		privacy_policy.setPressed(false);
 		help_center.setPressed(false);
 		terms_of_service.setPressed(false);
+		if(v!=null){
+			v.setPressed(true);
+			
+		}
+		
 	}
 
 	private void signOutAlert() {
@@ -253,7 +258,7 @@ public class SettingsFragment extends BaseFragment {
 
 								DBManager mDbManager = new DBManager(
 										getActivity());
-								mDbManager.clearDB();
+								mDbManager.clearDB(getActivity());
 								startActivity(intent);
 								getActivity().finish();
 

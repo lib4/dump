@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.appbase.datastorage.AppSqliteHelper;
 import com.appbase.datastorage.DBManager;
@@ -58,7 +59,19 @@ public class GetBusinessParser {
 							jsonParser.getText());
 					
 				}
+				
+				if (HttpConstants.BANK_ACCOUNT_JKEY.equals(token)) {
 
+					// get the next token which will be the value...
+					
+					while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
+						
+					}
+					
+					
+					
+				}
+				
 				if (HttpConstants._ID_JKEY.equals(token)) {
 
 					jsonParser.nextToken();
@@ -111,6 +124,7 @@ public class GetBusinessParser {
 					jsonParser.nextToken();
 					values.put(AppSqliteHelper.COLUMN_NAME,
 							jsonParser.getText());
+					Utils.BUSINESS_NAME	=	jsonParser.getText();
 				}
 
 				if (HttpConstants.POSTAL_CODE_JKEY.equals(token)) {
@@ -161,7 +175,7 @@ public class GetBusinessParser {
 				}
 
 				if (HttpConstants.SENSORS_JKEY.equals(token)) {// ARRAY
-
+					Log.e("Addeed ","Addes Starting");
 					jsonParser.nextToken();
 					JSONObject mSensorObject 	=	new JSONObject(); 
 					try {
@@ -172,6 +186,8 @@ public class GetBusinessParser {
 					}
 					values.put(AppSqliteHelper.COLUMN_SENSORS,
 							mSensorObject.toString());
+					
+					Log.e("Addeed ","Addes"+mSensorObject.toString());
 				}
 
 				if (HttpConstants.BALANCE_JKEY.equals(token)) {
@@ -238,6 +254,10 @@ public class GetBusinessParser {
 				while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
 					String token = jsonParser.getCurrentName();
 				
+					if (HttpConstants._ID_JKEY.equals(token)) {
+						jsonParser.nextToken();
+						snesorObject.put(token, jsonParser.getText());
+					}
 					if (HttpConstants.NAME_JKEY.equals(token)) {
 						jsonParser.nextToken();
 						snesorObject.put(token, jsonParser.getText());

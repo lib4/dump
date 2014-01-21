@@ -1,7 +1,11 @@
 package com.appbase.datastorage;
 
+import com.appbase.activities.BaseActivity;
+import com.appbase.gcm.GCM_Constants;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -156,8 +160,20 @@ public class DBManager {
 	/**
 	 * Flush the data in Menus  Table
 	 */
-	public void clearDB() {
+	public void clearDB(Context context) {
 
+		/**
+		 * Clearing Push notification
+		 */
+		
+		
+		final SharedPreferences prefs = context.getSharedPreferences(BaseActivity.class.getSimpleName(),
+				Context.MODE_PRIVATE);
+		
+		SharedPreferences.Editor editor	=	 prefs.edit().clear();
+		editor.commit();
+		
+		
 		open();
 		long insertId = appSqLiteDatabase.delete(
 				AppSqliteHelper.TABLE_PROFILE, null, null);

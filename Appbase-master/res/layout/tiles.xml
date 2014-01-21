@@ -49,19 +49,21 @@
                     style="@style/text_view_black"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".9"
-                    android:text="AnasAbubacker" >
+                    android:layout_weight="1.0"
+                   
+                    >
                 </TextView>
-
-                <ImageButton
+		
+                <ImageView
                     android:id="@+id/pop_menu"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight=".1"
+               		android:scaleType="center"
+               		android:layout_gravity="right"
                     android:background="@drawable/ic_vdots"
-                    android:scaleType="center" >
-                </ImageButton>
+                    >
+                </ImageView>
+        
             </LinearLayout>
 
             <TextView

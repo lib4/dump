@@ -56,64 +56,13 @@ public class SettingsActivity extends BaseActivity {
 		super.onSaveInstanceState(outState);
 
 	}
-	
-	  @Override
-	    public boolean onCreateOptionsMenu(Menu menu) {
-	        MenuInflater inflater = getMenuInflater();
-	        inflater.inflate(R.menu.settings, menu);
-	 
-	        return super.onCreateOptionsMenu(menu);
-	    }
 
-	private void signOutAlert() {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.settings, menu);
 
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-		// set title
-		// alertDialogBuilder.setTitle("Your Title");
-
-		// set dialog message
-		alertDialogBuilder
-				.setMessage(this.getString(R.string.logut_alert))
-				.setCancelable(true)
-				.setTitle(this.getString(R.string.app_name))
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// if this button is clicked, close
-						// current activity
-
-					}
-				})
-
-				.setPositiveButton("Logout",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								// if this button is clicked, close
-								// current activity
-
-								Intent intent = new Intent(
-										SettingsActivity.this,
-										LiveOrderActivity.class);
-								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								intent.putExtra("EXIT", true);
-
-								trgrSignOutService();
-
-								DBManager mDbManager = new DBManager(
-										SettingsActivity.this);
-								mDbManager.clearDB();
-								startActivity(intent);
-								finish();
-
-							}
-						});
-		
-		// create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
-
-		// show it
-		alertDialog.show();
-
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	private void trgrSignOutService() {
@@ -121,21 +70,4 @@ public class SettingsActivity extends BaseActivity {
 		new HttpHandler().signOut(this);
 	}
 
-	/**
-     * On selecting action bar icons
-     * */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	super.onOptionsItemSelected(item);
-        // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-        case R.id.action_logout:
-        	signOutAlert();
-            return true;
-       
-        }
-        
-        return true;
-    }
- 
 }

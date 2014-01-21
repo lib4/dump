@@ -19,12 +19,8 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -39,8 +35,7 @@ import com.appbase.httphandler.HttpConstants;
 import com.appbase.httphandler.HttpHandler;
 import com.appbase.utils.Utils;
 
-public class MenuFragment extends BaseFragment implements HTTPResponseListener,
-		OnClickListener{
+public class MenuFragment extends BaseFragment implements HTTPResponseListener {
 
 	LinearLayout menuLayout;
 	ListView mListView;
@@ -52,6 +47,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 	MenuAdapter menuAdapter;
 	JSONArray cards_Array = new JSONArray();
 	TextView noItemTextView;
+
 	public void FetchFromServerNeeded(boolean isFetchFromServer) {
 		// TODO Auto-generated constructor stub
 		this.isFetchFromServer = isFetchFromServer;
@@ -74,9 +70,11 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 		// Inflate the layout for this fragment
 		menuLayout = (LinearLayout) inflater.inflate(R.layout.menu_fragment,
 				container, false);
+		getActivity().getActionBar().setTitle(Utils.CATALOGUE_TEXT);
 		init();
-		if(new DBManager(getActivity()).isCatalogsAvailable()&&!Utils.REFRESH_CATALOGE){
-			isFetchFromServer	=	false;
+		if (new DBManager(getActivity()).isCatalogsAvailable()
+				&& !Utils.REFRESH_CATALOGE) {
+			isFetchFromServer = false;
 		}
 		if (isFetchFromServer) {
 			trgrGetMenusService();
@@ -84,6 +82,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 			onSuccess();
 		}
 		menuFragment = this;
+
 		return menuLayout;
 	}
 
@@ -93,43 +92,9 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 	 */
 	private void init() {
 
-
-
 		mListView = (ListView) menuLayout.findViewById(R.id.menu_list);
-		mListView.setOnItemSelectedListener(new OnItemSelectedListener() {
+		noItemTextView = (TextView) menuLayout.findViewById(R.id.no_item_found);
 
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				cardObject	=	 (JSONObject) menuAdapter.getItem(arg2);
-				loadDealDetailsFragment();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				cardObject	=	 (JSONObject) menuAdapter.getItem(arg2);
-				loadDealDetailsFragment();
-				
-			}
-		});
-		
-
-		
-		
-		noItemTextView	=	(TextView) menuLayout.findViewById(R.id.no_item_found);
-		
 	}
 
 	/**
@@ -137,28 +102,20 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 	 * 
 	 */
 
-	public void loadDealDetailsFragment() {
-
+	public void loadDealDetailsFragment(int itemIndex) {
+		cardObject = (JSONObject) menuAdapter.getItem(itemIndex);
 		View mView = getActivity().getWindow().getDecorView()
 				.findViewById(android.R.id.content);
 
 		if (mView.findViewById(R.id.slide_list) != null) {
-		
+
 			DealsDetailsFragment mDealsDetailsFragment = new DealsDetailsFragment();
 			mDealsDetailsFragment.hideHeaderBar(true);
 			FragmentManager fragmentManager = getFragmentManager();
 			FragmentTransaction fragmentTransaction = fragmentManager
 					.beginTransaction();
-
-			// fragmentTransaction.setCustomAnimations(R.anim.enter,
-			// R.anim.exit,
-			// R.anim.pop_enter, R.anim.pop_exit);
-			// Replace whatever is in the fragment_container view with this
-			// fragment,
-			// and add the transaction to the back stack
 			fragmentTransaction.replace(R.id.content_pane,
 					mDealsDetailsFragment);
-
 			// Commit the transaction
 			fragmentTransaction.commit();
 
@@ -176,8 +133,8 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 		if (mDialog != null && mDialog.isShowing())
 			mDialog.dismiss();
 		mHandler.sendMessage(new Message());
-		
-		Utils.REFRESH_CATALOGE	=	false;
+
+		Utils.REFRESH_CATALOGE = false;
 
 	}
 
@@ -209,10 +166,6 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				getActivity());
-
-		// set title
-		// alertDialogBuilder.setTitle("Your Title");
-
 		// set dialog message
 		alertDialogBuilder
 				.setMessage(
@@ -256,39 +209,26 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 			}
 
 			else {
-				cards_Array	=	setCardArray( new DBManager(
-						getActivity()).fetchCatalogs());
-				
-				
-			
-				if(cards_Array!=null&&cards_Array.length()>0){
-					menuAdapter = new MenuAdapter(getActivity(),cards_Array, menuFragment);
+				cards_Array = setCardArray(new DBManager(getActivity())
+						.fetchCatalogs());
+
+				if (cards_Array != null && cards_Array.length() > 0) {
+					menuAdapter = new MenuAdapter(getActivity(), cards_Array,
+							menuFragment);
 					mListView.setAdapter(menuAdapter);
 					mListView.setSmoothScrollbarEnabled(true);
 					mListView.setOverScrollMode(ScrollView.OVER_SCROLL_ALWAYS);
-				}
-				else{
+				} else {
 					mListView.setVisibility(View.GONE);
 					noItemTextView.setVisibility(View.VISIBLE);
-					
+
 				}
-				
-				
-				
 
 				resolveWidth();
 			}
 		}
 
 	};
-
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		cardObject = (JSONObject) v.getTag();
-		loadDealDetailsFragment();
-
-	}
 
 	private void resolveWidth() {
 
@@ -298,66 +238,63 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 			DisplayMetrics metrics = new DisplayMetrics();
 			wm.getDefaultDisplay().getMetrics(metrics);
 
-//			if (metrics.widthPixels > 1000) {
-//				loadDealDetailsFragment();
-//
-//			}
 		} catch (Exception e) {
 
 		}
 
 	}
 
+	public void trgrSearch(String searchStr) {
 
+		try {
+			menuAdapter.cards_Array = searchCardArray(searchStr);
+			if (menuAdapter.cards_Array != null
+					&& menuAdapter.cards_Array.length() > 0) {
+				mListView.setVisibility(View.VISIBLE);
+				menuAdapter.notifyDataSetChanged();
+				noItemTextView.setVisibility(View.GONE);
+			} else {
+				mListView.setVisibility(View.GONE);
+				noItemTextView.setVisibility(View.VISIBLE);
 
-	public void trgrSearch(String searchStr){
-		
-		menuAdapter.cards_Array	= searchCardArray(searchStr);
-		if(menuAdapter.cards_Array!=null&&menuAdapter.cards_Array.length()>0){
-			mListView.setVisibility(View.VISIBLE);
-			menuAdapter.notifyDataSetChanged();
-			noItemTextView.setVisibility(View.GONE);
-		}
-		else{
-			mListView.setVisibility(View.GONE);
-			noItemTextView.setVisibility(View.VISIBLE);
-			
+			}
+		} catch (Exception e) {
+
 		}
 	}
-	
+
 	/**
 	 * Converting Cursor To JsonArray
+	 * 
 	 * @param iCursor
 	 * @return cardsArray
 	 */
-	private JSONArray  setCardArray(Cursor iCursor) {
+	private JSONArray setCardArray(Cursor iCursor) {
 		JSONArray cards_Array = new JSONArray();
 		boolean catalogNameAdded = false;
 		boolean groupNameAdded = false;
-		if(iCursor==null){
+		if (iCursor == null) {
 			return null;
 		}
-		while (!iCursor.isClosed()&&iCursor.moveToNext() != false) {
+		while (!iCursor.isClosed() && iCursor.moveToNext() != false) {
 			try {
-				
+
 				catalogNameAdded = false;
 				String cataloge_name = iCursor.getString(0);
-				String cataloge_type	=	iCursor.getString(1);
-				
-				
+				String cataloge_type = iCursor.getString(1);
+
 				JSONArray mJsonArray = new JSONArray(iCursor.getString(4));
 
 				int size = mJsonArray.length();
 				for (int k = 0; k < size; k++) {
 					JSONObject group = (JSONObject) mJsonArray.get(k);
-					String groupName	=	"";
-					try{
+					String groupName = "";
+					try {
 						groupName = group.getString(HttpConstants.NAME_JKEY);
-					}catch(Exception e){
-						
+					} catch (Exception e) {
+
 					}
-					
-					
+
 					groupNameAdded = false;
 					JSONArray subGroups = group
 							.getJSONArray(HttpConstants.SUBGROUPS_JKEY);
@@ -367,7 +304,8 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 						try {
 
 							JSONObject cards = (JSONObject) subGroups.get(i);
-							String subGroupName	=	cards.optString(HttpConstants.NAME_JKEY);
+							String subGroupName = cards
+									.optString(HttpConstants.NAME_JKEY);
 							JSONArray cardsArray = cards
 									.getJSONArray(HttpConstants.CARDS_JKEY);
 
@@ -379,7 +317,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 								card.put("groupName", groupName);
 								card.put("subGroupName", subGroupName);
 								if (!groupNameAdded) {
-									
+
 									card.put("showGroupName", true);
 									groupNameAdded = true;
 								}
@@ -396,50 +334,64 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 						}
 					}
 				}
-				
-			
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			
+
 		}
-		
+
 		return cards_Array;
 	}
-	
-	
-	
+
 	/**
 	 * Search JsonArray
+	 * 
 	 * @return search Result cardsArray
 	 */
-	private JSONArray  searchCardArray(String searchString) {
+	private JSONArray searchCardArray(String searchString) {
+
+		JSONArray searchResult = new JSONArray();
+		int sourceArrayLength = cards_Array.length();
+		int i = 0;
+		boolean foundGroupHeader = false;
+	
 		
-		JSONArray searchResult	=	new JSONArray();
-		int sourceArrayLength	=	cards_Array.length();
-		int i =0;
-		while(i<sourceArrayLength){
-			
-				try {
-					JSONObject card	=	cards_Array.getJSONObject(i);
-					
-					String name	=	card.optString(HttpConstants.NAME_JKEY);
-					String description	=	card.optString(HttpConstants.DESCRIPTION_JKEY);
-					if(name.toLowerCase().contains(searchString.toLowerCase())||
-							description.toLowerCase().contains(searchString.toLowerCase())){
-							searchResult.put(card);
-					}
-					
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		
+		
+		while (i < sourceArrayLength) {
+
+			try {
+				JSONObject card = cards_Array.getJSONObject(i);
+
+				String name = card.optString(HttpConstants.NAME_JKEY);
+				String description = card
+						.optString(HttpConstants.DESCRIPTION_JKEY);
+				boolean showGroupName = card.optBoolean("showGroupName");
+				boolean showCatalogeName = card.optBoolean("showCatalogeName");
+
+				if (showGroupName || showCatalogeName) {
+					foundGroupHeader = true;
 				}
-				i++;
+
+				if (name.toLowerCase().contains(searchString.toLowerCase())
+						|| description.toLowerCase().contains(
+								searchString.toLowerCase())) {
+					if (foundGroupHeader) {
+						foundGroupHeader = false;
+						card.put("showCatalogeName", true);
+						card.put("showGroupName", true);
+					}
+					searchResult.put(card);
+				}
+
+			} catch (JSONException e) {
+
+				e.printStackTrace();
+			}
+			i++;
 		}
-		
-		
+
 		return searchResult;
 	}
 

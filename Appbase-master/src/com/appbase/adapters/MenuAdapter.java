@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -33,6 +34,8 @@ public class MenuAdapter extends BaseAdapter {
 	public JSONObject cardObject;
 
 	public JSONArray cards_Array = new JSONArray();
+	
+	MenuFragment menuFragment;
 
 	public MenuAdapter(Context mContext, JSONArray jsonArray,
 			MenuFragment menuFragment) {
@@ -40,6 +43,8 @@ public class MenuAdapter extends BaseAdapter {
 		this.iContext = (Activity) mContext;
 
 		this.cards_Array = jsonArray;
+		
+		this.menuFragment	=	menuFragment;
 
 	}
 
@@ -112,6 +117,14 @@ public class MenuAdapter extends BaseAdapter {
 		holder.card_titleTextView.setText("");
 		holder.card_descriptionTextView.setText("No description available");
 		holder.priceTextView.setText("");
+		holder.cardHolder.setTag(arg0);
+		holder.cardHolder.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				menuFragment.loadDealDetailsFragment((Integer)v.getTag());
+			}
+		});
 
 		try {
 			setGroupDetails((JSONObject) cards_Array.get(arg0), holder, rowView);

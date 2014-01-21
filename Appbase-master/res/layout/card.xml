@@ -2,14 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/pane_background_color"
-    android:paddingTop="5dp" >
+    android:background="@color/white_tile_background_color" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:background="@color/white_tile_background_color"
+        android:background="@drawable/list_selector"
         android:padding="5dp" >
 
         <ImageView
@@ -40,7 +38,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight=".7"
-                android:text="$100"
+             	android:layout_gravity="right"
+             	android:gravity="right"
+                android:textSize="20sp"
                 android:textColor="@color/text_color" />
         </LinearLayout>
 

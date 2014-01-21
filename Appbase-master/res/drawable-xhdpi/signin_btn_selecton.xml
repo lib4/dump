@@ -27,7 +27,7 @@
  -->
  
 	<item android:state_enabled="false" android:drawable="@color/header_background_color" />
-    <item android:state_pressed="true" android:drawable="@drawable/btn_regular_pressed" />
+    <item android:state_pressed="true" android:drawable="@color/signin_button_pressed_color" />
     <item android:state_enabled="true" android:drawable="@color/header_background_color" />
 
  

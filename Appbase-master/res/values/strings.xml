@@ -51,5 +51,9 @@
     <string name="please_wait_validating">Please wait validating...</string>
     <string name="could_not_find_sensor">Could not find the Sensor.Do you want to Archive it?</string>
     <string name="archive">Archive</string>
-
+ 	<string name="wait_archiving">Please wait Archiving...</string>
+ 	<string name="adv_interval">Advertising Interval</string>
+ 		<string name="power">Power</string>
+ 	
+ 	
 </resources>

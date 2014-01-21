@@ -7,4 +7,5 @@
      <color name="item_pane">#79888C</color>
      <color name="shadow_color">#969693</color>
      <color name="text_color">#4D4D4D</color>
+      <color name="signin_button_pressed_color">#e34e35</color>
 </resources>

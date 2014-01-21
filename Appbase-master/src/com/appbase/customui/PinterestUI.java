@@ -5,9 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -28,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appbase.R;
 import com.appbase.androidquery.AQuery;
@@ -49,7 +46,8 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	int ITEM_DRAWN_INDEX = 0;
 	Cursor liveOrderCursor;
 	Typeface tf;
-
+	PopupMenu popup;
+	private boolean isAnimationNeeded	=	true;
 	public PinterestUI(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
@@ -75,8 +73,12 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	public void createLayout(Cursor mCursor, final LiveOrderFragment mFragment) {
 
 		ITEM_DRAWN_INDEX = 0;
-
+		if(popup!=null)
+			popup.dismiss();
 		removeAllViews();
+		if(NextLayout!=null){
+			isAnimationNeeded	=	false;
+		}
 		NextLayout = null;
 		ViewTreeObserver vto = getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -145,9 +147,10 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 				FrameLayout mLinearLayout = (FrameLayout) mLayoutInflater
 						.inflate(R.layout.tiles, null);
 
-				ImageButton popMenuIcon = (ImageButton) mLinearLayout
+				ImageView popMenuIcon = (ImageView) mLinearLayout
 						.findViewById(R.id.pop_menu);
-				mLinearLayout.startAnimation(AnimationUtils.loadAnimation(
+				if(isAnimationNeeded)
+					mLinearLayout.startAnimation(AnimationUtils.loadAnimation(
 						context, R.anim.scale_alpha));
 
 				if (liveOrderCursor.getString(3).compareToIgnoreCase("Pending") == 0) {
@@ -208,10 +211,11 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 						}
 
 						itemPrice.setText(price);
-
+						
 						AQuery aq = new AQuery(mLinearLayout);
 						aq.id(mImageView)
-						// .image("http://design.jboss.org/arquillian/logo/final/arquillian_icon_256px.png",
+						
+						 //.image("http://res.cloudinary.com/demo/image/upload/sample.jpg",
 								.image(liveOrderCursor.getString(5),
 
 								true, true, 0, 0, new BitmapAjaxCallback() {
@@ -246,7 +250,8 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 		public void onClick(final View v) {
 
 			// Creating the instance of PopupMenu
-			PopupMenu popup = new PopupMenu(context, v);
+			popup = new PopupMenu(context, v);
+		
 			final FrameLayout mLinearLayout = (FrameLayout) v.getTag();
 
 			final ImageView mTickImage = (ImageView) mLinearLayout

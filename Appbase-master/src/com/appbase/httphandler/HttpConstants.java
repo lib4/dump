@@ -60,48 +60,61 @@ public class HttpConstants {
 	public static final String DESCRIPTION_JKEY = "description";
 	public static final String PRICE_STRING_JKEY = "priceString";
 	public static final String TEXT_JKEY = "text";
-	
-	
+
 	/*
-	 *################################### BUSINESS
+	 * ################################### BUSINESS
 	 */
-	
-	public static final String BUSINESS_ID_JKEY	=	"businessID";
-	public static final String CITY_JKEY	=	"city";
-	public static final String COUNTRY_JKEY	=	"country";
-	public static final String LAST_UPDATED_JKEY	=	"lastUpdated";
-	public static final String LOGO_JKEY	=	"logo";
-	public static final String POSTAL_CODE_JKEY	=	"postalCode";
-	public static final String PROXIMITY_ID_JKEY	=	"proximityID";
-	public static final String SENSOR_BATCH_JKEY	=	"sensorBatch";
-	public static final String STATE_JKEY	=	"state";
-	public static final String STREET_ADDRESS_JKEY	=	"streetAddress";
-	public static final String STRIPE_RECEIPIENT_ID_JKEY	=	"stripeRecipientID";
-	public static final String TAX_PERCENT_JEKEY	=	"taxPercent";
-	public static final String SENSORS_JKEY	=	"sensors";
-	
-	public static final String BALANCE_JKEY	=	"balance";
-	public static final String VERIFIED_JKEY	=	"verified";
-	public static final String RATING_SUM_JKEY	=	"ratingsSum";
-	public static final String RATING_COUNT_JKEY	=	"ratingsCount";
-	public static final String GEO_JKEY	=	"geo";
-	
-	public static final String SENSOR_ID_JKEY	=	"sensorID";
+
+	public static final String BUSINESS_ID_JKEY = "businessID";
+	public static final String CITY_JKEY = "city";
+	public static final String COUNTRY_JKEY = "country";
+	public static final String LAST_UPDATED_JKEY = "lastUpdated";
+	public static final String LOGO_JKEY = "logo";
+	public static final String POSTAL_CODE_JKEY = "postalCode";
+	public static final String PROXIMITY_ID_JKEY = "proximityID";
+	public static final String SENSOR_BATCH_JKEY = "sensorBatch";
+	public static final String STATE_JKEY = "state";
+	public static final String STREET_ADDRESS_JKEY = "streetAddress";
+	public static final String STRIPE_RECEIPIENT_ID_JKEY = "stripeRecipientID";
+	public static final String TAX_PERCENT_JEKEY = "taxPercent";
+	public static final String SENSORS_JKEY = "sensors";
+	public static final String BANK_ACCOUNT_JKEY = "bankAccount";
 	
 	
-	public static final String ADVERTISING_INTERVAL_JKEY	=	"advertisingInterval";
-	public static final String TX_POWER_JKEY	=	"txPower";
+	public static final String BALANCE_JKEY = "balance";
+	public static final String VERIFIED_JKEY = "verified";
+	public static final String RATING_SUM_JKEY = "ratingsSum";
+	public static final String RATING_COUNT_JKEY = "ratingsCount";
+	public static final String GEO_JKEY = "geo";
+
+	public static final String SENSOR_ID_JKEY = "sensorID";
+
+	public static final String ADVERTISING_INTERVAL_JKEY = "advertisingInterval";
+	public static final String TX_POWER_JKEY = "txPower";
+
+	public static final String MAJOR_JKEY = "major";
+	public static final String MINOR_JKEY = "minor";
+
+	public static final String DISPLAY_SENSOR_TYPE_JKEY = "displaySensorType";
+
+	public static final String ESTIMOTE = "ESTIMOTE";
+	public static final String AIRSENSOR = "AIRSENSOR";
+	public static final String VALIDATE_STATUS = "validation_status";
+	public static final String FAILURE = "failure";
+	public static final String SUCCESS = "success";
+	public static final String VALIDATE_TIME = "validation_status_time";
+	public static final String ARCHIVED = "Archived";
 	
-	public static final String	MAJOR_JKEY	=	"major";
-	public static final String	MINOR_JKEY	=	"minor";
-	
-	public static final String	DISPLAY_SENSOR_TYPE_JKEY	=	"displaySensorType";
 	
 	
-	public static final String	ESTIMOTE	=	"ESTIMOTE";
-	public static final String	AIRSENSOR	=	"AIRSENSOR";
-	public static final String	VALIDATE_STATUS	=	"validation_status";
-	public static final String	FAILURE	=	"failure";
-	public static final String	SUCCESS	=	"success";
-	public static final String	VALIDATE_TIME	=	"validation_status_time";
+	
+	
+	
+	
+	
+	
+	
+	public static final String DEVICE_TOKEN = "token";
+	public static final String TYPE = "type";
+	
 }

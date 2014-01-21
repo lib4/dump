@@ -10,13 +10,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
+import com.appbase.activities.BaseActivity;
 import com.appbase.datahandler.GetBusinessParser;
 import com.appbase.datahandler.GetMenusParser;
 import com.appbase.datahandler.LiveOrderParser;
 import com.appbase.datahandler.SignInParser;
+import com.appbase.gcm.GCM_Constants;
 import com.appbase.network.Connection;
 import com.appbase.utils.Utils;
 import com.estimote.sdk.Beacon;
@@ -32,10 +36,10 @@ public class HttpHandler extends Thread {
 
 	public static String GET_MENUS = BASE_URL + "/catalogs";
 	public static String LOGUT_URL = BASE_URL + "/account/signout";
-	public static String BUSINESS_URL	=	BASE_URL+"/settings/business";
-	public static String SENSORS_URL	=	BASE_URL+"/sensors/active";
-	public static String ARCHIVE_SENSORS_URL	=	BASE_URL+"/sensors/";
-	
+	public static String BUSINESS_URL = BASE_URL + "/settings/business";
+	public static String SENSORS_URL = BASE_URL + "/sensors/active";
+	public static String ARCHIVE_SENSORS_URL = BASE_URL + "/sensor/";
+	public static String DEVICE_URL = BASE_URL + "/account/device";
 
 	public static final String HTTP_POST = "POST";
 	public static final String HTTP_GET = "GET";
@@ -49,6 +53,7 @@ public class HttpHandler extends Thread {
 	final int BUSINESS_API_CODE = LOGOUT_API_CODE + 1;
 	final int GET_SENSORS_API_CODE = BUSINESS_API_CODE + 1;
 	final int DELETE_SENSORS_API_CODE = GET_SENSORS_API_CODE + 1;
+	final int DEVICE_TOKEN_API_CODE = DELETE_SENSORS_API_CODE + 1;
 	public static final int NO_NETWORK_CODE = 999;
 	public static final int DEFAULT_CODE = 1;
 	String URL;
@@ -56,7 +61,6 @@ public class HttpHandler extends Thread {
 	Context context;
 	String requestType;
 	HTTPResponseListener mHttpResponseListener;
-
 
 	/**
 	 * 
@@ -149,16 +153,15 @@ public class HttpHandler extends Thread {
 		requestType = HTTP_GET;
 		start();
 	}
-	
-	
-	
+
 	/**
 	 * 
 	 * BUSINESS Function calls the ServerConnection gateway once the response is
 	 * received Response will sent to appropriate response handled method. which
-	 * in turn stores the data in to RecordStore. 
+	 * in turn stores the data in to RecordStore.
 	 */
-	public void getBusiness(Context context,HTTPResponseListener mHttpResponseListener) {
+	public void getBusiness(Context context,
+			HTTPResponseListener mHttpResponseListener) {
 
 		URL = BUSINESS_URL;
 		this.context = context;
@@ -167,74 +170,98 @@ public class HttpHandler extends Thread {
 		requestType = HTTP_GET;
 		start();
 	}
-	
-	
-	
+
 	/**
 	 * 
 	 * SENSORS Function calls the ServerConnection gateway once the response is
 	 * received Response will sent to appropriate response handled method. which
-	 * in turn stores the data in to RecordStore. 
+	 * in turn stores the data in to RecordStore.
 	 */
-	public void getSensors(Context context,HTTPResponseListener mHttpResponseListener,List<Beacon> mBeacons) {
+	public void getSensors(Context context,
+			HTTPResponseListener mHttpResponseListener, List<Beacon> mBeacons) {
 
 		URL = SENSORS_URL;
 		this.context = context;
 		this.mHttpResponseListener = mHttpResponseListener;
-		Iterator mIterator	=	mBeacons.iterator();
-		JSONArray sensJsonArray	=	new JSONArray();
-		while(mIterator.hasNext()){
-			
-			Beacon mBeacon	=	(Beacon) mIterator.next();
-			JSONObject sensorObject 	=	new JSONObject();
+		Iterator mIterator = mBeacons.iterator();
+		JSONArray sensJsonArray = new JSONArray();
+		while (mIterator.hasNext()) {
+
+			Beacon mBeacon = (Beacon) mIterator.next();
+			JSONObject sensorObject = new JSONObject();
 			try {
-				sensorObject.put(HttpConstants.PROXIMITY_ID_JKEY, mBeacon.getProximityUUID());
+				sensorObject.put(HttpConstants.PROXIMITY_ID_JKEY,
+						mBeacon.getProximityUUID());
 				sensorObject.put("major", mBeacon.getMajor());
 				sensorObject.put("minor", mBeacon.getMinor());
 				sensJsonArray.put(sensorObject);
-			
+
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 		}
-		
-		JSONObject requestObject	=	new JSONObject();
-		try{
-	
-		requestObject.put("sensors", sensJsonArray);
-		}catch(Exception e){
+
+		JSONObject requestObject = new JSONObject();
+		try {
+
+			requestObject.put("sensors", sensJsonArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		requestBody = requestObject.toString();
-		
-	
+
 		REQUEST_API_CODE = GET_SENSORS_API_CODE;
 		requestType = HTTP_POST;
 		start();
 	}
 
-	
+	/**
+	 * 
+	 * Archive Sensor Function calls the ServerConnection gateway once the
+	 * response is received Response will sent to appropriate response handled
+	 * method. which in turn stores the data in to RecordStore.
+	 */
+	public void archiveSensor(String sensorId, Context context,
+			HTTPResponseListener mHttpResponseListener) {
+
+		URL = ARCHIVE_SENSORS_URL + sensorId;
+		this.context = context;
+		this.mHttpResponseListener = mHttpResponseListener;
+		REQUEST_API_CODE = DELETE_SENSORS_API_CODE;
+		requestType = HTTP_DELETE;
+		start();
+	}
+
 	/**
 	 * 
 	 * SIGNOUT Function calls the ServerConnection gateway once the response is
 	 * received Response will sent to appropriate response handled method. which
 	 * in turn stores the data in to RecordStore.
 	 */
-	public void archiveSensor(String sensorId,Context context) {
+	public void sendDeviceToken(String deviceToken, Context context,
+			HTTPResponseListener mHttpResponseListener) {
 
-		URL = DELETE_SENSORS_API_CODE+sensorId;
+		URL = DEVICE_URL;
 		this.context = context;
+
+		try {
+			JSONObject signInReqObject = new JSONObject();
+			signInReqObject.put(HttpConstants.DEVICE_TOKEN, deviceToken);
+			signInReqObject.put(HttpConstants.TYPE, "android");
+			requestBody = signInReqObject.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		this.mHttpResponseListener = mHttpResponseListener;
-		REQUEST_API_CODE = DELETE_SENSORS_API_CODE;
-		requestType = HTTP_DELETE;
-		mHttpResponseListener.onSuccess();
-		//start();
+		REQUEST_API_CODE = DEVICE_TOKEN_API_CODE;
+		requestType = HTTP_POST;
+		Log.e("Start on Archive ", "Start on archive");
+		start();
 	}
-	
-	
+
 	/**
 	 * 
 	 * SIGNOUT Function calls the ServerConnection gateway once the response is
@@ -245,9 +272,27 @@ public class HttpHandler extends Thread {
 
 		URL = LOGUT_URL;
 		this.context = context;
+		
+		try {
+			
+			final SharedPreferences prefs = context.getSharedPreferences(BaseActivity.class.getSimpleName(),
+					Context.MODE_PRIVATE);
+			
+			
+			
+			String registrationId = prefs.getString(GCM_Constants.PROPERTY_REG_ID,
+					"");
+			JSONObject signInReqObject = new JSONObject();
+			signInReqObject.put(HttpConstants.DEVICE_TOKEN, registrationId);
+			signInReqObject.put(HttpConstants.TYPE, "android");
+			requestBody = signInReqObject.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		this.mHttpResponseListener = mHttpResponseListener;
 		REQUEST_API_CODE = LOGOUT_API_CODE;
-		requestType = HTTP_GET;
+		requestType = HTTP_POST;
 		start();
 	}
 
@@ -257,8 +302,7 @@ public class HttpHandler extends Thread {
 	 * parser class. 3.Trigger the UI events
 	 */
 	public void run() {
-		
-	
+
 		if (!isNetworkOnline()) {
 			mHttpResponseListener.onFailure(NO_NETWORK_CODE);
 			return;
@@ -314,7 +358,7 @@ public class HttpHandler extends Thread {
 
 					GetMenusParser mGetMenusParser = new GetMenusParser(
 							mConnection.responseStream, context);
-					
+
 					mHttpResponseListener.onSuccess();
 
 					break;
@@ -324,16 +368,14 @@ public class HttpHandler extends Thread {
 					break;
 				}
 				break;
-				
-				
-				
+
 			case BUSINESS_API_CODE:
 				switch (mConnection.responseCode) {
 				case 200:
 
 					GetBusinessParser mGetBusinessParser = new GetBusinessParser(
 							mConnection.responseStream, context);
-					
+
 					mHttpResponseListener.onSuccess();
 
 					break;
@@ -366,24 +408,51 @@ public class HttpHandler extends Thread {
 					break;
 				}
 				break;
-			
+
 			case DELETE_SENSORS_API_CODE:
 				switch (mConnection.responseCode) {
 				case 200:
-					//mHttpResponseListener.onSuccess();
+					mHttpResponseListener.onFailure(Utils.DELETE_SENSOR);
 					break;
 
 				default:
-					//mHttpResponseListener.onFailure(DEFAULT_CODE);
+					mHttpResponseListener.onFailure(DEFAULT_CODE);
 					break;
 				}
 				break;
+
+			case DEVICE_TOKEN_API_CODE:
+				switch (mConnection.responseCode) {
+				case 200:
+					// mHttpResponseListener.onFailure(Utils.DELETE_SENSOR);
+
+					InputStreamReader is = new InputStreamReader(
+							mConnection.responseStream);
+					StringBuilder sb = new StringBuilder();
+					BufferedReader br = new BufferedReader(is);
+					String read = br.readLine();
+
+					while (read != null) {
+
+						sb.append(read);
+						read = br.readLine();
+
+					}
+
+					System.out.println(sb.toString());
+
+					break;
+
+				default:
+					// mHttpResponseListener.onFailure(DEFAULT_CODE);
+					break;
+				}
+				break;
+
 			default:
 				mHttpResponseListener.onFailure(DEFAULT_CODE);
 				break;
 			}
-		
-			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

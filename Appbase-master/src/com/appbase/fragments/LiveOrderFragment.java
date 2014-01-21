@@ -42,11 +42,12 @@ public class LiveOrderFragment extends BaseFragment implements
 	String CHEK = "Default";
 	boolean isFetchFromServer = false;
 	private TextView NoItemSoundTextView;
-	boolean isPollingResponsePending	=	false;
+	boolean isPollingResponsePending = false;
 	ScrollView mScrollView;
 	Timer t;
 	private int scrollY;
 	LiveOrderFragment mLiveOrderFragment;
+
 	public void FetchFromServerNeeded(boolean isFetchFromServer) {
 		// TODO Auto-generated constructor stub
 		this.isFetchFromServer = isFetchFromServer;
@@ -76,8 +77,8 @@ public class LiveOrderFragment extends BaseFragment implements
 		} else {
 			onSuccess();
 		}
-		
-		mLiveOrderFragment	=	this;
+
+		mLiveOrderFragment = this;
 
 		return view;
 	}
@@ -85,7 +86,7 @@ public class LiveOrderFragment extends BaseFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		isPollingResponsePending	=	false;
+		isPollingResponsePending = false;
 		startService();
 	}
 
@@ -111,20 +112,17 @@ public class LiveOrderFragment extends BaseFragment implements
 		super.onStart();
 
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
-		
-		
 
 	}
 
-	
 	@Override
 	public void onPause() {
-		Log.e("paused","Paused");
-		if(t!=null)
+		Log.e("paused", "Paused");
+		if (t != null)
 			t.cancel();
 		super.onPause();
 
@@ -165,11 +163,11 @@ public class LiveOrderFragment extends BaseFragment implements
 
 	private void trgrLiveOrderWebService() {
 
-		isPollingResponsePending	=	true;
+		isPollingResponsePending = true;
 		new DBManager(getActivity()).clearLiveOrders();
 		mDialog = new ProgressDialog(getActivity());
 		mDialog.setMessage(getActivity().getString(R.string.loading));
-		mDialog.setCancelable(true);
+		mDialog.setCancelable(false);
 		mDialog.show();
 		new HttpHandler().getLiveOrders(getActivity(), this);
 	}
@@ -214,13 +212,11 @@ public class LiveOrderFragment extends BaseFragment implements
 
 	final Handler mHandler = new Handler(Looper.getMainLooper()) {
 
-		
-		
 		public void handleMessage(Message msg) {
-			
-			isPollingResponsePending	=	false;
-			
-			Log.e("HANDLER ","HANDLER ");
+
+			isPollingResponsePending = false;
+
+			Log.e("HANDLER ", "HANDLER ");
 
 			if (msg.arg1 == HttpHandler.NO_NETWORK_CODE) {
 
@@ -231,23 +227,16 @@ public class LiveOrderFragment extends BaseFragment implements
 			}
 
 			else {
-				Cursor liveOrders =new DBManager(getActivity())
+				Cursor liveOrders = new DBManager(getActivity())
 						.fetchLiveOrders();
 				if (liveOrders != null && liveOrders.getCount() > 0) {
 
-					
-					Log.e("HANDLER not null","HANDLER ");
 					NoItemSoundTextView.setVisibility(View.GONE);
-					
-					scrollY  	=	mScrollView.getScrollY();
-			
-					Log.e("HANDLER not null","HANDLER "+scrollY +"  "+mScrollView.getScaleY());
-					
-				 	mPinterestUI.createLayout(liveOrders,mLiveOrderFragment);
-					
-					  
-				
-				
+
+					scrollY = mScrollView.getScrollY();
+
+					mPinterestUI.createLayout(liveOrders, mLiveOrderFragment);
+
 				} else {
 
 					NoItemSoundTextView.setVisibility(View.VISIBLE);
@@ -256,47 +245,46 @@ public class LiveOrderFragment extends BaseFragment implements
 		}
 	};
 
-	
-	
-	private void startService(){
-	
-		//Declare the timer
+	private void startService() {
+
+		// Declare the timer
 		t = new Timer();
-		//Set the schedule function and rate
+		// Set the schedule function and rate
 		t.scheduleAtFixedRate(new TimerTask() {
 
-		    @Override
-		    public void run() {
-		        //Called each time when 1000 milliseconds (1 second) (the period parameter)
-		    	if(!isPollingResponsePending){
-		    	isPollingResponsePending	=	true;
-		    	new DBManager(getActivity()).clearLiveOrders();
-		    	new HttpHandler().getLiveOrders(getActivity(), LiveOrderFragment.this);
-		    	
-		    	}
-		    }
-		         
+			@Override
+			public void run() {
+				// Called each time when 1000 milliseconds (1 second) (the
+				// period parameter)
+				if (!isPollingResponsePending) {
+					isPollingResponsePending = true;
+					new DBManager(getActivity()).clearLiveOrders();
+					new HttpHandler().getLiveOrders(getActivity(),
+							LiveOrderFragment.this);
+
+				}
+			}
+
 		},
-		//Set how long before to start calling the TimerTask (in milliseconds)
-		Utils.REFRESH_INTERVAL,
-		//Set the amount of time between each execution (in milliseconds)
-		Utils.REFRESH_INTERVAL);
+		// Set how long before to start calling the TimerTask (in milliseconds)
+				Utils.REFRESH_INTERVAL,
+				// Set the amount of time between each execution (in
+				// milliseconds)
+				Utils.REFRESH_INTERVAL);
 	}
-	
-	
-	public void updateScrollPosition(){
-		
-			
-		  mScrollView.post(new Runnable() {
-	            public void run() {
-	            	try{
-	                mScrollView.scrollTo(0, scrollY);
-	            	}catch(Exception e){
-	            		
-	            	}
-					
-	            }
-	        });
+
+	public void updateScrollPosition() {
+
+		mScrollView.post(new Runnable() {
+			public void run() {
+				try {
+					mScrollView.scrollTo(0, scrollY);
+				} catch (Exception e) {
+
+				}
+
+			}
+		});
 	}
 
 }

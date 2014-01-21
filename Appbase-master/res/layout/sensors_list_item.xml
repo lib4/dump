@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/pane_background_color"
+    
     android:orientation="vertical" >
 
     <TextView
@@ -19,7 +20,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white_tile_background_color"
+        android:id="@+id/sensor_item"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/sensors_list_selector"
         android:paddingBottom="15dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

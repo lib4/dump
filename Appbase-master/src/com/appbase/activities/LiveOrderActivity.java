@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +16,10 @@ import android.view.View;
 
 import com.appbase.R;
 import com.appbase.fragments.LiveOrderFragment;
+import com.appbase.gcm.GCM_Constants;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class LiveOrderActivity extends BaseActivity {
 	LiveOrderFragment mOrderListFragment;
@@ -26,6 +31,7 @@ public class LiveOrderActivity extends BaseActivity {
 		if (savedInstanceState != null) {
 			fetchFromServer = false;
 		}
+		context	=	this;
 
 		if (getIntent().getBooleanExtra("EXIT", false)) {
 
@@ -37,8 +43,11 @@ public class LiveOrderActivity extends BaseActivity {
 			setContentView(R.layout.launcher);
 			loadLiveOrderFragment();
 			initializeDrawer();
+			initiateGCMRegistration();
 		}
 		
+		
+	
 
 	}
 
@@ -69,20 +78,7 @@ public class LiveOrderActivity extends BaseActivity {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		// FragmentManager fragmentManager = getFragmentManager();
-		//
-		// FragmentTransaction fragmentTransaction = fragmentManager
-		// .beginTransaction();
-		//
-		// // fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit,
-		// // R.anim.pop_enter, R.anim.pop_exit);
-		// // Replace whatever is in the fragment_container view with this
-		// // fragment,
-		// // and add the transaction to the back stack
-		// fragmentTransaction.detach(mOrderListFragment);
-		//
-		// // Commit the transaction
-		// fragmentTransaction.commit();
+
 		super.onSaveInstanceState(outState);
 
 	}
@@ -104,26 +100,14 @@ public class LiveOrderActivity extends BaseActivity {
 		// Take appropriate action for each action item click
 		switch (item.getItemId()) {
 		case android.R.id.home:
-		     if (mDrawerToggle.onOptionsItemSelected(item)) {
-		            return true;
-		    }
-			
+			if (mDrawerToggle.onOptionsItemSelected(item)) {
+				return true;
+			}
+
 			return true;
 
 		}
 		return super.onOptionsItemSelected(item);
-
-	}
-
-	/**
-	 * Load the Settings fragment
-	 * 
-	 */
-
-	private void loadSettingsFragment() {
-
-		Intent intent = new Intent(this, SettingsActivity.class);
-		startActivity(intent);
 
 	}
 
@@ -145,6 +129,6 @@ public class LiveOrderActivity extends BaseActivity {
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-	
-	
+
+
 }
