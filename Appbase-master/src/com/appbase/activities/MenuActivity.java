@@ -19,6 +19,7 @@ import android.widget.SearchView;
 import com.appbase.R;
 import com.appbase.fragments.DealsDetailsFragment;
 import com.appbase.fragments.MenuFragment;
+import com.appbase.utils.Utils;
 
 public class MenuActivity extends BaseActivity implements
 		SearchView.OnQueryTextListener, SearchView.OnCloseListener {
@@ -31,7 +32,7 @@ public class MenuActivity extends BaseActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		getActionBar().setTitle(Utils.BUSINESS_NAME);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		if (savedInstanceState != null) {
 			fetchFromServer = false;

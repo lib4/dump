@@ -4,20 +4,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.provider.ContactsContract.CommonDataKinds.Im;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appbase.R;
-import com.appbase.adapters.MenuAdapter.ViewHolder;
-import com.appbase.androidquery.auth.GoogleHandle;
 import com.appbase.fragments.SensorsFragment;
 import com.appbase.httphandler.HttpConstants;
 
@@ -36,7 +32,7 @@ public class SensorsAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
+		Log.e("GET COUNT ","COUNT "+sensorsArray.length());
 		return sensorsArray.length();
 	}
 

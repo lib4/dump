@@ -111,6 +111,7 @@ public class GetBusinessParser {
 					jsonParser.nextToken();
 					values.put(AppSqliteHelper.COLUMN_NAME,
 							jsonParser.getText());
+					Utils.BUSINESS_NAME	=	jsonParser.getText();
 				}
 
 				if (HttpConstants.POSTAL_CODE_JKEY.equals(token)) {
@@ -238,6 +239,10 @@ public class GetBusinessParser {
 				while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
 					String token = jsonParser.getCurrentName();
 				
+					if (HttpConstants._ID_JKEY.equals(token)) {
+						jsonParser.nextToken();
+						snesorObject.put(token, jsonParser.getText());
+					}
 					if (HttpConstants.NAME_JKEY.equals(token)) {
 						jsonParser.nextToken();
 						snesorObject.put(token, jsonParser.getText());

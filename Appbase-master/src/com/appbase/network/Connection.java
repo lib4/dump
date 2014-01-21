@@ -25,12 +25,14 @@ public class Connection {
 			throws IOException {
 
 		try{
+			System.out.println("\nSending 'POST' request to URL : " + url);
 		URL obj = new URL(url);
 		// Trusting all the Https server and certificate. This is insecure
 		// should be avoided.
-		trustAllHosts();
+		trustAllHosts();	
+		
 		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-		System.out.println("\nSending 'POST' request to URL : " + url);
+	
 		System.out.println("Post body : " + requestBody);
 
 		con.setRequestMethod(requestType);

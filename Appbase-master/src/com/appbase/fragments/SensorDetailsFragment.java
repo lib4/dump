@@ -1,17 +1,24 @@
 package com.appbase.fragments;
 
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.appbase.R;
+import com.appbase.httphandler.HttpConstants;
+import com.appbase.utils.Utils;
 
 public class SensorDetailsFragment extends BaseFragment{
 
 	
 	LinearLayout sensorDetailsLayout;
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -25,10 +32,36 @@ public class SensorDetailsFragment extends BaseFragment{
 			// the view hierarchy; it would just never be used.
 			return null;
 		}
-
+		getActivity().getActionBar().setTitle(Utils.SENSOR_DETAILS_TEXT);
 		sensorDetailsLayout	=	 (LinearLayout) inflater.inflate(R.layout.sensor_details_fragment, container,
 				false);	
-		
+		init();
 		return sensorDetailsLayout;
 	}
+	
+
+	
+	private void init(){
+		
+		try{
+		TextView SensorName	=	(TextView) sensorDetailsLayout.findViewById(R.id.sensorNameText);
+		SensorName.setText(Utils.SELECTED_OBJECT.getString(HttpConstants.NAME_JKEY));
+		
+		TextView 	AdvIntervalText =	(TextView) sensorDetailsLayout.findViewById(R.id.AdvIntervalText);
+		TextView advIntervalValue	=	(TextView) sensorDetailsLayout.findViewById(R.id.advIntervalValue);
+		advIntervalValue.setText(Utils.SELECTED_OBJECT.getString(HttpConstants.ADVERTISING_INTERVAL_JKEY));
+		
+		
+		TextView powerText	=	(TextView) sensorDetailsLayout.findViewById(R.id.powerText);
+		TextView powerValue	=	(TextView) sensorDetailsLayout.findViewById(R.id.powerValue);
+		powerValue.setText(Utils.SELECTED_OBJECT.getString(HttpConstants.TX_POWER_JKEY)+"dBm");
+		
+		}catch(Exception e){
+			
+		}
+		
+	}
+	
+	
+	
 }

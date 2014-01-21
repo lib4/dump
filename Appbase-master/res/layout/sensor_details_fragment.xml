@@ -4,5 +4,87 @@
     android:layout_height="match_parent"
     android:background="@color/pane_background_color"
     android:orientation="vertical" >
-    
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@color/white_tile_background_color"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp" >
+
+        <TextView
+            android:id="@+id/sensorNameText"
+            style="@style/text_view_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dsdsdsd"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_tile_background_color"
+        android:layout_marginTop="1dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp" >
+
+        <TextView
+            android:id="@+id/AdvIntervalText"
+            style="@style/text_view_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/adv_interval"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/advIntervalValue"
+            style="@style/text_view_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+           />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      
+        android:layout_marginTop="1dp"
+        android:background="@color/white_tile_background_color"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp" >
+
+        <TextView
+            android:id="@+id/powerText"
+            style="@style/text_view_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/power"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/powerValue"
+            style="@style/text_view_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+         />
+    </RelativeLayout>
+
+   
+
 </LinearLayout>

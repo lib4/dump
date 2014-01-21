@@ -49,6 +49,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	int ITEM_DRAWN_INDEX = 0;
 	Cursor liveOrderCursor;
 	Typeface tf;
+	PopupMenu popup;
 
 	public PinterestUI(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -75,7 +76,8 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	public void createLayout(Cursor mCursor, final LiveOrderFragment mFragment) {
 
 		ITEM_DRAWN_INDEX = 0;
-
+		if(popup!=null)
+			popup.dismiss();
 		removeAllViews();
 		NextLayout = null;
 		ViewTreeObserver vto = getViewTreeObserver();
@@ -246,7 +248,8 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 		public void onClick(final View v) {
 
 			// Creating the instance of PopupMenu
-			PopupMenu popup = new PopupMenu(context, v);
+			popup = new PopupMenu(context, v);
+		
 			final FrameLayout mLinearLayout = (FrameLayout) v.getTag();
 
 			final ImageView mTickImage = (ImageView) mLinearLayout

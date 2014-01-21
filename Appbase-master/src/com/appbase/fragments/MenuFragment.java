@@ -84,6 +84,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener,
 			onSuccess();
 		}
 		menuFragment = this;
+		
 		return menuLayout;
 	}
 

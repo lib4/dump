@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.appbase.datahandler.GetBusinessParser;
 import com.appbase.datahandler.GetMenusParser;
@@ -34,7 +35,7 @@ public class HttpHandler extends Thread {
 	public static String LOGUT_URL = BASE_URL + "/account/signout";
 	public static String BUSINESS_URL	=	BASE_URL+"/settings/business";
 	public static String SENSORS_URL	=	BASE_URL+"/sensors/active";
-	public static String ARCHIVE_SENSORS_URL	=	BASE_URL+"/sensors/";
+	public static String ARCHIVE_SENSORS_URL	=	BASE_URL+"/sensor/";
 	
 
 	public static final String HTTP_POST = "POST";
@@ -223,15 +224,15 @@ public class HttpHandler extends Thread {
 	 * received Response will sent to appropriate response handled method. which
 	 * in turn stores the data in to RecordStore.
 	 */
-	public void archiveSensor(String sensorId,Context context) {
+	public void archiveSensor(String sensorId,Context context,HTTPResponseListener mHttpResponseListener) {
 
-		URL = DELETE_SENSORS_API_CODE+sensorId;
+		URL = ARCHIVE_SENSORS_URL+sensorId;
 		this.context = context;
 		this.mHttpResponseListener = mHttpResponseListener;
 		REQUEST_API_CODE = DELETE_SENSORS_API_CODE;
 		requestType = HTTP_DELETE;
-		mHttpResponseListener.onSuccess();
-		//start();
+		Log.e("Start on Archive ","Start on archive");
+		start();
 	}
 	
 	
@@ -370,11 +371,11 @@ public class HttpHandler extends Thread {
 			case DELETE_SENSORS_API_CODE:
 				switch (mConnection.responseCode) {
 				case 200:
-					//mHttpResponseListener.onSuccess();
+					mHttpResponseListener.onFailure(Utils.DELETE_SENSOR);
 					break;
 
 				default:
-					//mHttpResponseListener.onFailure(DEFAULT_CODE);
+					mHttpResponseListener.onFailure(DEFAULT_CODE);
 					break;
 				}
 				break;
