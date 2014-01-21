@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
+   
     android:background="@color/pane_background_color">
 
     <TextView
@@ -18,6 +19,9 @@
         android:id="@+id/card_holder_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/signin_btn_selecton"
         android:orientation="vertical" >
          <include layout="@layout/cards_holder"/>
     </LinearLayout>
