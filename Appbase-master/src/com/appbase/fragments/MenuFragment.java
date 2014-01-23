@@ -70,7 +70,12 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener {
 		// Inflate the layout for this fragment
 		menuLayout = (LinearLayout) inflater.inflate(R.layout.menu_fragment,
 				container, false);
-		getActivity().getActionBar().setTitle(Utils.CATALOGUE_TEXT);
+		if(Utils.BUSINESS_NAME.length()==0){
+			getActivity().getActionBar().setTitle(Utils.CATALOGUE_TEXT);
+		}else{
+			getActivity().getActionBar().setTitle(Utils.BUSINESS_NAME);
+		}
+		
 		init();
 		if (new DBManager(getActivity()).isCatalogsAvailable()
 				&& !Utils.REFRESH_CATALOGE) {

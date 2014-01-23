@@ -2,6 +2,7 @@ package com.appbase.datastorage;
 
 import com.appbase.activities.BaseActivity;
 import com.appbase.gcm.GCM_Constants;
+import com.appbase.utils.Utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -172,7 +173,7 @@ public class DBManager {
 		
 		SharedPreferences.Editor editor	=	 prefs.edit().clear();
 		editor.commit();
-		
+		Utils.BUSINESS_NAME="";
 		
 		open();
 		long insertId = appSqLiteDatabase.delete(

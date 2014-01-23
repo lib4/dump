@@ -170,6 +170,8 @@ public class LiveOrderFragment extends BaseFragment implements
 		mDialog.setCancelable(false);
 		mDialog.show();
 		new HttpHandler().getLiveOrders(getActivity(), this);
+		if(Utils.BUSINESS_NAME.length()==0)
+		new HttpHandler().getBusiness(getActivity(), null);
 	}
 
 	private void showNoNetworkAlertDialog() {

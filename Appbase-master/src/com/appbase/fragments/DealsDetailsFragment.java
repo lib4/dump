@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.appbase.R;
 import com.appbase.httphandler.HttpConstants;
+import com.appbase.utils.Utils;
 
 public class DealsDetailsFragment extends BaseFragment {
 
@@ -43,6 +44,8 @@ public class DealsDetailsFragment extends BaseFragment {
 			return null;
 		}
 
+		if(Utils.BUSINESS_NAME.length()>0)
+		getActivity().getActionBar().setTitle(Utils.BUSINESS_NAME);
 		// Inflate the layout for this fragment
 		dealsDetailsLayout = (ScrollView) inflater.inflate(
 				R.layout.deal_details_fragment, container, false);
