@@ -8,4 +8,5 @@
      <color name="shadow_color">#969693</color>
      <color name="text_color">#4D4D4D</color>
       <color name="signin_button_pressed_color">#e34e35</color>
+      <color name="grey_selector">#9f808080</color>
 </resources>

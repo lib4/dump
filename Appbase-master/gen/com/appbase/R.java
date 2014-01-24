@@ -184,8 +184,9 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f050006;
         public static final int common_signin_btn_light_text_focused=0x7f050007;
         public static final int common_signin_btn_light_text_pressed=0x7f050005;
-        public static final int common_signin_btn_text_dark=0x7f050012;
-        public static final int common_signin_btn_text_light=0x7f050013;
+        public static final int common_signin_btn_text_dark=0x7f050013;
+        public static final int common_signin_btn_text_light=0x7f050014;
+        public static final int grey_selector=0x7f050012;
         public static final int header_background_color=0x7f05000b;
         public static final int item_pane=0x7f05000e;
         public static final int pane_background_color=0x7f05000a;
@@ -264,13 +265,15 @@ containing a value of this type.
         public static final int ic_tick_mark=0x7f020030;
         public static final int ic_vdots=0x7f020031;
         public static final int icon_120=0x7f020032;
-        public static final int list_selector=0x7f020033;
-        public static final int offer_images=0x7f020034;
-        public static final int screen_splash=0x7f020035;
-        public static final int selector=0x7f020036;
-        public static final int sensors_list_selector=0x7f020037;
-        public static final int signin_btn_selecton=0x7f020038;
-        public static final int transparent_selector=0x7f020039;
+        public static final int icon_2=0x7f020033;
+        public static final int icon_app_launcher=0x7f020034;
+        public static final int list_selector=0x7f020035;
+        public static final int offer_images=0x7f020036;
+        public static final int screen_splash=0x7f020037;
+        public static final int selector=0x7f020038;
+        public static final int sensors_list_selector=0x7f020039;
+        public static final int signin_btn_selecton=0x7f02003a;
+        public static final int transparent_selector=0x7f02003b;
     }
     public static final class id {
         public static final int AdvIntervalText=0x7f060028;
