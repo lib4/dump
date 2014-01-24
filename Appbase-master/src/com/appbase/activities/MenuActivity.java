@@ -33,12 +33,13 @@ public class MenuActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setTitle(Utils.BUSINESS_NAME);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		if (savedInstanceState != null) {
 			fetchFromServer = false;
 		}
-		resolveWidth();
+		setContentView(R.layout.launcher);
+		loadMenuFragment();
 		initializeDrawer();
+	
 
 	}
 

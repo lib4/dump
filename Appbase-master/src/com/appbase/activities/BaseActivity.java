@@ -20,10 +20,12 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.appbase.R;
 import com.appbase.gcm.GCM_Constants;
 import com.appbase.httphandler.HttpHandler;
+import com.appbase.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -48,19 +50,31 @@ public class BaseActivity extends Activity {
 	Context context;
 
 	String regid;
-	private String TAG = "BASE ACTIVITY";
+	private String TAG = "BASE ACTIVITY";	
+	boolean IS_TABLET	=	false;
 
 	/**
 	 * Called when the activity is starting.
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.launcher);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
+	
+		IS_TABLET			=	Utils.isTabletDevice(this);
+		Toast.makeText(this, ""+ IS_TABLET,1000).show();
+		
+		if(!IS_TABLET){
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}else{
+			
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		}
+	
 		this.overridePendingTransition(R.anim.enter, R.anim.exit);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
+		
 	}
 
 	/**
@@ -148,32 +162,36 @@ public class BaseActivity extends Activity {
 	}
 
 	public void initializeDrawer() {
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-		// set a custom shadow that overlays the main content when the drawer
-		// opens
-		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-				GravityCompat.START);
-
-		// ActionBarDrawerToggle ties together the the proper interactions
-		// between the sliding drawer and the action bar app icon
-		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.drawer_open, /* "open drawer" description for accessibility */
-		R.string.drawer_close /* "close drawer" description for accessibility */
-		) {
-			public void onDrawerClosed(View view) {
-
-			}
-
-			public void onDrawerOpened(View drawerView) {
-
-			}
-		};
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-		mDrawerLayout.closeDrawers();
+		
+		if(!IS_TABLET){
+					mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+			
+					// set a custom shadow that overlays the main content when the drawer
+					// opens
+					mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+							GravityCompat.START);
+			
+					// ActionBarDrawerToggle ties together the the proper interactions
+					// between the sliding drawer and the action bar app icon
+					mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+					mDrawerLayout, /* DrawerLayout object */
+					R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+					R.string.drawer_open, /* "open drawer" description for accessibility */
+					R.string.drawer_close /* "close drawer" description for accessibility */
+					) {
+						public void onDrawerClosed(View view) {
+			
+						}
+			
+						public void onDrawerOpened(View drawerView) {
+			
+						}
+					};
+					mDrawerLayout.setDrawerListener(mDrawerToggle);
+			
+					mDrawerLayout.closeDrawers();
+					
+		}
 
 	}
 
@@ -185,7 +203,7 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-
+		if(!IS_TABLET){
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 		if (savedInstanceState != null
 				&& savedInstanceState.get("FromDealDetails") != null
@@ -197,12 +215,13 @@ public class BaseActivity extends Activity {
 		} else {
 			mDrawerToggle.syncState();
 		}
+		}
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-
+		if(!IS_TABLET)
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
@@ -374,5 +393,12 @@ public class BaseActivity extends Activity {
 	private void sendRegistrationIdToBackend(String deviceToken){
 		
 		new HttpHandler().sendDeviceToken(deviceToken, context, null);
+	}
+	
+	public void closeDrawayer(){
+		
+		if(!IS_TABLET){
+			mDrawerLayout.closeDrawers();
+		}
 	}
 }

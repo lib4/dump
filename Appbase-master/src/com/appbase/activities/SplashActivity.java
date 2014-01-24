@@ -20,7 +20,7 @@ public class SplashActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 		
 		String profileToken	=	new DBManager(this).getProfileToken();
 		getActionBar().hide();

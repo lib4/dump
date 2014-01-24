@@ -172,7 +172,7 @@ public class SettingsFragment extends BaseFragment {
 
 	@Override
 	public void onStop() {
-		((BaseActivity) getActivity()).mDrawerLayout.closeDrawers();
+		((BaseActivity) getActivity()).closeDrawayer();
 		super.onStop();
 	}
 
