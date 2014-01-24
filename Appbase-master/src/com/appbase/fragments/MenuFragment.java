@@ -70,12 +70,12 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener {
 		// Inflate the layout for this fragment
 		menuLayout = (LinearLayout) inflater.inflate(R.layout.menu_fragment,
 				container, false);
-		if(Utils.BUSINESS_NAME.length()==0){
+		if (Utils.BUSINESS_NAME.length() == 0) {
 			getActivity().getActionBar().setTitle(Utils.CATALOGUE_TEXT);
-		}else{
+		} else {
 			getActivity().getActionBar().setTitle(Utils.BUSINESS_NAME);
 		}
-		
+
 		init();
 		if (new DBManager(getActivity()).isCatalogsAvailable()
 				&& !Utils.REFRESH_CATALOGE) {
@@ -109,24 +109,28 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener {
 
 	public void loadDealDetailsFragment(int itemIndex) {
 		cardObject = (JSONObject) menuAdapter.getItem(itemIndex);
-		View mView = getActivity().getWindow().getDecorView()
-				.findViewById(android.R.id.content);
 
-		if (mView.findViewById(R.id.slide_list) != null) {
+		if (!Utils.IS_TABLET) {
+			Intent intent = new Intent(getActivity(), DealDetailsActivity.class);
+			startActivity(intent);
+		} else {
 
 			DealsDetailsFragment mDealsDetailsFragment = new DealsDetailsFragment();
-			mDealsDetailsFragment.hideHeaderBar(true);
 			FragmentManager fragmentManager = getFragmentManager();
 			FragmentTransaction fragmentTransaction = fragmentManager
 					.beginTransaction();
-			fragmentTransaction.replace(R.id.content_pane,
+
+			// fragmentTransaction.setCustomAnimations(R.anim.enter,
+			// R.anim.exit,
+			// R.anim.pop_enter, R.anim.pop_exit);
+			// Replace whatever is in the fragment_container view with this
+			// fragment,
+			// and add the transaction to the back stack
+			fragmentTransaction.replace(R.id.fragment_holder,
 					mDealsDetailsFragment);
+
 			// Commit the transaction
 			fragmentTransaction.commit();
-
-		} else {
-			Intent intent = new Intent(getActivity(), DealDetailsActivity.class);
-			startActivity(intent);
 
 		}
 
@@ -360,10 +364,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener {
 		int sourceArrayLength = cards_Array.length();
 		int i = 0;
 		boolean foundGroupHeader = false;
-	
-		
-		
-		
+
 		while (i < sourceArrayLength) {
 
 			try {

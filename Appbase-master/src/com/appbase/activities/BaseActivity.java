@@ -51,7 +51,7 @@ public class BaseActivity extends Activity {
 
 	String regid;
 	private String TAG = "BASE ACTIVITY";	
-	boolean IS_TABLET	=	false;
+	
 
 	/**
 	 * Called when the activity is starting.
@@ -60,10 +60,10 @@ public class BaseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 	
-		IS_TABLET			=	Utils.isTabletDevice(this);
-		Toast.makeText(this, ""+ IS_TABLET,1000).show();
+		Utils.IS_TABLET			=	Utils.isTabletDevice(this);
+		Toast.makeText(this, ""+ Utils.IS_TABLET	,1000).show();
 		
-		if(!IS_TABLET){
+		if(!Utils.IS_TABLET	){
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}else{
 			
@@ -163,7 +163,7 @@ public class BaseActivity extends Activity {
 
 	public void initializeDrawer() {
 		
-		if(!IS_TABLET){
+		if(!Utils.IS_TABLET	){
 					mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 			
 					// set a custom shadow that overlays the main content when the drawer
@@ -203,7 +203,7 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		if(!IS_TABLET){
+		if(!Utils.IS_TABLET	){
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 		if (savedInstanceState != null
 				&& savedInstanceState.get("FromDealDetails") != null
@@ -221,9 +221,9 @@ public class BaseActivity extends Activity {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		if(!IS_TABLET)
+		if(!Utils.IS_TABLET	)
 		// Pass any configuration change to the drawer toggls
-		mDrawerToggle.onConfigurationChanged(newConfig);
+			mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
 	private void findDensity() {
@@ -397,7 +397,7 @@ public class BaseActivity extends Activity {
 	
 	public void closeDrawayer(){
 		
-		if(!IS_TABLET){
+		if(!Utils.IS_TABLET	){
 			mDrawerLayout.closeDrawers();
 		}
 	}

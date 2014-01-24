@@ -26,7 +26,7 @@ public class Utils {
 	public static String SENSOR_DETAILS_TEXT	=	"Sensor Details";
 	public static String CATALOGUE_TEXT	=	"Catalogue";
 	public static int ARCHIVE_INDEX			=	-1;
- 
+	public static boolean IS_TABLET			=	false;
 	
 	
 	

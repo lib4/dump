@@ -1,6 +1,8 @@
 package com.appbase.fragments;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import com.appbase.activities.SensorsActivity;
 import com.appbase.activities.TermsOfServiceActivity;
 import com.appbase.datastorage.DBManager;
 import com.appbase.httphandler.HttpHandler;
+import com.appbase.utils.Utils;
 
 public class SettingsFragment extends BaseFragment {
 
@@ -57,10 +60,17 @@ public class SettingsFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				disableHighlight(v);
+				if(!Utils.IS_TABLET){
 				Intent intent = new Intent(getActivity(),
 						LiveOrderActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
+				}else{
+					
+					LiveOrderFragment mLiveOrderFragment	=	new LiveOrderFragment();
+					loadFragment(mLiveOrderFragment);
+					
+				}
 
 			}
 		});
@@ -72,9 +82,15 @@ public class SettingsFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				disableHighlight(v);
-
+				if(!Utils.IS_TABLET){
 				Intent intent = new Intent(getActivity(), MenuActivity.class);
 				startActivity(intent);
+				}else{
+					
+					
+					MenuFragment mMenuFragment	=	new MenuFragment();
+					loadFragment(mMenuFragment);
+				}
 
 			}
 		});
@@ -88,9 +104,14 @@ public class SettingsFragment extends BaseFragment {
 				// Toast.makeText(getActivity(),
 				// "Functinality yet to be implemented.", 1000).show();
 				disableHighlight(v);
+				if(!Utils.IS_TABLET){
 				Intent intent = new Intent(getActivity(), SensorsActivity.class);
 
 				startActivity(intent);
+				}else{
+					SensorsFragment mSensorsFragment	=	new SensorsFragment();
+					loadFragment(mSensorsFragment);
+				}
 
 			}
 		});
@@ -133,24 +154,41 @@ public class SettingsFragment extends BaseFragment {
 			// TODO Auto-generated method stub
 			switch (v.getId()) {
 			case R.id.security:
+				if(!Utils.IS_TABLET){
 				Intent security_intent = new Intent(getActivity(),
 						SecurityActivity.class);
 				startActivity(security_intent);
+				}else{
+					
+				
+				}
 				break;
 			case R.id.help_center:
+				if(!Utils.IS_TABLET){
 				Intent help_center_intent = new Intent(getActivity(),
 						HelpCenterActivity.class);
 				startActivity(help_center_intent);
+				}else{
+					
+				}
 				break;
 			case R.id.privacy_policy:
+				if(!Utils.IS_TABLET){
 				Intent privacy_policy_intent = new Intent(getActivity(),
 						PrivacyPolicyActivity.class);
 				startActivity(privacy_policy_intent);
+				}else{
+					
+				}
 				break;
 			case R.id.terms_of_service:
+				if(!Utils.IS_TABLET){
 				Intent terms_of_service_intent = new Intent(getActivity(),
 						TermsOfServiceActivity.class);
 				startActivity(terms_of_service_intent);
+				}else{
+					
+				}
 				break;
 
 			}
@@ -181,7 +219,7 @@ public class SettingsFragment extends BaseFragment {
 		String callingActyivityName = getActivity().getComponentName()
 				.getClassName();
 		String packageName = "com.appbase.Activities.";
-		
+
 		if (callingActyivityName.equalsIgnoreCase(packageName
 				+ "LiveOrderActivity")) {
 			liveOrdersLayout.setPressed(true);
@@ -217,11 +255,11 @@ public class SettingsFragment extends BaseFragment {
 		privacy_policy.setPressed(false);
 		help_center.setPressed(false);
 		terms_of_service.setPressed(false);
-		if(v!=null){
+		if (v != null) {
 			v.setPressed(true);
-			
+
 		}
-		
+
 	}
 
 	private void signOutAlert() {
@@ -276,6 +314,32 @@ public class SettingsFragment extends BaseFragment {
 	private void trgrSignOutService() {
 
 		new HttpHandler().signOut(getActivity());
+	}
+	
+	
+	/**
+	 * Load the LiveOrder fragment
+	 * 
+	 */
+
+	private void loadFragment(BaseFragment mBaseFragment) {
+
+		
+		
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+
+		// fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit,
+		// R.anim.pop_enter, R.anim.pop_exit);
+		// Replace whatever is in the fragment_container view with this
+		// fragment,
+		// and add the transaction to the back stack
+		fragmentTransaction.replace(R.id.fragment_holder, mBaseFragment);
+
+		// Commit the transaction
+		fragmentTransaction.commit();
+
 	}
 
 }
