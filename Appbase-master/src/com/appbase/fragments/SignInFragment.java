@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -54,6 +55,13 @@ public class SignInFragment extends BaseFragment implements
 		}
 		mDialog	=	null;
 		// Inflate the layout for this fragment
+		
+		if(!Utils.IS_TABLET	){
+			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}else{
+			
+			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		}
 		signInLayout = inflater.inflate(R.layout.signin_fragment, container,
 				false);
 		init();

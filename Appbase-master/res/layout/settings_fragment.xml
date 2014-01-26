@@ -1,179 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView    android:layout_width="fill_parent"
-    android:layout_height="match_parent" 
-     android:background="@color/pane_background_color"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout 
-    android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
-
-    android:orientation="vertical" >
-
-    <!-- GENERAL -->
-
-    <TextView
-        style="@style/SubTitleHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/general" />
+    android:background="@color/pane_background_color" >
 
     <LinearLayout
-        android:id="@+id/live_orders"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/selector"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <!-- GENERAL -->
 
         <TextView
-            style="@style/list_item"
+            style="@style/SubTitleHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/transparent_selector"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:text="@string/live_orders" />
-    </LinearLayout>
+            android:layout_marginTop="8dp"
+            android:text="@string/general" />
 
-    <LinearLayout
-        android:id="@+id/menu_management"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/selector"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="horizontal" >
-
-        <TextView
-            style="@style/list_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/transparent_selector"
-            android:text="@string/preview_cards" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/sensor_management"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/selector"
-        android:clickable="true"
-        android:orientation="horizontal" >
-
-        <TextView
-            style="@style/list_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/transparent_selector"
-            android:text="@string/manage_sensors" />
-    </LinearLayout>
-
-    
-    
         <LinearLayout
-        android:id="@+id/logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/selector"
-        android:clickable="true"
-        android:orientation="horizontal" >
-
-        <TextView
-            style="@style/list_item"
+            android:id="@+id/live_orders"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/transparent_selector"
-            android:text="@string/logout" />
-    </LinearLayout>
-    
-        
-    <!-- ABOUT -->
+            android:layout_marginTop="2dp"
+            android:background="@drawable/selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal" >
 
-    <TextView
-        style="@style/SubTitleHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/about" />
+            <TextView
+                style="@style/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_selector"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="@string/live_orders" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/security"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/selector"
-        android:clickable="true"
-        android:orientation="horizontal" >
-
-        <TextView
-            style="@style/list_item"
+        <LinearLayout
+            android:id="@+id/menu_management"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/transparent_selector"
-            android:text="@string/security" />
-    </LinearLayout>
+            android:layout_marginTop="2dp"
+            android:background="@drawable/selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:id="@+id/help_center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/selector"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="horizontal" >
+            <TextView
+                style="@style/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_selector"
+                android:text="@string/preview_cards" />
+        </LinearLayout>
 
-        <TextView
-            style="@style/list_item"
+        <LinearLayout
+            android:id="@+id/sensor_management"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/transparent_selector"
-            android:text="@string/help_center" />
-    </LinearLayout>
+            android:layout_marginTop="2dp"
+            android:background="@drawable/selector"
+            android:clickable="true"
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:id="@+id/privacy_policy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/selector"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="horizontal" >
+            <TextView
+                style="@style/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_selector"
+                android:text="@string/manage_sensors" />
+        </LinearLayout>
 
-        <TextView
-            style="@style/list_item"
+        <LinearLayout
+            android:id="@+id/logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/transparent_selector"
-            android:text="@string/privacy_policy" />
-    </LinearLayout>
+            android:layout_marginTop="2dp"
+            android:background="@drawable/selector"
+            android:clickable="true"
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:id="@+id/terms_of_service"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/selector"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="horizontal" >
+            <TextView
+                style="@style/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_selector"
+                android:text="@string/logout" />
+        </LinearLayout>
+
+        <!-- ABOUT -->
 
         <TextView
-            style="@style/list_item"
+            style="@style/SubTitleHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/transparent_selector"
-            android:text="@string/terms_of_service" />
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/about" />
+
+        <LinearLayout
+            android:id="@+id/security"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/selector"
+            android:clickable="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_selector"
+                android:text="@string/security" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/help_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_selector"
+                android:text="@string/help_center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/privacy_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_selector"
+                android:text="@string/privacy_policy" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/terms_of_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_selector"
+                android:text="@string/terms_of_service" />
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
 </ScrollView>

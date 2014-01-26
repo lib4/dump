@@ -18,12 +18,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.appbase.R;
+import com.appbase.fragments.MenuFragment;
+import com.appbase.fragments.SettingsFragment;
 import com.appbase.gcm.GCM_Constants;
 import com.appbase.httphandler.HttpHandler;
+import com.appbase.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -38,7 +47,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
  *         clearing etc needs to e handled only in this class.
  * 
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements
+		SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
 	public DrawerLayout mDrawerLayout;
 	public ActionBarDrawerToggle mDrawerToggle;
@@ -48,18 +58,32 @@ public class BaseActivity extends Activity {
 	Context context;
 
 	String regid;
+	SearchView searchView;
 	private String TAG = "BASE ACTIVITY";
+	Menu searchMenuItem;
 
 	/**
 	 * Called when the activity is starting.
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.launcher);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+		Utils.IS_TABLET = Utils.isTabletDevice(this);
+		Toast.makeText(this, "" + Utils.IS_TABLET, 1000).show();
+
+		if (!Utils.IS_TABLET) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		} else {
+
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		}
+
 		this.overridePendingTransition(R.anim.enter, R.anim.exit);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
+
+		Utils.WIDTH_IN_DP = Utils.findDisplayWidthDensity(this);
+		Utils.WIDTH_IN_PX = Utils.findDisplayWidthPixels(this);
 
 	}
 
@@ -124,20 +148,55 @@ public class BaseActivity extends Activity {
 
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		Log.e("MENU>>>>>>>>>>", "MENU>>>>>>>>>>>>>>>>>>>>>>>>>");
+		searchMenuItem = menu;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.cataloge_list, menu);
+		searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
+		searchView.setOnQueryTextListener(this);
+		searchView.setOnCloseListener(this);
+		menu.findItem(R.id.action_search).setVisible(false);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	public void showSearchActionItem() {
+		if (searchMenuItem != null) {
+			Log.e("text", "test" + searchMenuItem.findItem(R.id.action_search));
+			searchMenuItem.findItem(R.id.action_search).setVisible(true);
+		}
+	}
+
+	public void hideSearchActionItem() {
+		if (searchMenuItem != null) {
+			Log.e("text", "test" + searchMenuItem.findItem(R.id.action_search));
+			searchMenuItem.findItem(R.id.action_search).setVisible(false);
+		}
+	}
+
 	/**
 	 * On selecting action bar icons
 	 * */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+
 		Log.e("OnOption Selected", "On option");
 
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
+		if(!Utils.IS_TABLET){
+				if (mDrawerToggle.onOptionsItemSelected(item)) {
+					return true;
+				}
 		}
 		// Take appropriate action for each action item click
 		switch (item.getItemId()) {
 		case android.R.id.home:
+			if(!Utils.IS_TABLET)
 			finish();
+			else
+				super.onBackPressed();
 			break;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -148,32 +207,36 @@ public class BaseActivity extends Activity {
 	}
 
 	public void initializeDrawer() {
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-		// set a custom shadow that overlays the main content when the drawer
-		// opens
-		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-				GravityCompat.START);
+		if (!Utils.IS_TABLET) {
+			mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-		// ActionBarDrawerToggle ties together the the proper interactions
-		// between the sliding drawer and the action bar app icon
-		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.drawer_open, /* "open drawer" description for accessibility */
-		R.string.drawer_close /* "close drawer" description for accessibility */
-		) {
-			public void onDrawerClosed(View view) {
+			// set a custom shadow that overlays the main content when the
+			// drawer
+			// opens
+			mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+					GravityCompat.START);
 
-			}
+			// ActionBarDrawerToggle ties together the the proper interactions
+			// between the sliding drawer and the action bar app icon
+			mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+			mDrawerLayout, /* DrawerLayout object */
+			R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+			R.string.drawer_open, /* "open drawer" description for accessibility */
+			R.string.drawer_close /* "close drawer" description for accessibility */
+			) {
+				public void onDrawerClosed(View view) {
 
-			public void onDrawerOpened(View drawerView) {
+				}
 
-			}
-		};
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+				public void onDrawerOpened(View drawerView) {
 
-		mDrawerLayout.closeDrawers();
+				}
+			};
+			mDrawerLayout.setDrawerListener(mDrawerToggle);
+			mDrawerLayout.closeDrawers();
+
+		}
 
 	}
 
@@ -185,36 +248,27 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+		if (!Utils.IS_TABLET) {
+			// Sync the toggle state after onRestoreInstanceState has occurred.
+			if (savedInstanceState != null
+					&& savedInstanceState.get("FromDealDetails") != null
+					|| savedInstanceState != null
+					&& savedInstanceState.get("FromSensorsList") != null
+					|| savedInstanceState != null
+					&& savedInstanceState.get("FromSensorDetails") != null) {
 
-		// Sync the toggle state after onRestoreInstanceState has occurred.
-		if (savedInstanceState != null
-				&& savedInstanceState.get("FromDealDetails") != null
-				|| savedInstanceState != null
-				&& savedInstanceState.get("FromSensorsList") != null
-				|| savedInstanceState != null
-				&& savedInstanceState.get("FromSensorDetails") != null) {
-
-		} else {
-			mDrawerToggle.syncState();
+			} else {
+				mDrawerToggle.syncState();
+			}
 		}
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-
-		// Pass any configuration change to the drawer toggls
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
-
-	private void findDensity() {
-		Display display = getWindowManager().getDefaultDisplay();
-		DisplayMetrics outMetrics = new DisplayMetrics();
-		display.getMetrics(outMetrics);
-
-		float density = getResources().getDisplayMetrics().density;
-		float dpHeight = outMetrics.heightPixels / density;
-		SCREEN_WIDTH_DP = outMetrics.widthPixels / density;
+		if (!Utils.IS_TABLET)
+			// Pass any configuration change to the drawer toggls
+			mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
 	/**
@@ -325,7 +379,7 @@ public class BaseActivity extends Activity {
 					// You should send the registration ID to your server over
 					// HTTP, so it
 					// can use GCM/HTTP or CCS to send messages to your app.
-					 sendRegistrationIdToBackend(regid);
+					sendRegistrationIdToBackend(regid);
 
 					// For this demo: we don't need to send it because the
 					// device will send
@@ -370,9 +424,51 @@ public class BaseActivity extends Activity {
 		editor.putInt(GCM_Constants.PROPERTY_APP_VERSION, appVersion);
 		editor.commit();
 	}
-	
-	private void sendRegistrationIdToBackend(String deviceToken){
-		
+
+	private void sendRegistrationIdToBackend(String deviceToken) {
+
 		new HttpHandler().sendDeviceToken(deviceToken, context, null);
+	}
+
+	public void closeDrawayer() {
+
+		if (!Utils.IS_TABLET) {
+			mDrawerLayout.closeDrawers();
+		}
+	}
+
+	@Override
+	public boolean onClose() {
+		// TODO Auto-generated method stub
+
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String arg0) {
+		// TODO Auto-generated method stub
+
+		MenuFragment menuFragment = (MenuFragment) getFragmentManager()
+				.findFragmentByTag(MenuFragment.class.getName());
+		menuFragment.trgrSearch(arg0);
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+
+		hideKeyboard();
+		return false;
+	}
+
+	/**
+	 * Method to hide the keyboard
+	 */
+
+	private void hideKeyboard() {
+		InputMethodManager imm = (InputMethodManager) this
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 	}
 }

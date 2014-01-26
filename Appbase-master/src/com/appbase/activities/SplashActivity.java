@@ -20,16 +20,26 @@ public class SplashActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 		
 		String profileToken	=	new DBManager(this).getProfileToken();
 		getActionBar().hide();
+		Utils.IS_TABLET	=	Utils.isTabletDevice(this);
+		
+		if(!Utils.IS_TABLET	){
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}else{
+			
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		}
 		Utils.REFRESH_CATALOGE	=	true;
 		if(profileToken!=null){
 			Utils.TOKEN	=	profileToken;
 			swapToLiveViewActivity();
 		}else{
+			
 			setContentView(R.layout.splash);
+			
 			swapToSignInActivity();
 		}
 	}

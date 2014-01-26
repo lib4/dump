@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.appbase.datastorage.AppSqliteHelper;
 import com.appbase.datastorage.DBManager;
@@ -50,6 +51,7 @@ public class GetMenusParser {
 			ContentValues values = null;
 			jsonParser.nextToken();
 			while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
+				Log.e("True","ttur");
 				if (jsonParser.getCurrentToken() == JsonToken.START_OBJECT) {
 					values = new ContentValues();
 				}
@@ -57,7 +59,7 @@ public class GetMenusParser {
 				while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
 
 					String token = jsonParser.getCurrentName();
-					//System.out.println("Token "+token);
+					System.out.println("Token "+token);
 
 				
 					if (HttpConstants.NAME_JKEY.equals(token)) {
@@ -107,7 +109,7 @@ public class GetMenusParser {
 							JSONObject groupObject = new JSONObject();
 							while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
 								token = jsonParser.getCurrentName();
-
+								Log.e("True","ttur"+token);
 								if (HttpConstants.NAME_JKEY.equals(token)) {
 									jsonParser.nextToken();
 									groupObject
@@ -132,7 +134,7 @@ public class GetMenusParser {
 										JSONObject subGroupObject = new JSONObject();
 										while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
 											token = jsonParser.getCurrentName();
-
+											Log.e("True","tturaaa"+token);
 											if (HttpConstants.NAME_JKEY
 													.equals(token)) {
 												jsonParser.nextToken();
@@ -219,8 +221,10 @@ public class GetMenusParser {
 
 				JSONObject cardObject = new JSONObject();
 				while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
+					
+					
 					token = jsonParser.getCurrentName();
-
+					Log.e("True","cardsArrayParser"+token);
 					if (HttpConstants.TYPE_JKEY.equals(token)) {
 						jsonParser.nextToken();
 						cardObject.put(token, jsonParser.getText());

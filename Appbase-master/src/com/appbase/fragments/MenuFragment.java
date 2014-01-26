@@ -27,6 +27,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.appbase.R;
+import com.appbase.activities.BaseActivity;
 import com.appbase.activities.DealDetailsActivity;
 import com.appbase.adapters.MenuAdapter;
 import com.appbase.datastorage.DBManager;
@@ -66,16 +67,27 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener {
 			// the view hierarchy; it would just never be used.
 			return null;
 		}
+		
+		
+		
 		mDialog = null;
 		// Inflate the layout for this fragment
 		menuLayout = (LinearLayout) inflater.inflate(R.layout.menu_fragment,
 				container, false);
-		getActivity().getActionBar().setTitle(Utils.CATALOGUE_TEXT);
+		if (Utils.BUSINESS_NAME.length() == 0) {
+			getActivity().getActionBar().setTitle(Utils.CATALOGUE_TEXT);
+		} else {
+			getActivity().getActionBar().setTitle(Utils.BUSINESS_NAME);
+		}
+
 		init();
 		if (new DBManager(getActivity()).isCatalogsAvailable()
 				&& !Utils.REFRESH_CATALOGE) {
 			isFetchFromServer = false;
 		}
+		
+		
+		
 		if (isFetchFromServer) {
 			trgrGetMenusService();
 		} else {
@@ -104,27 +116,40 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener {
 
 	public void loadDealDetailsFragment(int itemIndex) {
 		cardObject = (JSONObject) menuAdapter.getItem(itemIndex);
-		View mView = getActivity().getWindow().getDecorView()
-				.findViewById(android.R.id.content);
 
-		if (mView.findViewById(R.id.slide_list) != null) {
+		if (!Utils.IS_TABLET) {
+			Intent intent = new Intent(getActivity(), DealDetailsActivity.class);
+			startActivity(intent);
+		} else {
+			
+			((BaseActivity)getActivity()).hideSearchActionItem();
 
 			DealsDetailsFragment mDealsDetailsFragment = new DealsDetailsFragment();
-			mDealsDetailsFragment.hideHeaderBar(true);
 			FragmentManager fragmentManager = getFragmentManager();
 			FragmentTransaction fragmentTransaction = fragmentManager
 					.beginTransaction();
-			fragmentTransaction.replace(R.id.content_pane,
+
+			// fragmentTransaction.setCustomAnimations(R.anim.enter,
+			// R.anim.exit,
+			// R.anim.pop_enter, R.anim.pop_exit);
+			// Replace whatever is in the fragment_container view with this
+			// fragment,
+			// and add the transaction to the back stack
+			fragmentTransaction.replace(R.id.fragment_holder,
 					mDealsDetailsFragment);
+			fragmentTransaction.addToBackStack(null);
 			// Commit the transaction
 			fragmentTransaction.commit();
 
-		} else {
-			Intent intent = new Intent(getActivity(), DealDetailsActivity.class);
-			startActivity(intent);
-
 		}
 
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		((BaseActivity)getActivity()).showSearchActionItem();
+		
 	}
 
 	@Override
@@ -244,6 +269,12 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener {
 
 	}
 
+	@Override
+	public void onStop(){
+		
+		((BaseActivity)getActivity()).hideSearchActionItem();
+		super.onStop();
+	}
 	public void trgrSearch(String searchStr) {
 
 		try {
@@ -355,10 +386,7 @@ public class MenuFragment extends BaseFragment implements HTTPResponseListener {
 		int sourceArrayLength = cards_Array.length();
 		int i = 0;
 		boolean foundGroupHeader = false;
-	
-		
-		
-		
+
 		while (i < sourceArrayLength) {
 
 			try {

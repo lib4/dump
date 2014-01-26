@@ -54,15 +54,7 @@
                     >
                 </TextView>
 		
-                <ImageView
-                    android:id="@+id/pop_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-               		android:scaleType="center"
-               		android:layout_gravity="right"
-                    android:background="@drawable/ic_vdots"
-                    >
-                </ImageView>
+        
         
             </LinearLayout>
 

@@ -92,28 +92,28 @@ public class AppSqliteHelper extends SQLiteOpenHelper {
 			+ COLUMN_EMAIL + " text not null," + "" + COLUMN_FNAME
 			+ " text not null," + "" + COLUMN_LASTUPDATED + " text not null,"
 			+ COLUMN_LNAME + " text not null," + COLUMN_PHONE
-			+ " text," + COLUMN_TYPE + " text not null," + ""
-			+ COLUMN_BACKGROUNDSCAN + " boolean not null," + COLUMN_GUEST
-			+ " boolean not null," + COLUMN_FULLNAME + " text not null,"
-			+ COLUMN__ID + " text not null);";
+			+ " text," + COLUMN_TYPE + " text null," + ""
+			+ COLUMN_BACKGROUNDSCAN + " boolean  null," + COLUMN_GUEST
+			+ " boolean not null," + COLUMN_FULLNAME + " text  null,"
+			+ COLUMN__ID + " text  null);";
 
 	private static final String CREATE_LIVEORDERS_TABLE = "create table "
 			+ TABLE_LIVE_ORDERS
 			+ " (auto_id integer primary key autoincrement,"
 			+ COLUMN_LASTUPDATED + " text," + COLUMN_CREATED
 			+ " text," + "" + COLUMN_AMOUNT + " FLOAT not null,"
-			+ COLUMN_TAX + " FLOAT not null, " + COLUMN_CONSUMEREMAIL
+			+ COLUMN_TAX + " FLOAT  null, " + COLUMN_CONSUMEREMAIL
 			+ " text , " + COLUMN_DEVICE_ID + " text default null," + ""
 			+ COLUMN_TYPE + " text , " + COLUMN_CONSUMER__ID
 			+ " text , " + COLUMN_CONSUMER_V + " integer , "
 			+COLUMN_FNAME+" text, "+COLUMN_LNAME +" text, "+COLUMN_FULLNAME+" text, "
 			+COLUMN_IMAGE+" text, "+COLUMN_THUMB	+" text, "	
-			+ COLUMN_BACKGROUNDSCAN + " boolean not null," + "" + COLUMN_GUEST
-			+ " boolean not null, " + COLUMN_ID + " text not null,"
-			+ COLUMN_BUSINESS + " text not null," + COLUMN__ID
-			+ " text not null, " + COLUMN_V + " integer not null, "
-			+ COLUMN_RATED + " boolean not null, " + "" + COLUMN_FEECOLLECTED
-			+ " boolean not null," + COLUMN_STATUS + " text not null, "
+			+ COLUMN_BACKGROUNDSCAN + " boolean  null," + "" + COLUMN_GUEST
+			+ " boolean  null, " + COLUMN_ID + " text  null,"
+			+ COLUMN_BUSINESS + " text  null," + COLUMN__ID
+			+ " text  null, " + COLUMN_V + " integer  null, "
+			+ COLUMN_RATED + " boolean  null, " + "" + COLUMN_FEECOLLECTED
+			+ " boolean  null," + COLUMN_STATUS + " text  null, "
 			+ COLUMN_ITEMS + " text not null);";
 	
 

@@ -40,6 +40,7 @@ public class WebViewFragment extends BaseFragment{
 			return null;
 		}
 
+		getActivity().getActionBar().setTitle(getResources().getText(R.string.app_name));
 		
 		 final ProgressDialog pd = ProgressDialog.show(getActivity(), "", "Loading...",true);
 		 pd.setCancelable(true);

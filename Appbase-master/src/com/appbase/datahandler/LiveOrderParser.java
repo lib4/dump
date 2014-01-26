@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.appbase.datastorage.AppSqliteHelper;
 import com.appbase.datastorage.DBManager;
@@ -88,8 +89,11 @@ public class LiveOrderParser {
 										//Consumer object parsing
 										if (HttpConstants.CONSUMER_JKEY.equals(token)) {
 				
+											if(jsonParser.nextToken()==JsonToken.START_OBJECT){
 											while (jsonParser.nextToken() != JsonToken.END_OBJECT){
 												token = jsonParser.getCurrentName();
+												
+												Log.e("TOKEN ","TOKEN  "+token);
 												if (HttpConstants.LASTUPDATED_JKEY.equals(token)) {
 				
 													jsonParser.nextToken();
@@ -183,7 +187,7 @@ public class LiveOrderParser {
 												}
 												
 											}
-											
+											}//If Consumer Close
 				
 										}
 										
@@ -228,7 +232,9 @@ public class LiveOrderParser {
 										
 										
 										if (HttpConstants.ITEMS_JKEY.equals(token)) {
+											Log.e("Items ","Items "+token);
 											jsonParser.nextToken();
+											
 											JSONArray itemArray	=	new JSONArray();
 											while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
 												

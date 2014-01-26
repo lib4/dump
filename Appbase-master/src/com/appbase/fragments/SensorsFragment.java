@@ -9,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -32,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appbase.R;
+import com.appbase.activities.BaseActivity;
 import com.appbase.activities.SensorDetailsActivity;
 import com.appbase.adapters.SensorsAdapter;
 import com.appbase.datastorage.DBManager;
@@ -576,9 +579,30 @@ public class SensorsFragment extends BaseFragment implements
 		try {
 			Utils.SELECTED_OBJECT = sensorArray.getJSONObject(itemindex);
 			Utils.SELECTED_OBJECT.put("index", itemindex);
-			Intent intent = new Intent(getActivity(),
-					SensorDetailsActivity.class);
-			startActivity(intent);
+			
+			
+			if(!Utils.IS_TABLET){
+				Intent intent = new Intent(getActivity(),
+						SensorDetailsActivity.class);
+				startActivity(intent);
+			}else{
+				FragmentManager fragmentManager = getFragmentManager();
+
+//				BaseFragment mFragment = (BaseFragment) fragmentManager
+//						.findFragmentByTag(fragmentTag);
+
+				SensorDetailsFragment mSensorDetailsFragment	=	 new SensorDetailsFragment();
+				FragmentTransaction fragmentTransaction = fragmentManager
+						.beginTransaction();
+
+				
+				fragmentTransaction.replace(R.id.fragment_holder, mSensorDetailsFragment);
+				fragmentTransaction.addToBackStack(null);
+				// Commit the transaction
+				fragmentTransaction.commit();
+				
+				
+			}
 		} catch (Exception e) {
 
 		}

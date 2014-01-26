@@ -1,10 +1,14 @@
 package com.appbase.customui;
 
+import java.text.DecimalFormat;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.dimen;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,6 +17,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,19 +26,21 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.appbase.R;
+import com.appbase.activities.BaseActivity;
 import com.appbase.androidquery.AQuery;
 import com.appbase.androidquery.callback.AjaxStatus;
 import com.appbase.androidquery.callback.BitmapAjaxCallback;
+import com.appbase.fragments.BaseFragment;
 import com.appbase.fragments.LiveOrderFragment;
 import com.appbase.httphandler.HTTPResponseListener;
 import com.appbase.httphandler.HttpHandler;
+import com.appbase.utils.Utils;
 
 public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	private int NUM_COLUMN = 2;
@@ -47,7 +54,12 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	Cursor liveOrderCursor;
 	Typeface tf;
 	PopupMenu popup;
-	private boolean isAnimationNeeded	=	true;
+	private boolean isAnimationNeeded = true;
+	DecimalFormat df = new DecimalFormat("0.00");
+
+	int blankSpace = 0;
+	int sidePanelWidthInPix;
+
 	public PinterestUI(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
@@ -60,12 +72,26 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 		this.context = context;
 		setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT));
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
-		DisplayMetrics metrics = new DisplayMetrics();
-		wm.getDefaultDisplay().getMetrics(metrics);
 
-		SCREEN_WIDTH = metrics.widthPixels;
+		if (!Utils.IS_TABLET)
+			SCREEN_WIDTH = Utils.WIDTH_IN_PX;
+		else {
+
+			float width = context.getResources().getDimension(
+					R.dimen.drawer_width);
+
+			sidePanelWidthInPix = (Utils.convertDensityToPixel(
+					(Activity) context, (int) width));
+			
+			
+			
+			SCREEN_WIDTH = (int) (Utils.WIDTH_IN_PX - sidePanelWidthInPix);
+			blankSpace = Utils.WIDTH_IN_PX - (sidePanelWidthInPix + (2 * 400));
+
+		}
+
+		NUM_COLUMN = SCREEN_WIDTH / 400;
+
 		HeightArray = new int[NUM_COLUMN];
 
 	}
@@ -73,11 +99,11 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	public void createLayout(Cursor mCursor, final LiveOrderFragment mFragment) {
 
 		ITEM_DRAWN_INDEX = 0;
-		if(popup!=null)
+		if (popup != null)
 			popup.dismiss();
 		removeAllViews();
-		if(NextLayout!=null){
-			isAnimationNeeded	=	false;
+		if (NextLayout != null) {
+			isAnimationNeeded = false;
 		}
 		NextLayout = null;
 		ViewTreeObserver vto = getViewTreeObserver();
@@ -113,10 +139,6 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 
 		TOTAL_NUM_ITEMS = liveOrderCursor.getCount();
 
-		if (SCREEN_WIDTH > 1200) {
-			NUM_COLUMN = SCREEN_WIDTH / 400;
-		}
-
 		for (int i = 0; i < NUM_COLUMN; i++) {
 
 			LinearLayout mLinearLayout = new LinearLayout(context);
@@ -125,6 +147,7 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 
 			mLinearLayout.setOrientation(LinearLayout.VERTICAL);
 			setOrientation(LinearLayout.HORIZONTAL);
+			setGravity(Gravity.CENTER_HORIZONTAL);
 			mLinearLayout.setPadding(2, 5, 2, 5);
 			addView(mLinearLayout);
 
@@ -147,27 +170,27 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 				FrameLayout mLinearLayout = (FrameLayout) mLayoutInflater
 						.inflate(R.layout.tiles, null);
 
-				ImageView popMenuIcon = (ImageView) mLinearLayout
-						.findViewById(R.id.pop_menu);
-				if(isAnimationNeeded)
+				if (isAnimationNeeded)
 					mLinearLayout.startAnimation(AnimationUtils.loadAnimation(
-						context, R.anim.scale_alpha));
+							context, R.anim.scale_alpha));
 
-				if (liveOrderCursor.getString(3).compareToIgnoreCase("Pending") == 0) {
+				if (liveOrderCursor.getString(3) != null
+						&& liveOrderCursor.getString(3).compareToIgnoreCase(
+								"Pending") == 0) {
 
 					ImageView mImageView = ((ImageView) mLinearLayout
 							.findViewById(R.id.tick_image));
-					popMenuIcon.setTag(mLinearLayout);
+					// popMenuIcon.setTag(mLinearLayout);
 					mImageView.setTag(liveOrderCursor.getString(2));
-					popMenuIcon.setOnClickListener(TileClickLister);
+					mLinearLayout.setOnClickListener(TileClickLister);
 				} else {
 
 					ImageView mImageView = ((ImageView) mLinearLayout
 							.findViewById(R.id.tick_image));
 					mImageView.setTag(liveOrderCursor.getString(2));
 					mImageView.setVisibility(View.VISIBLE);
-					popMenuIcon.setTag(mLinearLayout);
-					popMenuIcon.setOnClickListener(TileClickLister);
+					// popMenuIcon.setTag(mLinearLayout);
+					mLinearLayout.setOnClickListener(TileClickLister);
 				}
 
 				TextView customerName = (TextView) mLinearLayout
@@ -176,13 +199,10 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 				customerName.setText(liveOrderCursor.getString(0));
 				TextView amount = (TextView) mLinearLayout
 						.findViewById(R.id.amount);
-				String price = "" + liveOrderCursor.getDouble(1);
-				if (!price.contains("$")) {
-					price = "$" + price;
-				}
 
-				price = "(" + price + ")";
-				amount.setText("" + price);
+				String priceFormated = df.format(liveOrderCursor.getDouble(1));
+				priceFormated = "$" + priceFormated;
+				amount.setText("" + priceFormated);
 				LinearLayout itemLinearLayout = (LinearLayout) mLinearLayout
 						.findViewById(R.id.itemsLayout);
 
@@ -205,17 +225,17 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 								.findViewById(R.id.item_price);
 						itemLinearLayout.addView(mItemLinearLayout);
 						itemName.setText(mJsonObject.getString("name"));
-						price = "" + mJsonObject.getDouble("price");
-						if (!price.contains("$")) {
-							price = "$" + price;
-						}
+						priceFormated = df.format(mJsonObject
+								.getDouble("price"));
 
-						itemPrice.setText(price);
-						
+						priceFormated = "$" + priceFormated;
+
+						itemPrice.setText(priceFormated);
+
 						AQuery aq = new AQuery(mLinearLayout);
 						aq.id(mImageView)
-						
-						 //.image("http://res.cloudinary.com/demo/image/upload/sample.jpg",
+
+						// .image("http://res.cloudinary.com/demo/image/upload/sample.jpg",
 								.image(liveOrderCursor.getString(5),
 
 								true, true, 0, 0, new BitmapAjaxCallback() {
@@ -249,12 +269,15 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 		@Override
 		public void onClick(final View v) {
 
-			// Creating the instance of PopupMenu
-			popup = new PopupMenu(context, v);
-		
-			final FrameLayout mLinearLayout = (FrameLayout) v.getTag();
+			TextView popMenuIcon = (TextView) v
+					.findViewById(R.id.customer_name);
 
-			final ImageView mTickImage = (ImageView) mLinearLayout
+			// Creating the instance of PopupMenu
+			popup = new PopupMenu(context, popMenuIcon);
+
+			// final FrameLayout mLinearLayout = (FrameLayout) v.getTag();
+
+			final ImageView mTickImage = (ImageView) v
 					.findViewById(R.id.tick_image);
 			if (mTickImage.getVisibility() == View.VISIBLE) {
 				popup.getMenuInflater().inflate(
@@ -283,13 +306,13 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 						new HttpHandler().liveOrderAction(context,
 								PinterestUI.this, (String) mTickImage.getTag(),
 								"confirm");
-						mLinearLayout.setVisibility(View.GONE);
+						v.setVisibility(View.GONE);
 						break;
 					case R.id.reject_order:
 						new HttpHandler().liveOrderAction(context,
 								PinterestUI.this, (String) mTickImage.getTag(),
 								"cancel");
-						mLinearLayout.setVisibility(View.GONE);
+						v.setVisibility(View.GONE);
 						break;
 
 					}
@@ -334,6 +357,18 @@ public class PinterestUI extends LinearLayout implements HTTPResponseListener {
 	@Override
 	public void onFailure(int failureCode) {
 		// TODO Auto-generated method stub
+
+	}
+
+	public void adjustSidePaneWidth() {
+		/*
+		Log.e("sidePanelWidthInPix + blankSpace",""+(sidePanelWidthInPix + blankSpace) + " BLANK "+blankSpace);
+		BaseFragment v = (BaseFragment) ((BaseActivity) context)
+				.getFragmentManager().findFragmentByTag("SettingsFragment");
+		(v.getView()).setLayoutParams(new LinearLayout.LayoutParams(
+				sidePanelWidthInPix,
+				LinearLayout.LayoutParams.MATCH_PARENT));
+				*/
 
 	}
 

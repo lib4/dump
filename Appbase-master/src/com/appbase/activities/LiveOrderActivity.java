@@ -83,6 +83,7 @@ public class LiveOrderActivity extends BaseActivity {
 
 	}
 
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// MenuInflater inflater = getMenuInflater();
@@ -91,9 +92,12 @@ public class LiveOrderActivity extends BaseActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+
 	/**
 	 * On selecting action bar icons
 	 * */
+	
+	/*
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -110,25 +114,9 @@ public class LiveOrderActivity extends BaseActivity {
 		return super.onOptionsItemSelected(item);
 
 	}
+	*/
 
-	/**
-	 * When using the ActionBarDrawerToggle, you must call it during
-	 * onPostCreate() and onConfigurationChanged()...
-	 */
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
-		mDrawerToggle.syncState();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
 
 
 }

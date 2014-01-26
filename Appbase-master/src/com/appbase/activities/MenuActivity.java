@@ -21,23 +21,23 @@ import com.appbase.fragments.DealsDetailsFragment;
 import com.appbase.fragments.MenuFragment;
 import com.appbase.utils.Utils;
 
-public class MenuActivity extends BaseActivity implements
-		SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+public class MenuActivity extends BaseActivity {
 
 	MenuFragment mMenuFragment;
 
 	boolean fetchFromServer = true;
-	SearchView searchView;
+
+	// SearchView searchView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setTitle(Utils.BUSINESS_NAME);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		if (savedInstanceState != null) {
 			fetchFromServer = false;
 		}
-		resolveWidth();
+		setContentView(R.layout.launcher);
+		loadMenuFragment();
 		initializeDrawer();
 
 	}
@@ -60,7 +60,7 @@ public class MenuActivity extends BaseActivity implements
 		// Replace whatever is in the fragment_container view with this
 		// fragment,
 		// and add the transaction to the back stack
-		fragmentTransaction.replace(R.id.fragment_holder, mMenuFragment);
+		fragmentTransaction.replace(R.id.fragment_holder, mMenuFragment,MenuFragment.class.getName());
 
 		// Commit the transaction
 		fragmentTransaction.commit();
@@ -152,14 +152,9 @@ public class MenuActivity extends BaseActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.cataloge_list, menu);
-		searchView = (SearchView) menu.findItem(R.id.action_search)
-				.getActionView();
-		searchView.setOnQueryTextListener(this);
-		searchView.setOnCloseListener(this);
-
-		return super.onCreateOptionsMenu(menu);
+			super.onCreateOptionsMenu(menu);
+			showSearchActionItem();
+			return true;
 	}
 
 	/**
@@ -179,38 +174,6 @@ public class MenuActivity extends BaseActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 
-	}
-
-	@Override
-	public boolean onClose() {
-		// TODO Auto-generated method stub
-
-		return false;
-	}
-
-	@Override
-	public boolean onQueryTextChange(String arg0) {
-		// TODO Auto-generated method stub
-		mMenuFragment.trgrSearch(arg0);
-		return false;
-	}
-
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		// TODO Auto-generated method stub
-
-		hideKeyboard();
-		return false;
-	}
-
-	/**
-	 * Method to hide the keyboard
-	 */
-
-	private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager) this
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 	}
 
 }

@@ -376,12 +376,14 @@ public class HttpHandler extends Thread {
 					GetBusinessParser mGetBusinessParser = new GetBusinessParser(
 							mConnection.responseStream, context);
 
-					mHttpResponseListener.onSuccess();
+					if(mHttpResponseListener!=null)
+						mHttpResponseListener.onSuccess();
 
 					break;
 
 				default:
-					mHttpResponseListener.onFailure(DEFAULT_CODE);
+					if(mHttpResponseListener!=null)
+						mHttpResponseListener.onFailure(DEFAULT_CODE);
 					break;
 				}
 				break;
